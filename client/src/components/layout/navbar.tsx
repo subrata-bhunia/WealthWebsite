@@ -16,9 +16,9 @@ export function Navbar() {
   if (isMobile) {
     return (
       <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b">
-        <div className="container flex items-center justify-between h-16">
+        <div className="container mx-auto px-4 flex items-center justify-between h-16">
           <Link href="/">
-            <a className="font-bold text-xl">WealthSpire</a>
+            <span className="font-bold text-xl">WealthSpire</span>
           </Link>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
@@ -36,9 +36,9 @@ export function Navbar() {
                         <div className="flex flex-col space-y-2">
                           {category.items.map((item) => (
                             <Link key={item.href} href={item.href}>
-                              <a className="px-4 py-2 text-sm" onClick={() => setIsOpen(false)}>
+                              <span className="block px-4 py-2 text-sm hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
                                 {item.title}
-                              </a>
+                              </span>
                             </Link>
                           ))}
                         </div>
@@ -59,27 +59,27 @@ export function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b">
-      <div className="container flex items-center justify-between h-16">
+      <div className="container mx-auto px-4 flex items-center justify-between h-16">
         <Link href="/">
-          <a className="font-bold text-xl">WealthSpire</a>
+          <span className="font-bold text-xl">WealthSpire</span>
         </Link>
         <NavigationMenu>
-          <NavigationMenuList>
+          <NavigationMenuList className="hidden md:flex">
             {Object.values(NAVIGATION_ITEMS).map((category) => (
               <NavigationMenuItem key={category.label}>
                 <NavigationMenuTrigger>{category.label}</NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[400px] gap-2 p-4">
+                  <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] lg:w-[600px]">
                     {category.items.map((item) => (
                       <li key={item.href}>
                         <NavigationMenuLink asChild>
                           <Link href={item.href}>
-                            <a className={cn(
+                            <span className={cn(
                               "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
                               "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                             )}>
                               {item.title}
-                            </a>
+                            </span>
                           </Link>
                         </NavigationMenuLink>
                       </li>
@@ -90,7 +90,7 @@ export function Navbar() {
             ))}
           </NavigationMenuList>
         </NavigationMenu>
-        <Button asChild>
+        <Button asChild className="hidden md:inline-flex">
           <Link href="/contact">Contact Us</Link>
         </Button>
       </div>
