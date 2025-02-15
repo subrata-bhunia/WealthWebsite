@@ -14,6 +14,9 @@ import IndividualsFamiliesPage from "@/pages/who-we-serve/individuals-families";
 import ExecutivesPage from "@/pages/who-we-serve/executives";
 import MutualFundsPage from "@/pages/wealth-management/mutual-funds";
 import PersonalInsurancePage from "@/pages/insurance/personal";
+import HomeLoanPage from "@/pages/loans/home-loan";
+import NewCarLeasePage from "@/pages/lease/new-car";
+import BusinessInsurancePage from "@/pages/insurance/business";
 
 function Router() {
   return (
@@ -43,7 +46,15 @@ function Router() {
 
           {/* Insurance Routes */}
           <Route path="/insurance/personal" component={PersonalInsurancePage} />
-          {/* Other Insurance routes will follow the same pattern */}
+          <Route path="/insurance/business" component={BusinessInsurancePage} />
+
+          {/* Lease Routes */}
+          <Route path="/lease/new-car" component={NewCarLeasePage} />
+          {/* Other Lease routes will follow the same pattern */}
+
+          {/* Loans Routes */}
+          <Route path="/loans/home-loan" component={HomeLoanPage} />
+          {/* Other Loans routes will follow the same pattern */}
 
           <Route component={NotFound} />
         </Switch>
