@@ -8,9 +8,9 @@ export default function HomeLoanPage() {
       title="Home Loan"
       subtitle="Realize your dream of homeownership with our flexible and competitive home loan solutions."
     >
-      <div className="grid gap-8">
+      <div className="max-w-7xl mx-auto space-y-12">
         {/* Loan Features */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card>
             <CardHeader>
               <Home className="w-8 h-8 text-primary mb-4" />
@@ -25,7 +25,7 @@ export default function HomeLoanPage() {
               </ul>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <Percent className="w-8 h-8 text-primary mb-4" />
@@ -40,7 +40,7 @@ export default function HomeLoanPage() {
               </ul>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <Clock className="w-8 h-8 text-primary mb-4" />
@@ -55,7 +55,7 @@ export default function HomeLoanPage() {
               </ul>
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <FileCheck className="w-8 h-8 text-primary mb-4" />
@@ -73,11 +73,11 @@ export default function HomeLoanPage() {
         </div>
 
         {/* Loan Process */}
-        <div className="mt-12">
-          <h2 className="text-2xl font-bold mb-6">Application Process</h2>
-          <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-8">Application Process</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <span className="text-xl font-bold text-primary">1</span>
               </div>
               <h3 className="font-semibold mb-2">Apply Online</h3>
@@ -85,8 +85,8 @@ export default function HomeLoanPage() {
                 Fill out our simple online application form
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <span className="text-xl font-bold text-primary">2</span>
               </div>
               <h3 className="font-semibold mb-2">Document Upload</h3>
@@ -94,8 +94,8 @@ export default function HomeLoanPage() {
                 Submit required documents digitally
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <span className="text-xl font-bold text-primary">3</span>
               </div>
               <h3 className="font-semibold mb-2">Verification</h3>
@@ -103,8 +103,8 @@ export default function HomeLoanPage() {
                 Quick verification and property assessment
               </p>
             </div>
-            <div className="text-center">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                 <span className="text-xl font-bold text-primary">4</span>
               </div>
               <h3 className="font-semibold mb-2">Loan Disbursement</h3>
@@ -116,22 +116,22 @@ export default function HomeLoanPage() {
         </div>
 
         {/* Additional Benefits */}
-        <div className="mt-12 bg-primary/5 p-8 rounded-lg">
-          <h2 className="text-2xl font-bold mb-6">Additional Benefits</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div>
+        <div className="bg-primary/5 p-8 rounded-lg">
+          <h2 className="text-2xl font-bold mb-6 text-center">Additional Benefits</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="text-center">
               <h3 className="font-semibold mb-2">Tax Benefits</h3>
               <p className="text-muted-foreground">
                 Take advantage of tax deductions on principal and interest payments
               </p>
             </div>
-            <div>
+            <div className="text-center">
               <h3 className="font-semibold mb-2">Insurance Coverage</h3>
               <p className="text-muted-foreground">
                 Optional loan protection insurance for added security
               </p>
             </div>
-            <div>
+            <div className="text-center">
               <h3 className="font-semibold mb-2">Expert Guidance</h3>
               <p className="text-muted-foreground">
                 Dedicated relationship manager throughout your loan journey
