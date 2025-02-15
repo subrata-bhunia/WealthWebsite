@@ -26,9 +26,12 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/contact" component={() => (
-            <div className="container py-12">
-              <h1 className="text-3xl font-bold mb-8">Contact Us</h1>
-              <div className="max-w-lg mx-auto">
+            <div className="container mx-auto px-4 py-24">
+              <div className="max-w-lg mx-auto text-center">
+                <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
+                <p className="text-muted-foreground mb-8">
+                  Get in touch with our team of experts to discuss your financial goals.
+                </p>
                 <ContactForm />
               </div>
             </div>

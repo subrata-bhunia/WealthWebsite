@@ -8,7 +8,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="pt-24 pb-16 bg-gradient-to-b from-primary/10 to-background">
-        <div className="container flex flex-col items-center text-center">
+        <div className="container mx-auto px-4 flex flex-col items-center text-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
             Secure Your Financial Future
           </h1>
@@ -28,9 +28,9 @@ export default function Home() {
 
       {/* Services Section */}
       <section className="py-16">
-        <div className="container">
+        <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12">Our Services</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <ServiceCard
               title="Wealth Management"
               description="Comprehensive investment solutions including mutual funds, bonds, and startup investments."
@@ -62,8 +62,8 @@ export default function Home() {
 
       {/* Stats Section */}
       <section className="py-16 bg-gray-100">
-        <div className="container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
             <div>
               <div className="text-4xl font-bold text-primary mb-2">20+</div>
               <div className="text-sm text-muted-foreground">Years Experience</div>
