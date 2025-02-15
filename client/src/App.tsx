@@ -9,8 +9,9 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/forms/contact-form";
 
-// Import new pages
+// Import pages
 import IndividualsFamiliesPage from "@/pages/who-we-serve/individuals-families";
+import ExecutivesPage from "@/pages/who-we-serve/executives";
 import MutualFundsPage from "@/pages/wealth-management/mutual-funds";
 import PersonalInsurancePage from "@/pages/insurance/personal";
 
@@ -33,6 +34,7 @@ function Router() {
 
           {/* Who We Serve Routes */}
           <Route path="/who-we-serve/individuals-families" component={IndividualsFamiliesPage} />
+          <Route path="/who-we-serve/executives" component={ExecutivesPage} />
           {/* Other Who We Serve routes will follow the same pattern */}
 
           {/* Wealth Management Routes */}
