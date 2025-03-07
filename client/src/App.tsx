@@ -17,6 +17,12 @@ import PersonalInsurancePage from "@/pages/insurance/personal";
 import HomeLoanPage from "@/pages/loans/home-loan";
 import NewCarLeasePage from "@/pages/lease/new-car";
 import BusinessInsurancePage from "@/pages/insurance/business";
+// Placeholder import - needs to be created
+import AdminPage from "@/pages/admin";
+import LoginPage from "@/pages/login";
+import RegisterPage from "@/pages/register";
+import BlogPostPage from "./pages/blog/[id]";
+import BlogPage from "./pages/blog";
 
 function Router() {
   return (
@@ -25,26 +31,36 @@ function Router() {
       <main className="flex-1">
         <Switch>
           <Route path="/" component={Home} />
-          <Route path="/contact" component={() => (
-            <div className="container mx-auto px-4 py-24">
-              <div className="max-w-lg mx-auto text-center">
-                <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-                <p className="text-muted-foreground mb-8">
-                  Get in touch with our team of experts to discuss your financial goals.
-                </p>
-                <ContactForm />
+          <Route
+            path="/contact"
+            component={() => (
+              <div className="container mx-auto px-4 py-24">
+                <div className="max-w-lg mx-auto text-center">
+                  <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
+                  <p className="text-muted-foreground mb-8">
+                    Get in touch with our team of experts to discuss your
+                    financial goals.
+                  </p>
+                  <ContactForm />
+                </div>
               </div>
-            </div>
-          )} />
+            )}
+          />
           <Route path="/services" component={Services} />
 
           {/* Who We Serve Routes */}
-          <Route path="/who-we-serve/individuals-families" component={IndividualsFamiliesPage} />
+          <Route
+            path="/who-we-serve/individuals-families"
+            component={IndividualsFamiliesPage}
+          />
           <Route path="/who-we-serve/executives" component={ExecutivesPage} />
           {/* Other Who We Serve routes will follow the same pattern */}
 
           {/* Wealth Management Routes */}
-          <Route path="/wealth-management/mutual-funds" component={MutualFundsPage} />
+          <Route
+            path="/wealth-management/mutual-funds"
+            component={MutualFundsPage}
+          />
           {/* Other Wealth Management routes will follow the same pattern */}
 
           {/* Insurance Routes */}
@@ -58,6 +74,14 @@ function Router() {
           {/* Loans Routes */}
           <Route path="/loans/home-loan" component={HomeLoanPage} />
           {/* Other Loans routes will follow the same pattern */}
+
+          {/* Admin Routes */}
+          <Route path="/login" component={LoginPage} />
+          <Route path="/blog" component={BlogPage} />
+          <Route path="/blog/:id" component={BlogPostPage} />
+          <Route path="/register" component={RegisterPage} />
+          {/* Admin route - only accessible via direct URL and protected by authentication */}
+          <Route path="/admin" component={AdminPage} />
 
           <Route component={NotFound} />
         </Switch>

@@ -55,5 +55,6 @@ export const NAVIGATION_ITEMS = {
       { title: "Working Capital", href: "/loans/working-capital" },
       { title: "Term Loan", href: "/loans/term-loan" }
     ]
-  }
+  },
+  // Admin section removed
 };

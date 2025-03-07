@@ -19,3 +19,21 @@ export const insertContactSchema = createInsertSchema(contacts).pick({
 
 export type Contact = typeof contacts.$inferSelect;
 export type InsertContact = z.infer<typeof insertContactSchema>;
+
+export const blogs = pgTable("blogs", {
+  id: serial("id").primaryKey(),
+  title: text("title").notNull(),
+  content: text("content").notNull(),
+  authorName: text("author_name").notNull(),
+  image: text("image"),
+  createdAt: text("created_at").notNull().default(new Date().toISOString()),
+});
+
+export const insertBlogSchema = createInsertSchema(blogs).pick({
+  title: true,
+  content: true,
+  authorName: true,
+});
+
+export type Blog = typeof blogs.$inferSelect;
+export type InsertBlog = z.infer<typeof insertBlogSchema>;

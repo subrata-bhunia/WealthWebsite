@@ -1,4 +1,11 @@
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 import { NAVIGATION_ITEMS } from "@/lib/constants";
 import { Link } from "wouter";
 import { cn } from "@/lib/utils";
@@ -6,7 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import { useState } from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Navbar() {
@@ -36,7 +48,10 @@ export function Navbar() {
                         <div className="flex flex-col space-y-2">
                           {category.items.map((item) => (
                             <Link key={item.href} href={item.href}>
-                              <span className="block px-4 py-2 text-sm hover:bg-accent rounded-md" onClick={() => setIsOpen(false)}>
+                              <span
+                                className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
+                                onClick={() => setIsOpen(false)}
+                              >
                                 {item.title}
                               </span>
                             </Link>
@@ -74,10 +89,12 @@ export function Navbar() {
                       <li key={item.href}>
                         <NavigationMenuLink asChild>
                           <Link href={item.href}>
-                            <span className={cn(
-                              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-                              "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                            )}>
+                            <span
+                              className={cn(
+                                "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
+                                "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                              )}
+                            >
                               {item.title}
                             </span>
                           </Link>
