@@ -61,8 +61,16 @@ export function Navbar() {
                     </AccordionItem>
                   ))}
                 </Accordion>
+                <Link className="space-y-2" href={"/blog"}>
+                  <span
+                      className="hover:bg-accent rounded-md"
+                      onClick={() => setIsOpen(false)}
+                  >
+                                Blog
+                              </span>
+                </Link>
                 <Button asChild className="w-full">
-                  <Link href="/contact">Contact Us</Link>
+                  <Link href={"/contact"}>Contact Us</Link>
                 </Button>
               </nav>
             </SheetContent>
@@ -105,8 +113,14 @@ export function Navbar() {
                 </NavigationMenuContent>
               </NavigationMenuItem>
             ))}
+            <NavigationMenuItem key={"blog"}>
+              <NavigationMenuTrigger>
+                <Link href="/blog">{"Blog"}</Link>
+              </NavigationMenuTrigger>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
+
         <Button asChild className="hidden md:inline-flex">
           <Link href="/contact">Contact Us</Link>
         </Button>

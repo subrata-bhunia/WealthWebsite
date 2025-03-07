@@ -7,8 +7,13 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="pt-24 pb-16 bg-gradient-to-b from-primary/10 to-background">
-        <div className="container mx-auto px-4 flex flex-col items-center text-center">
+      <section className="h-[70vh] pt-24 pb-16 bg-gradient-to-b from-primary/10 to-background" style={{
+        backgroundImage: "url('https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg')", // Update with the correct image path
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+      >
+        <div className="container mx-auto px-4 flex flex-col items-center text-center h-full justify-center">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4">
             Secure Your Financial Future
           </h1>

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Subrata Bhunia CopyRight" pattern="file[WealthNavigatorV3]:client/*||file[WealthNavigatorV3]:server/*||file[WealthNavigatorV3]:shared/*" />
+</component>

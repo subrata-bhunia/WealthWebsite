@@ -23,8 +23,15 @@ import LoginPage from "@/pages/login";
 import RegisterPage from "@/pages/register";
 import BlogPostPage from "./pages/blog/[id]";
 import BlogPage from "./pages/blog";
+import {useEffect} from "react";
 
 function Router() {
+    useEffect(() => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }, []);
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
@@ -34,14 +41,18 @@ function Router() {
           <Route
             path="/contact"
             component={() => (
-              <div className="container mx-auto px-4 py-24">
-                <div className="max-w-lg mx-auto text-center">
-                  <h1 className="text-4xl font-bold mb-4">Contact Us</h1>
-                  <p className="text-muted-foreground mb-8">
+              <div className="container mx-auto px-4 py-24" style={{
+                  backgroundImage: "url('https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg')", // Update with the correct image path
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+              }}>
+                <div className="max-w-lg mx-auto ">
+                  <h1 className="text-4xl font-bold mb-4 text-center">Contact Us</h1>
+                  <p className="text-muted-foreground mb-8 text-center">
                     Get in touch with our team of experts to discuss your
                     financial goals.
                   </p>
-                  <ContactForm />
+                    <ContactForm />
                 </div>
               </div>
             )}

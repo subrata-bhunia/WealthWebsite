@@ -11,6 +11,7 @@ type Blog = {
   content: string;
   authorName: string;
   createdAt: string;
+  image?:string;
 };
 
 export default function BlogPostPage() {
@@ -72,20 +73,38 @@ export default function BlogPostPage() {
             <ArrowLeft className="mr-2 h-4 w-4" /> Back to Blog
           </Link>
         </Button>
+        {/* Thumbnail with Title and Gradient */}
+        {blog.image && (
+            <div className="relative mb-8 w-full mx-auto">
+              <div
+                  className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent rounded-md"
+              ></div>
+              <img
+                  src={blog.image}
+                  alt={blog.title}
+                  className="w-full h-96 rounded-md object-cover"
+              />
+              <div className="absolute inset-0 flex flex-col justify-end p-6 text-white">
+                <h1 className="text-2xl font-bold">{blog.title}</h1>
+                <p className="text-base text-gray-300">
+                  By {blog.authorName} • {new Date(blog.createdAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+        )}
 
-        <article className="prose lg:prose-xl mx-auto">
-          <h1>{blog.title}</h1>
-          <div className="text-muted-foreground mb-8">
-            By {blog.authorName} •{" "}
-            {new Date(blog.createdAt).toLocaleDateString()}
-          </div>
 
-          {/* Render blog content - in a real app, you might use a rich text editor */}
-          {blog?.content
-            ?.split("\n")
-            .map((paragraph, index) =>
-              paragraph ? <p key={index}>{paragraph}</p> : <br key={index} />
-            )}
+
+        <article className="prose lg:prose-xl mx-auto" dangerouslySetInnerHTML={{
+          __html: blog.content.replace('/n', '<br />')
+        }}>
+
+          {/*/!* Render blog content - in a real app, you might use a rich text editor *!/*/}
+          {/*{blog?.content*/}
+          {/*  ?.split("\n")*/}
+          {/*  .map((paragraph, index) =>*/}
+          {/*    paragraph ? <p key={index}>{paragraph}</p> : <br key={index} />*/}
+          {/*  )}*/}
         </article>
       </div>
     </div>
