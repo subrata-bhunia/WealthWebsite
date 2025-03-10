@@ -1,9 +1,9 @@
-import { pgTable, text, serial, varchar } from "drizzle-orm/pg-core";
+import { mysqlTable, int, text, varchar } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const contacts = pgTable("contacts", {
-  id: serial("id").primaryKey(),
+export const contacts = mysqlTable("contacts", {
+  id: int("id").primaryKey().autoincrement(),
   name: text("name").notNull(),
   email: text("email").notNull(),
   phone: varchar("phone", { length: 20 }).notNull(),
@@ -20,8 +20,8 @@ export const insertContactSchema = createInsertSchema(contacts).pick({
 export type Contact = typeof contacts.$inferSelect;
 export type InsertContact = z.infer<typeof insertContactSchema>;
 
-export const blogs = pgTable("blogs", {
-  id: serial("id").primaryKey(),
+export const blogs = mysqlTable("blogs", {
+  id: int("id").primaryKey().autoincrement(),
   title: text("title").notNull(),
   content: text("content").notNull(),
   authorName: text("author_name").notNull(),

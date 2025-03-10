@@ -7,8 +7,12 @@ if (!process.env.DATABASE_URL) {
 export default defineConfig({
   out: "./migrations",
   schema: "./shared/schema.ts",
-  dialect: "postgresql",
+  dialect: "mysql",
   dbCredentials: {
-    url: process.env.DATABASE_URL,
+    host: "cloud2.defaultserver.net",
+    port: 3306,
+    user: "xqdjzboa_wealth",
+    password: "admin1234",
+    database: "xqdjzboa_wealth",
   },
 });

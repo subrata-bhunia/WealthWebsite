@@ -1,4 +1,4 @@
-modules = ["nodejs-20:v8-20230920-bd784b9", "web", "postgresql-16"]
+modules = ["nodejs-20", "web"]
 run = "npm run dev"
 hidden = [".config", ".git", ".gitignore"]
 
@@ -6,11 +6,11 @@ hidden = [".config", ".git", ".gitignore"]
 DATABASE_URL = "postgres://postgres.slptmhetwquwhjvgwpdw:zmWwL2fCslW5YOZe@aws-0-us-east-1.pooler.supabase.com:6543/postgres?sslmode=require"
 
 [nix]
-channel = "stable-23_05"
+channel = "stable-24_05"
 
 [deployment]
 deploymentTarget = "cloudrun"
-run = ["sh", "-c", "npm run start"]
+run = ["sh", "-c", "npm run dev"]
 
 [languages]
 
@@ -21,8 +21,16 @@ pattern = "**/{*.ts,*.js,*.tsx,*.jsx}"
 start = "typescript-language-server --stdio"
 
 [[ports]]
+localPort = 3000
+externalPort = 3001
+
+[[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 5555
+externalPort = 3000
 
 [workflows]
 runButton = "Project"
