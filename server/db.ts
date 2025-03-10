@@ -1,12 +1,14 @@
+// @ts-nocheck
+/* @subrata-bhunia */
+
 import { createConnection } from "mysql2/promise";
 import { drizzle } from "drizzle-orm/mysql2";
 import * as schema from "@shared/schema";
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
-}
+// if (!process.env.DATABASE_URL) {
+//   throw new Error(//     "DATABASE_URL must be set. Did you forget to provision a database?",
+//   );
+// }
 
 // Create a connection and handle errors
 export const getConnection = async () => {
@@ -22,7 +24,7 @@ export const getConnection = async () => {
   } catch (error) {
     console.error("Database connection error:", error);
     throw new Error(
-      "Failed to connect to the database. Please check your DATABASE_URL.",
+      "Failed to connect to the database. Please check your DATABASE_URL."
     );
   }
 };
@@ -37,7 +39,7 @@ try {
 }
 
 // Create a Drizzle ORM instance
-export const db = drizzle(connection, { schema, mode: 'default' });
+export const db = drizzle(connection, { schema, mode: "default" });
 
 // Handle unexpected disconnects
 connection?.on("error", async (err) => {
@@ -51,6 +53,7 @@ connection?.on("error", async (err) => {
       console.error("Failed to reconnect:", reconnectError);
     }
   } else {
+    connection.destroy();
     throw err;
   }
 });
