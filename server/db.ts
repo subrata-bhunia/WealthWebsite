@@ -1,6 +1,5 @@
-
-import { createConnection } from 'mysql2/promise';
-import { drizzle } from 'drizzle-orm/mysql2';
+import { createConnection } from "mysql2/promise";
+import { drizzle } from "drizzle-orm/mysql2";
 import * as schema from "@shared/schema";
 
 if (!process.env.DATABASE_URL) {
@@ -14,11 +13,17 @@ export const getConnection = async () => {
   try {
     console.log("Attempting to connect to database...");
     return await createConnection({
-      uri: process.env.DATABASE_URL
+      host: "cloud2.defaultserver.net",
+      port: 3306,
+      user: "xqdjzboa_wealth",
+      password: "admin1234",
+      database: "xqdjzboa_wealth",
     });
   } catch (error) {
     console.error("Database connection error:", error);
-    throw new Error("Failed to connect to the database. Please check your DATABASE_URL.");
+    throw new Error(
+      "Failed to connect to the database. Please check your DATABASE_URL.",
+    );
   }
 };
 
@@ -35,15 +40,15 @@ try {
 export const db = drizzle(connection, { schema });
 
 // Handle unexpected disconnects
-connection?.on('error', async (err) => {
-  console.error('Database connection error:', err);
-  if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-    console.log('Attempting to reconnect to database...');
+connection?.on("error", async (err) => {
+  console.error("Database connection error:", err);
+  if (err.code === "PROTOCOL_CONNECTION_LOST") {
+    console.log("Attempting to reconnect to database...");
     try {
       connection = await getConnection();
-      console.log('Reconnected to database!');
+      console.log("Reconnected to database!");
     } catch (reconnectError) {
-      console.error('Failed to reconnect:', reconnectError);
+      console.error("Failed to reconnect:", reconnectError);
     }
   } else {
     throw err;
