@@ -37,7 +37,7 @@ try {
 }
 
 // Create a Drizzle ORM instance
-export const db = drizzle(connection, { schema });
+export const db = drizzle(connection, { schema, mode: 'default' });
 
 // Handle unexpected disconnects
 connection?.on("error", async (err) => {
