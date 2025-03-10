@@ -1,4 +1,3 @@
-
 import { defineConfig } from "drizzle-kit";
 
 if (!process.env.DATABASE_URL) {
@@ -8,8 +7,12 @@ if (!process.env.DATABASE_URL) {
 export default defineConfig({
   out: "./migrations",
   schema: "./shared/schema.ts",
-  dialect: "mysql2",
+  dialect: "mysql",
   dbCredentials: {
-    uri: process.env.DATABASE_URL,
+    host: "cloud2.defaultserver.net",
+    port: 3306,
+    user: "xqdjzboa_wealth",
+    password: "admin1234",
+    database: "xqdjzboa_wealth",
   },
 });
