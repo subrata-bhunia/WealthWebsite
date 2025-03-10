@@ -1,40 +1,67 @@
-import { InsertContact, contacts, InsertBlog, blogs } from "@shared/schema";
-import { drizzle } from "drizzle-orm/neon-serverless";
-import { Pool } from "@neondatabase/serverless";
-import { sql } from "drizzle-orm";
-import "dotenv/config";
-const connectionString = process.env.DATABASE_URL;
 
-const pool = new Pool({ connectionString });
-const db = drizzle(pool);
+import { db } from "./db";
+import { blogs, contacts, type InsertBlog, type InsertContact } from "@shared/schema";
+import { eq } from "drizzle-orm";
 
 export const storage = {
-  // Contact functions
-  createContact: async (contact: InsertContact) => {
-    const result = await db.insert(contacts).values(contact).returning();
-    return result[0];
-  },
-  getAllContacts: async () => {
-    return await db.select().from(contacts);
+  async createContact(contact: InsertContact) {
+    try {
+      const result = await db.insert(contacts).values(contact);
+      return { id: result[0].insertId, ...contact };
+    } catch (error) {
+      console.error("Error creating contact:", error);
+      throw error;
+    }
   },
 
-  // Blog functions
-  createBlog: async (blog: InsertBlog) => {
-    const result = await db.insert(blogs).values(blog).returning();
-    return result[0];
+  async getAllContacts() {
+    try {
+      return await db.select().from(contacts);
+    } catch (error) {
+      console.error("Error getting contacts:", error);
+      throw error;
+    }
   },
-  getAllBlogs: async () => {
-    return await db.select().from(blogs);
+
+  async createBlog(blog: InsertBlog) {
+    try {
+      const result = await db.insert(blogs).values({
+        ...blog,
+        createdAt: new Date().toISOString()
+      });
+      return { id: result[0].insertId, ...blog, createdAt: new Date().toISOString() };
+    } catch (error) {
+      console.error("Error creating blog:", error);
+      throw error;
+    }
   },
-  getBlogById: async (id: number) => {
-    const result = await db
-      .select()
-      .from(blogs)
-      .where(sql`${blogs.id} = ${id}`);
-    return result[0];
+
+  async getAllBlogs() {
+    try {
+      return await db.select().from(blogs);
+    } catch (error) {
+      console.error("Error getting blogs:", error);
+      throw error;
+    }
   },
-  deleteBlog: async (id: number) => {
-    await db.delete(blogs).where(sql`${blogs.id} = ${id}`);
-    return { success: true };
+
+  async getBlogById(id: number) {
+    try {
+      const results = await db.select().from(blogs).where(eq(blogs.id, id));
+      return results[0] || null;
+    } catch (error) {
+      console.error("Error getting blog by id:", error);
+      throw error;
+    }
   },
+
+  async deleteBlog(id: number) {
+    try {
+      await db.delete(blogs).where(eq(blogs.id, id));
+      return { success: true };
+    } catch (error) {
+      console.error("Error deleting blog:", error);
+      throw error;
+    }
+  }
 };
