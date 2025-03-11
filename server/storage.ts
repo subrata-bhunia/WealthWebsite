@@ -1,6 +1,6 @@
 
 import { db } from "./db";
-import { blogs, contacts, type InsertBlog, type InsertContact } from "@shared/schema";
+import { blogs, contacts, mediaItems, type InsertBlog, type InsertContact, type InsertMediaItem } from "@shared/schema";
 import { eq } from "drizzle-orm";
 
 export const storage = {
@@ -61,6 +61,84 @@ export const storage = {
       return { success: true };
     } catch (error) {
       console.error("Error deleting blog:", error);
+      throw error;
+    }
+  },
+
+  async createMediaItem(mediaItem: InsertMediaItem) {
+    try {
+      const result = await db.insert(mediaItems).values({
+        ...mediaItem,
+        createdAt: new Date().toISOString()
+      });
+      return { id: result[0].insertId, ...mediaItem, createdAt: new Date().toISOString() };
+    } catch (error) {
+      console.error("Error creating media item:", error);
+      throw error;
+    }
+  },
+
+  async getAllMediaItems() {
+    try {
+      return await db.select().from(mediaItems);
+    } catch (error) {
+      console.error("Error getting media items:", error);
+      throw error;
+    }
+  },
+
+  async getMediaItemById(id: number) {
+    try {
+      const results = await db.select().from(mediaItems).where(eq(mediaItems.id, id));
+      return results[0] || null;
+    } catch (error) {
+      console.error("Error getting media item by id:", error);
+      throw error;
+    }
+  },
+
+  async deleteMediaItem(id: number) {
+    try {
+      await db.delete(mediaItems).where(eq(mediaItems.id, id));
+      return { success: true };
+    } catch (error) {
+      console.error("Error deleting media item:", error);
+      throw error;
+    }
+  },
+  
+  async updateBlog(id: number, blogUpdate: InsertBlog) {
+    try {
+      await db.update(blogs)
+        .set({
+          ...blogUpdate,
+          // Don't update the creation date
+        })
+        .where(eq(blogs.id, id));
+      
+      // Return the updated blog
+      const results = await db.select().from(blogs).where(eq(blogs.id, id));
+      return results[0] || null;
+    } catch (error) {
+      console.error("Error updating blog:", error);
+      throw error;
+    }
+  },
+  
+  async updateMediaItem(id: number, mediaUpdate: InsertMediaItem) {
+    try {
+      await db.update(mediaItems)
+        .set({
+          ...mediaUpdate,
+          // Don't update the creation date
+        })
+        .where(eq(mediaItems.id, id));
+      
+      // Return the updated media item
+      const results = await db.select().from(mediaItems).where(eq(mediaItems.id, id));
+      return results[0] || null;
+    } catch (error) {
+      console.error("Error updating media item:", error);
       throw error;
     }
   }
