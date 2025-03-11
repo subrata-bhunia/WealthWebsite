@@ -122,6 +122,17 @@ export async function registerRoutes(app: Express) {
       res.status(500).json({ error: "Error deleting blog" });
     }
   });
+  
+  app.put("/api/blogs/:id", requireAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const blogUpdate = insertBlogSchema.parse(req.body);
+      const result = await storage.updateBlog(id, blogUpdate);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Error updating blog" });
+    }
+  });
 
   // Media routes
   app.post("/api/media", requireAdmin, async (req, res) => {
@@ -162,6 +173,17 @@ export async function registerRoutes(app: Express) {
       res.json({ success: true });
     } catch (error) {
       res.status(500).json({ error: "Error deleting media item" });
+    }
+  });
+  
+  app.put("/api/media/:id", requireAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const mediaUpdate = insertMediaSchema.parse(req.body);
+      const result = await storage.updateMediaItem(id, mediaUpdate);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Error updating media item" });
     }
   });
 

@@ -3,25 +3,25 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle, 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Trash2, FileVideo, Youtube } from "lucide-react";
+import { Trash2, FileVideo, Youtube, Pencil } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -42,6 +42,8 @@ export function MediaManagement() {
   const [newMediaYoutubeUrl, setNewMediaYoutubeUrl] = useState("");
   const [newMediaType, setNewMediaType] = useState<'file' | 'youtube' | 'both'>('file');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false); // Added for edit mode
+  const [mediaToEdit, setMediaToEdit] = useState<MediaItem | null>(null); // Added for edit mode
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -101,6 +103,41 @@ export function MediaManagement() {
       });
     },
   });
+
+  const updateMedia = useMutation({ // Added for update
+    mutationFn: async (updatedMedia: MediaItem) => {
+      const response = await authFetch(`/api/media/${updatedMedia.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedMedia),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update media item");
+      }
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["media"] });
+      toast({
+        title: "Success",
+        description: "Media item updated successfully",
+      });
+      resetForm();
+      setDialogOpen(false);
+      setIsEditMode(false);
+      setMediaToEdit(null);
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    },
+  });
+
 
   const deleteMedia = useMutation({
     mutationFn: async (id: number) => {
@@ -178,6 +215,19 @@ export function MediaManagement() {
     });
   };
 
+  const handleUpdateMedia = () => { // Added for update
+    if (!mediaToEdit) return;
+    updateMedia.mutate({...mediaToEdit, title: newMediaTitle, description: newMediaDescription, fileUrl: newMediaFileUrl, youtubeUrl: newMediaYoutubeUrl, mediaType: newMediaType});
+  };
+
+  const handleCancelEdit = () => { // Added for cancel edit
+    setIsEditMode(false);
+    setMediaToEdit(null);
+    resetForm();
+    setDialogOpen(false);
+  }
+
+
   const resetForm = () => {
     setNewMediaTitle("");
     setNewMediaDescription("");
@@ -190,6 +240,17 @@ export function MediaManagement() {
     if (window.confirm("Are you sure you want to delete this media item?")) {
       deleteMedia.mutate(id);
     }
+  };
+
+  const handleEditMedia = (media: MediaItem) => {
+    setNewMediaTitle(media.title);
+    setNewMediaDescription(media.description || "");
+    setNewMediaFileUrl(media.fileUrl || "");
+    setNewMediaYoutubeUrl(media.youtubeUrl || "");
+    setNewMediaType(media.mediaType);
+    setIsEditMode(true);
+    setMediaToEdit(media);
+    setDialogOpen(true);
   };
 
   function formatYouTubeEmbed(url: string) {
@@ -212,14 +273,23 @@ export function MediaManagement() {
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
             <span>{item.title}</span>
-            <Button 
-              variant="destructive" 
-              size="icon" 
-              onClick={() => handleDeleteMedia(item.id)}
-              className="h-8 w-8"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
+            <div className="flex space-x-2">
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => handleEditMedia(item)}
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="destructive"
+                size="icon"
+                onClick={() => handleDeleteMedia(item.id)}
+                className="h-8 w-8"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
           </CardTitle>
           {item.description && <CardDescription>{item.description}</CardDescription>}
         </CardHeader>
@@ -287,15 +357,15 @@ export function MediaManagement() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Media Library</h2>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <Dialog open={dialogOpen} onOpenChange={(open) => !open ? handleCancelEdit() : setDialogOpen(open)}>
           <DialogTrigger asChild>
             <Button>Add New Media</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add New Media Item</DialogTitle>
+              <DialogTitle>{isEditMode ? "Edit Media" : "Add New Media"}</DialogTitle>
               <DialogDescription>
-                Upload file URLs or YouTube video links to share with your audience.
+                {isEditMode ? "Edit existing media item." : "Upload file URLs or YouTube video links to share with your audience."}
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
@@ -321,8 +391,8 @@ export function MediaManagement() {
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="mediaType">Media Type</Label>
-                <Select 
-                  value={newMediaType} 
+                <Select
+                  value={newMediaType}
                   onValueChange={(value) => setNewMediaType(value as 'file' | 'youtube' | 'both')}
                 >
                   <SelectTrigger>
@@ -361,11 +431,11 @@ export function MediaManagement() {
               )}
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setDialogOpen(false)}>
+              <Button type="button" variant="outline" onClick={handleCancelEdit}>
                 Cancel
               </Button>
-              <Button onClick={handleCreateMedia}>
-                Add Media
+              <Button type="submit" onClick={isEditMode ? handleUpdateMedia : handleCreateMedia}>
+                {isEditMode ? "Update Media" : "Add Media"}
               </Button>
             </DialogFooter>
           </DialogContent>

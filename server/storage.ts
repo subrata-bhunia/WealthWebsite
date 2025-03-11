@@ -105,5 +105,41 @@ export const storage = {
       console.error("Error deleting media item:", error);
       throw error;
     }
+  },
+  
+  async updateBlog(id: number, blogUpdate: InsertBlog) {
+    try {
+      await db.update(blogs)
+        .set({
+          ...blogUpdate,
+          // Don't update the creation date
+        })
+        .where(eq(blogs.id, id));
+      
+      // Return the updated blog
+      const results = await db.select().from(blogs).where(eq(blogs.id, id));
+      return results[0] || null;
+    } catch (error) {
+      console.error("Error updating blog:", error);
+      throw error;
+    }
+  },
+  
+  async updateMediaItem(id: number, mediaUpdate: InsertMediaItem) {
+    try {
+      await db.update(mediaItems)
+        .set({
+          ...mediaUpdate,
+          // Don't update the creation date
+        })
+        .where(eq(mediaItems.id, id));
+      
+      // Return the updated media item
+      const results = await db.select().from(mediaItems).where(eq(mediaItems.id, id));
+      return results[0] || null;
+    } catch (error) {
+      console.error("Error updating media item:", error);
+      throw error;
+    }
   }
 };
