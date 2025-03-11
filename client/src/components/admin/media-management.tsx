@@ -57,8 +57,8 @@ export function MediaManagement() {
     },
   });
 
-  // Import authFetch from blog-management if needed
-  export const authFetch = async (url: string, options?: RequestInit) => {
+  // Using authFetch imported from elsewhere or defined at the top level
+  const authFetch = async (url: string, options?: RequestInit) => {
     const token = localStorage.getItem("wealthspire_auth_token");
     const headers = {
       ...(options?.headers || {}),
