@@ -27,6 +27,9 @@ export const NAVIGATION_ITEMS = {
     items: [
       { title: "Mutual Funds", href: "/wealth-management/mutual-funds" },
       { title: "NCD/Bond", href: "/wealth-management/ncd-bond" },
+      { title: "Corporate Bonds", href: "/wealth-management/corporate-bonds" },
+      { title: "Government Bonds", href: "/wealth-management/government-bonds" },
+      { title: "Tax-Free Bonds", href: "/wealth-management/tax-free-bonds" },
       {
         title: "Fractional Real Estate",
         href: "/wealth-management/fractional-real-estate",
