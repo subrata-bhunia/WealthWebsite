@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
@@ -72,43 +71,38 @@ export default function BlogPage() {
           </p>
         </div>
       ) : (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {blogs.map((blog) => (
-                <Card
-                    key={blog.id}
-                    className="flex flex-col"
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {blogs.map((blog) => (
+            <Card key={blog.id} className="flex flex-col">
+              {blog.image && (
+                <div
+                  className="h-40 w-full bg-cover bg-center rounded-t-md"
+                  style={{ backgroundImage: `url(${blog.image})` }}
+                />
+              )}
 
-                >
-                  {blog.image && (
-                      <div
-                          className="h-40 w-full bg-cover bg-center rounded-t-md"
-                          style={{ backgroundImage: `url(${blog.image})` }}
-                      />
-                  )}
-
-                  <CardHeader>
-                    <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
-                    <div className="text-sm text-muted-foreground">
-                      By {blog.authorName} •{" "}
-                      {new Date(blog.createdAt).toLocaleDateString()}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <p className="line-clamp-4">{blog.content}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button asChild className="w-full">
-                      <Link href={`/blog/${blog.id}`}>Read More</Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-            ))}
-          </div>
+              <CardHeader>
+                <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
+                <div className="text-sm text-muted-foreground">
+                  By {blog.authorName} •{" "}
+                  {new Date(blog.createdAt).toLocaleDateString()}
+                </div>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <p className="line-clamp-4">{blog.content}</p>
+              </CardContent>
+              <CardFooter>
+                <Button asChild className="w-full">
+                  <Link href={`/blog/${blog.id}`}>Read More</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       )}
     </PageLayout>
   );
 }
-
 
 //<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 //           {blogs.map((blog) => (
