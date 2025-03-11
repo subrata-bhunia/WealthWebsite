@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Trash2, Edit, Plus, Save } from "lucide-react";
+import { Trash2, Edit, Plus, Save, Pencil } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
+import { Editor } from '@tinymce/tinymce-react';
+
 type Blog = {
   id: number;
   title: string;
@@ -31,7 +33,7 @@ type Blog = {
   createdAt: string;
 };
 
-const authFetch = async (url: string, options?: RequestInit) => {
+export const authFetch = async (url: string, options?: RequestInit) => {
   const token = localStorage.getItem("wealthspire_auth_token");
   const headers = {
     ...(options?.headers || {}),
@@ -44,12 +46,15 @@ const authFetch = async (url: string, options?: RequestInit) => {
 export function BlogManagement() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [newBlog, setNewBlog] = useState({
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newBlog, setNewBlog] = useState<Omit<Blog, 'id' | 'createdAt'>>({
     title: "",
     content: "",
     authorName: "",
     image: "",
   });
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedBlog, setEditedBlog] = useState<Blog | null>(null);
   const { toast } = useToast();
 
   const fetchBlogs = async () => {
@@ -90,11 +95,12 @@ export function BlogManagement() {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to create blog post");
       }
-      setNewBlog({ title: "", content: "", authorName: "", image: "" });
       toast({
         title: "Success",
         description: "Blog post created successfully",
       });
+      setNewBlog({ title: "", content: "", authorName: "", image: "" });
+      setDialogOpen(false);
       fetchBlogs();
     } catch (error: any) {
       toast({
@@ -131,6 +137,51 @@ export function BlogManagement() {
     }
   };
 
+  const handleEditBlog = (blog: Blog) => {
+    setEditedBlog(blog);
+    setNewBlog(blog); // Populate the form with existing data
+    setIsEditMode(true);
+    setDialogOpen(true); // Open the dialog when edit button is clicked
+  };
+
+  const handleUpdateBlog = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Implement update logic here using authFetch and editedBlog
+    try {
+      const response = await authFetch(`/api/blogs/${editedBlog?.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newBlog),
+      });
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update blog post");
+      }
+      setIsEditMode(false);
+      setEditedBlog(null);
+      setNewBlog({ title: "", content: "", authorName: "", image: "" });
+      setDialogOpen(false); // Close dialog after update
+      toast({ title: "Success", description: "Blog post updated successfully" });
+      fetchBlogs();
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: `Failed to update blog post: ${error.message}`,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setIsEditMode(false);
+    setEditedBlog(null);
+    setNewBlog({ title: "", content: "", authorName: "", image: "" });
+    setDialogOpen(false); // Close dialog on cancel
+  };
+
+
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -143,17 +194,17 @@ export function BlogManagement() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
-        <Dialog>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}> {/* Use dialogOpen state */}
           <DialogTrigger asChild>
-            <Button>
+            <Button onClick={() => setDialogOpen(true)}> {/* Open dialog on button click */}
               <Plus className="mr-2 h-4 w-4" /> Create New Post
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[550px]">
             <DialogHeader>
-              <DialogTitle>Create New Blog Post</DialogTitle>
+              <DialogTitle>{isEditMode ? "Edit Blog Post" : "Create New Blog Post"}</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={isEditMode ? handleUpdateBlog : handleSubmit}>
               <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
                   <Label htmlFor="title">Title</Label>
@@ -189,20 +240,35 @@ export function BlogManagement() {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="content">Content</Label>
-                  <Textarea
-                    id="content"
-                    value={newBlog.content}
-                    onChange={(e) =>
-                      setNewBlog({ ...newBlog, content: e.target.value })
-                    }
-                    rows={10}
-                    required
-                  />
+                  <div className="border rounded-md">
+                    <Editor
+                      id="content"
+                      apiKey="no-api-key"
+                      value={newBlog.content}
+                      onEditorChange={(content) =>
+                        setNewBlog({ ...newBlog, content })
+                      }
+                      init={{
+                        height: 400,
+                        menubar: true,
+                        plugins: [
+                          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                          'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                        ],
+                        toolbar: 'undo redo | blocks | ' +
+                          'bold italic forecolor | alignleft aligncenter ' +
+                          'alignright alignjustify | bullist numlist outdent indent | ' +
+                          'removeformat | image link media | help',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button type="button" variant="outline">
+                  <Button type="button" variant="outline" onClick={handleCancelEdit}>
                     Cancel
                   </Button>
                 </DialogClose>
@@ -227,7 +293,25 @@ export function BlogManagement() {
           {blogs.map((blog) => (
             <Card key={blog.id}>
               <CardHeader>
-                <CardTitle>{blog.title}</CardTitle>
+                <CardTitle className="flex justify-between items-center">
+                  <span className="truncate">{blog.title}</span>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleEditBlog(blog)}
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => handleDelete(blog.id)}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardTitle>
                 <div className="text-sm text-muted-foreground">
                   By {blog.authorName} •{" "}
                   {new Date(blog.createdAt).toLocaleDateString()}
@@ -236,22 +320,7 @@ export function BlogManagement() {
               <CardContent>
                 <p className="line-clamp-4">{blog.content}</p>
               </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button
-                  variant="destructive"
-                  onClick={() => handleDelete(blog.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-                <Button variant="outline" asChild>
-                  <a
-                    href={`/blog/${blog.id}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Edit className="mr-2 h-4 w-4" /> View/Edit
-                  </a>
-                </Button>
+              <CardFooter className="flex justify-end">
               </CardFooter>
             </Card>
           ))}

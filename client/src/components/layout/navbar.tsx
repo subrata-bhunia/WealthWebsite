@@ -47,14 +47,34 @@ export function Navbar() {
                       <AccordionContent>
                         <div className="flex flex-col space-y-2">
                           {category.items.map((item) => (
-                            <Link key={item.href} href={item.href}>
-                              <span
-                                className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
-                                onClick={() => setIsOpen(false)}
-                              >
-                                {item.title}
-                              </span>
-                            </Link>
+                            item.items ? (
+                              <div key={item.href} className="flex flex-col">
+                                <span className="block px-4 py-2 text-sm font-medium">
+                                  {item.title}
+                                </span>
+                                <div className="flex flex-col space-y-2 pl-4 border-l border-border ml-4 mt-1">
+                                  {item.items.map((subItem) => (
+                                    <Link key={subItem.href} href={subItem.href}>
+                                      <span
+                                        className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
+                                        onClick={() => setIsOpen(false)}
+                                      >
+                                        {subItem.title}
+                                      </span>
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            ) : (
+                              <Link key={item.href} href={item.href}>
+                                <span
+                                  className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
+                                  onClick={() => setIsOpen(false)}
+                                >
+                                  {item.title}
+                                </span>
+                              </Link>
+                            )
                           ))}
                         </div>
                       </AccordionContent>
@@ -95,18 +115,42 @@ export function Navbar() {
                   <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] lg:w-[600px]">
                     {category.items.map((item) => (
                       <li key={item.href}>
-                        <NavigationMenuLink asChild>
-                          <Link href={item.href}>
-                            <span
-                              className={cn(
-                                "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-                                "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                              )}
-                            >
-                              {item.title}
-                            </span>
-                          </Link>
-                        </NavigationMenuLink>
+                        {item.items ? ( // Check for nested items
+                          <>
+                            <div className="font-medium py-1.5">{item.title}</div>
+                            <ul className="pl-4 border-l border-border">
+                              {item.items.map((subItem) => (
+                                <li key={subItem.href}>
+                                  <NavigationMenuLink asChild>
+                                    <Link href={subItem.href}>
+                                      <span
+                                        className={cn(
+                                          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
+                                          "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                        )}
+                                      >
+                                        {subItem.title}
+                                      </span>
+                                    </Link>
+                                  </NavigationMenuLink>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        ) : (
+                          <NavigationMenuLink asChild>
+                            <Link href={item.href}>
+                              <span
+                                className={cn(
+                                  "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
+                                  "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                )}
+                              >
+                                {item.title}
+                              </span>
+                            </Link>
+                          </NavigationMenuLink>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -116,6 +160,11 @@ export function Navbar() {
             <NavigationMenuItem key={"blog"}>
               <NavigationMenuTrigger>
                 <Link href="/blog">{"Blog"}</Link>
+              </NavigationMenuTrigger>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>
+                <Link href="/media">{"Media"}</Link>
               </NavigationMenuTrigger>
             </NavigationMenuItem>
           </NavigationMenuList>
