@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor } from "@tinymce/tinymce-react";
 
 type Blog = {
   id: number;
@@ -47,7 +47,7 @@ export function BlogManagement() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [newBlog, setNewBlog] = useState<Omit<Blog, 'id' | 'createdAt'>>({
+  const [newBlog, setNewBlog] = useState<Omit<Blog, "id" | "createdAt">>({
     title: "",
     content: "",
     authorName: "",
@@ -163,7 +163,10 @@ export function BlogManagement() {
       setEditedBlog(null);
       setNewBlog({ title: "", content: "", authorName: "", image: "" });
       setDialogOpen(false); // Close dialog after update
-      toast({ title: "Success", description: "Blog post updated successfully" });
+      toast({
+        title: "Success",
+        description: "Blog post updated successfully",
+      });
       fetchBlogs();
     } catch (error: any) {
       toast({
@@ -181,7 +184,6 @@ export function BlogManagement() {
     setDialogOpen(false); // Close dialog on cancel
   };
 
-
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -194,15 +196,21 @@ export function BlogManagement() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}> {/* Use dialogOpen state */}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          {" "}
+          {/* Use dialogOpen state */}
           <DialogTrigger asChild>
-            <Button onClick={() => setDialogOpen(true)}> {/* Open dialog on button click */}
+            <Button onClick={() => setDialogOpen(true)}>
+              {" "}
+              {/* Open dialog on button click */}
               <Plus className="mr-2 h-4 w-4" /> Create New Post
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[550px]">
             <DialogHeader>
-              <DialogTitle>{isEditMode ? "Edit Blog Post" : "Create New Blog Post"}</DialogTitle>
+              <DialogTitle>
+                {isEditMode ? "Edit Blog Post" : "Create New Blog Post"}
+              </DialogTitle>
             </DialogHeader>
             <form onSubmit={isEditMode ? handleUpdateBlog : handleSubmit}>
               <div className="grid gap-4 py-4">
@@ -243,7 +251,7 @@ export function BlogManagement() {
                   <div className="border rounded-md">
                     <Editor
                       id="content"
-                      apiKey="no-api-key"
+                      apiKey="umak557fl1ac4c7h9bbwherzgj1j1oobz284flomy8rpze5p"
                       value={newBlog.content}
                       onEditorChange={(content) =>
                         setNewBlog({ ...newBlog, content })
@@ -252,15 +260,31 @@ export function BlogManagement() {
                         height: 400,
                         menubar: true,
                         plugins: [
-                          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                          'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                          "advlist",
+                          "autolink",
+                          "lists",
+                          "link",
+                          "image",
+                          "charmap",
+                          "preview",
+                          "anchor",
+                          "searchreplace",
+                          "visualblocks",
+                          "code",
+                          "fullscreen",
+                          "insertdatetime",
+                          "media",
+                          "table",
+                          "help",
+                          "wordcount",
                         ],
-                        toolbar: 'undo redo | blocks | ' +
-                          'bold italic forecolor | alignleft aligncenter ' +
-                          'alignright alignjustify | bullist numlist outdent indent | ' +
-                          'removeformat | image link media | help',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                        toolbar:
+                          "undo redo | blocks | " +
+                          "bold italic forecolor | alignleft aligncenter " +
+                          "alignright alignjustify | bullist numlist outdent indent | " +
+                          "removeformat | image link media | help",
+                        content_style:
+                          "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                       }}
                     />
                   </div>
@@ -268,7 +292,11 @@ export function BlogManagement() {
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button type="button" variant="outline" onClick={handleCancelEdit}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCancelEdit}
+                  >
                     Cancel
                   </Button>
                 </DialogClose>
@@ -320,8 +348,7 @@ export function BlogManagement() {
               <CardContent>
                 <p className="line-clamp-4">{blog.content}</p>
               </CardContent>
-              <CardFooter className="flex justify-end">
-              </CardFooter>
+              <CardFooter className="flex justify-end"></CardFooter>
             </Card>
           ))}
         </div>

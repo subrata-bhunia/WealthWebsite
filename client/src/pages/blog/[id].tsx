@@ -36,6 +36,7 @@ export default function BlogPostPage() {
         data.json().then((res) => setBlog(res));
       } catch (error) {
         toast({
+          id: "",
           title: "Error",
           description: "Failed to load blog post",
           variant: "destructive",
