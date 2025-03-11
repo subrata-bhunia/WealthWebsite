@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -43,7 +42,7 @@ export function MediaManagement() {
   const [newMediaYoutubeUrl, setNewMediaYoutubeUrl] = useState("");
   const [newMediaType, setNewMediaType] = useState<'file' | 'youtube' | 'both'>('file');
   const [dialogOpen, setDialogOpen] = useState(false);
-  
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -60,18 +59,26 @@ export function MediaManagement() {
 
   const createMedia = useMutation({
     mutationFn: async (newMedia: Omit<MediaItem, "id" | "createdAt">) => {
+      // Get JWT token from localStorage
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        throw new Error("Authentication token not found. Please log in again.");
+      }
+
       const response = await fetch("/api/media", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(newMedia),
       });
-      
+
       if (!response.ok) {
         throw new Error("Failed to create media item");
       }
-      
+
       return response.json();
     },
     onSuccess: () => {
@@ -94,14 +101,24 @@ export function MediaManagement() {
 
   const deleteMedia = useMutation({
     mutationFn: async (id: number) => {
+      // Get JWT token from localStorage
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        throw new Error("Authentication token not found. Please log in again.");
+      }
+
       const response = await fetch(`/api/media/${id}`, {
         method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
       });
-      
+
       if (!response.ok) {
         throw new Error("Failed to delete media item");
       }
-      
+
       return response.json();
     },
     onSuccess: () => {
@@ -130,7 +147,7 @@ export function MediaManagement() {
       });
       return;
     }
-    
+
     // Validate media type
     if (newMediaType === 'file' && !newMediaFileUrl) {
       toast({
@@ -140,7 +157,7 @@ export function MediaManagement() {
       });
       return;
     }
-    
+
     if (newMediaType === 'youtube' && !newMediaYoutubeUrl) {
       toast({
         title: "Error",
@@ -149,7 +166,7 @@ export function MediaManagement() {
       });
       return;
     }
-    
+
     if (newMediaType === 'both' && (!newMediaFileUrl || !newMediaYoutubeUrl)) {
       toast({
         title: "Error",
@@ -184,15 +201,15 @@ export function MediaManagement() {
 
   function formatYouTubeEmbed(url: string) {
     if (!url) return '';
-    
+
     // Handle YouTube URLs
     const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
     const match = url.match(regExp);
-    
+
     if (match && match[2].length === 11) {
       return `https://www.youtube.com/embed/${match[2]}`;
     }
-    
+
     return url;
   }
 
@@ -231,7 +248,7 @@ export function MediaManagement() {
                 </div>
               </div>
             )}
-            
+
             {(item.mediaType === 'file' || item.mediaType === 'both') && item.fileUrl && (
               <div>
                 <div className="flex items-center gap-2 font-semibold text-sm mb-2">
@@ -256,6 +273,19 @@ export function MediaManagement() {
       </Card>
     );
   };
+
+  // Effect to check for authentication
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      toast({
+        title: "Authentication Required",
+        description: "Please log in to manage media resources.",
+        variant: "destructive",
+      });
+    }
+  }, [toast]);
+
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading media items: {(error as Error).message}</div>;
@@ -312,7 +342,7 @@ export function MediaManagement() {
                   </SelectContent>
                 </Select>
               </div>
-              
+
               {(newMediaType === 'file' || newMediaType === 'both') && (
                 <div className="grid gap-2">
                   <Label htmlFor="fileUrl">File URL</Label>
@@ -324,7 +354,7 @@ export function MediaManagement() {
                   />
                 </div>
               )}
-              
+
               {(newMediaType === 'youtube' || newMediaType === 'both') && (
                 <div className="grid gap-2">
                   <Label htmlFor="youtubeUrl">YouTube URL</Label>
