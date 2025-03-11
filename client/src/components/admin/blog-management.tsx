@@ -44,14 +44,15 @@ export const authFetch = async (url: string, options?: RequestInit) => {
 export function BlogManagement() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [newBlog, setNewBlog] = useState({
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [newBlog, setNewBlog] = useState<Omit<Blog, 'id' | 'createdAt'>>({
     title: "",
     content: "",
     authorName: "",
     image: "",
   });
-  const [editedBlog, setEditedBlog] = useState<Blog | null>(null); // Added state for editing
-  const [isEditMode, setIsEditMode] = useState(false); // Added state for edit mode
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedBlog, setEditedBlog] = useState<Blog | null>(null);
   const { toast } = useToast();
 
   const fetchBlogs = async () => {
@@ -92,11 +93,12 @@ export function BlogManagement() {
         const errorData = await response.json();
         throw new Error(errorData.message || "Failed to create blog post");
       }
-      setNewBlog({ title: "", content: "", authorName: "", image: "" });
       toast({
         title: "Success",
         description: "Blog post created successfully",
       });
+      setNewBlog({ title: "", content: "", authorName: "", image: "" });
+      setDialogOpen(false);
       fetchBlogs();
     } catch (error: any) {
       toast({
@@ -157,6 +159,7 @@ export function BlogManagement() {
       setIsEditMode(false);
       setEditedBlog(null);
       setNewBlog({ title: "", content: "", authorName: "", image: "" });
+      setDialogOpen(false); // Close dialog after update
       toast({ title: "Success", description: "Blog post updated successfully" });
       fetchBlogs();
     } catch (error: any) {
@@ -172,6 +175,7 @@ export function BlogManagement() {
     setIsEditMode(false);
     setEditedBlog(null);
     setNewBlog({ title: "", content: "", authorName: "", image: "" });
+    setDialogOpen(false); // Close dialog on cancel
   };
 
 
@@ -187,9 +191,9 @@ export function BlogManagement() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
-        <Dialog open={!isEditMode} onOpenChange={setIsEditMode}> {/* Modified Dialog */}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}> {/* Use dialogOpen state */}
           <DialogTrigger asChild>
-            <Button>
+            <Button onClick={() => setDialogOpen(true)}> {/* Open dialog on button click */}
               <Plus className="mr-2 h-4 w-4" /> Create New Post
             </Button>
           </DialogTrigger>
@@ -298,14 +302,7 @@ export function BlogManagement() {
               <CardContent>
                 <p className="line-clamp-4">{blog.content}</p>
               </CardContent>
-              {/* Removed View/Edit button as edit functionality is now integrated */}
-              <CardFooter className="flex justify-end"> {/* Moved delete button to the right */}
-                {/* <Button
-                  variant="destructive"
-                  onClick={() => handleDelete(blog.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button> */}
+              <CardFooter className="flex justify-end">
               </CardFooter>
             </Card>
           ))}
