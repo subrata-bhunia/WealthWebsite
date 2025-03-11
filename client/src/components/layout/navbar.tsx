@@ -47,14 +47,34 @@ export function Navbar() {
                       <AccordionContent>
                         <div className="flex flex-col space-y-2">
                           {category.items.map((item) => (
-                            <Link key={item.href} href={item.href}>
-                              <span
-                                className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
-                                onClick={() => setIsOpen(false)}
-                              >
-                                {item.title}
-                              </span>
-                            </Link>
+                            item.items ? (
+                              <div key={item.href} className="flex flex-col">
+                                <span className="block px-4 py-2 text-sm font-medium">
+                                  {item.title}
+                                </span>
+                                <div className="flex flex-col space-y-2 pl-4 border-l border-border ml-4 mt-1">
+                                  {item.items.map((subItem) => (
+                                    <Link key={subItem.href} href={subItem.href}>
+                                      <span
+                                        className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
+                                        onClick={() => setIsOpen(false)}
+                                      >
+                                        {subItem.title}
+                                      </span>
+                                    </Link>
+                                  ))}
+                                </div>
+                              </div>
+                            ) : (
+                              <Link key={item.href} href={item.href}>
+                                <span
+                                  className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
+                                  onClick={() => setIsOpen(false)}
+                                >
+                                  {item.title}
+                                </span>
+                              </Link>
+                            )
                           ))}
                         </div>
                       </AccordionContent>
