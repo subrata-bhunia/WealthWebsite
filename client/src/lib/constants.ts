@@ -26,18 +26,27 @@ export const NAVIGATION_ITEMS = {
     label: "Wealth Management",
     items: [
       { title: "Mutual Funds", href: "/wealth-management/mutual-funds" },
-      { 
-        title: "NCD/Bond", 
+      {
+        title: "NCD/Bond",
         href: "/wealth-management/ncd-bond",
         items: [
-          { title: "Corporate Bonds", href: "/wealth-management/ncd-bond/corporate-bonds" },
-          { title: "Government Bonds", href: "/wealth-management/ncd-bond/government-bonds" },
-          { title: "Tax-Free Bonds", href: "/wealth-management/ncd-bond/tax-free-bonds" }
-        ]
+          { title: "NCD", href: "/wealth-management/ncd-bond/ncd" },
+          { title: "Bond", href: "/wealth-management/ncd-bond/bonds" },
+        ],
       },
       {
-        title: "Fractional Real Estate",
-        href: "/wealth-management/fractional-real-estate",
+        title: "Real Estate",
+        href: "/wealth-management/real-estate",
+        items: [
+          {
+            title: "Fractional ownership of commercial real estate",
+            href: "/wealth-management/real-estate/fractional",
+          },
+          {
+            title: "Investment in RERA approved projects",
+            href: "/wealth-management/real-estate/rera",
+          },
+        ],
       },
       {
         title: "Investment in Startup",
