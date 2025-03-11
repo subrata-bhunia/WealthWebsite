@@ -162,6 +162,11 @@ export function Navbar() {
                 <Link href="/blog">{"Blog"}</Link>
               </NavigationMenuTrigger>
             </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>
+                <Link href="/media">{"Media"}</Link>
+              </NavigationMenuTrigger>
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 

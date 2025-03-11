@@ -37,3 +37,24 @@ export const insertBlogSchema = createInsertSchema(blogs).pick({
 
 export type Blog = typeof blogs.$inferSelect;
 export type InsertBlog = z.infer<typeof insertBlogSchema>;
+
+export const mediaItems = mysqlTable("media_items", {
+  id: int("id").primaryKey().autoincrement(),
+  title: text("title").notNull(),
+  description: text("description"),
+  fileUrl: text("file_url"),
+  youtubeUrl: text("youtube_url"),
+  mediaType: varchar("media_type", { length: 20 }).notNull(), // 'file', 'youtube', or 'both'
+  createdAt: text("created_at").notNull().default(new Date().toISOString()),
+});
+
+export const insertMediaSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().optional(),
+  fileUrl: z.string().optional(),
+  youtubeUrl: z.string().optional(),
+  mediaType: z.enum(['file', 'youtube', 'both']),
+});
+
+export type MediaItem = typeof mediaItems.$inferSelect;
+export type InsertMediaItem = z.infer<typeof insertMediaSchema>;

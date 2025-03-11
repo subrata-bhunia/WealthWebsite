@@ -5,6 +5,7 @@ import { ContactsList } from "./contacts-list";
 import { BlogManagement } from "./blog-management";
 import { Button } from "@/components/ui/button";
 import { isAuthenticated, isAdmin } from "@/lib/auth";
+import { MediaManagement } from "./media-management";
 
 export function AdminLayout() {
   const [, setLocation] = useLocation();
@@ -48,15 +49,19 @@ export function AdminLayout() {
       <section className="flex-1 w-full py-12">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="blogs" className="w-full">
-            <TabsList className="w-full max-w-md mx-auto grid grid-cols-2 mb-8">
+            <TabsList className="w-full max-w-md mx-auto grid grid-cols-3 mb-8"> {/* Increased cols to 3 */}
               <TabsTrigger value="blogs">Blog Management</TabsTrigger>
               <TabsTrigger value="contacts">Contact Submissions</TabsTrigger>
+              <TabsTrigger value="media">Media Management</TabsTrigger> {/* Added Media Management */}
             </TabsList>
             <TabsContent value="blogs" className="mt-6">
               <BlogManagement />
             </TabsContent>
             <TabsContent value="contacts" className="mt-6">
               <ContactsList />
+            </TabsContent>
+            <TabsContent value="media" className="mt-6"> {/* Added Media Management Content */}
+              <MediaManagement />
             </TabsContent>
           </Tabs>
         </div>

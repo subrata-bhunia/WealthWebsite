@@ -1,7 +1,7 @@
 import type { Express, Request } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
-import { insertContactSchema, insertBlogSchema } from "@shared/schema";
+import { insertContactSchema, insertBlogSchema, insertMediaSchema } from "@shared/schema";
 import { generateToken, requireAdmin } from "./auth";
 import { LoginCredentials } from "@shared/auth";
 
@@ -120,6 +120,48 @@ export async function registerRoutes(app: Express) {
       res.json({ success: true });
     } catch (error) {
       res.status(500).json({ error: "Error deleting blog" });
+    }
+  });
+
+  // Media routes
+  app.post("/api/media", requireAdmin, async (req, res) => {
+    try {
+      const mediaItem = insertMediaSchema.parse(req.body);
+      const result = await storage.createMediaItem(mediaItem);
+      res.json(result);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid media data" });
+    }
+  });
+
+  app.get("/api/media", async (req, res) => {
+    try {
+      const mediaItems = await storage.getAllMediaItems();
+      res.json(mediaItems);
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching media items" });
+    }
+  });
+
+  app.get("/api/media/:id", async (req, res) => {
+    try {
+      const mediaItem = await storage.getMediaItemById(parseInt(req.params.id));
+      if (mediaItem) {
+        res.json(mediaItem);
+      } else {
+        res.status(404).json({ error: "Media item not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching media item" });
+    }
+  });
+
+  app.delete("/api/media/:id", requireAdmin, async (req, res) => {
+    try {
+      await storage.deleteMediaItem(parseInt(req.params.id));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Error deleting media item" });
     }
   });
 
