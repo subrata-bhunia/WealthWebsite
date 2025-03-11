@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
-import { useState, createContext, useContext } from "react";
+import { useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -20,33 +20,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-// Theme Context
-const ThemeContext = createContext('light');
-
-const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
-      {children}
-    </ThemeContext.Provider>
-  );
-};
-
-const useTheme = () => {
-  return useContext(ThemeContext);
-};
-
-
-const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme();
-  return (
-    <Button onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}>
-      {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
-    </Button>
-  );
-};
-
 
 export function Navbar() {
   const isMobile = useIsMobile();
@@ -133,9 +106,6 @@ export function Navbar() {
         <Link href="/">
           <span className="font-bold text-xl">WealthSpire</span>
         </Link>
-        <div className="flex items-center">
-          <ThemeToggle />
-        </div>
         <NavigationMenu>
           <NavigationMenuList className="hidden md:flex">
             {Object.values(NAVIGATION_ITEMS).map((category) => (
@@ -202,5 +172,3 @@ export function Navbar() {
     </header>
   );
 }
-
-export {ThemeProvider, useTheme};
