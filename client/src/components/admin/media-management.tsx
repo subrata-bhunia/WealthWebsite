@@ -57,20 +57,23 @@ export function MediaManagement() {
     },
   });
 
+  // Import authFetch from blog-management if needed
+  export const authFetch = async (url: string, options?: RequestInit) => {
+    const token = localStorage.getItem("wealthspire_auth_token");
+    const headers = {
+      ...(options?.headers || {}),
+      Authorization: token ? `Bearer ${token}` : undefined,
+    };
+    // @ts-ignore
+    return fetch(url, { ...options, headers });
+  };
+
   const createMedia = useMutation({
     mutationFn: async (newMedia: Omit<MediaItem, "id" | "createdAt">) => {
-      // Get JWT token from localStorage
-      const token = localStorage.getItem('authToken');
-
-      if (!token) {
-        throw new Error("Authentication token not found. Please log in again.");
-      }
-
-      const response = await fetch("/api/media", {
+      const response = await authFetch("/api/media", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify(newMedia),
       });
@@ -101,18 +104,8 @@ export function MediaManagement() {
 
   const deleteMedia = useMutation({
     mutationFn: async (id: number) => {
-      // Get JWT token from localStorage
-      const token = localStorage.getItem('authToken');
-
-      if (!token) {
-        throw new Error("Authentication token not found. Please log in again.");
-      }
-
-      const response = await fetch(`/api/media/${id}`, {
+      const response = await authFetch(`/api/media/${id}`, {
         method: "DELETE",
-        headers: {
-          "Authorization": `Bearer ${token}`,
-        },
       });
 
       if (!response.ok) {
@@ -276,7 +269,7 @@ export function MediaManagement() {
 
   // Effect to check for authentication
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('wealthspire_auth_token');
     if (!token) {
       toast({
         title: "Authentication Required",
