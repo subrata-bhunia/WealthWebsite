@@ -1,5 +1,5 @@
 import React from "react";
-import { Editor } from "@tinymce/tinymce-react";
+import { Textarea } from "@/components/ui/textarea";
 
 interface RichTextEditorProps {
   value: string;
@@ -15,41 +15,12 @@ export function RichTextEditor({
   id = "editor",
 }: RichTextEditorProps) {
   return (
-    <Editor
+    <Textarea
       id={id}
-      apiKey="umak557fl1ac4c7h9bbwherzgj1j1oobz284flomy8rpze5p"
       value={value}
-      onEditorChange={onChange}
-      init={{
-        height,
-        menubar: true,
-        plugins: [
-          "advlist",
-          "autolink",
-          "lists",
-          "link",
-          "image",
-          "charmap",
-          "preview",
-          "anchor",
-          "searchreplace",
-          "visualblocks",
-          "code",
-          "fullscreen",
-          "insertdatetime",
-          "media",
-          "table",
-          "help",
-          "wordcount",
-        ],
-        toolbar:
-          "undo redo | blocks | " +
-          "bold italic forecolor | alignleft aligncenter " +
-          "alignright alignjustify | bullist numlist outdent indent | " +
-          "removeformat | image link media | help",
-        content_style:
-          "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
-      }}
+      onChange={(e) => onChange(e.target.value)}
+      className="min-h-[300px]"
+      style={{ height: `${height}px` }}
     />
   );
 }
