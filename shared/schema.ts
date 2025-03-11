@@ -1,3 +1,4 @@
+
 import { mysqlTable, int, text, varchar } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
