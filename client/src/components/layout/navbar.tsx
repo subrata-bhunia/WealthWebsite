@@ -95,18 +95,42 @@ export function Navbar() {
                   <ul className="grid w-[400px] gap-2 p-4 md:w-[500px] lg:w-[600px]">
                     {category.items.map((item) => (
                       <li key={item.href}>
-                        <NavigationMenuLink asChild>
-                          <Link href={item.href}>
-                            <span
-                              className={cn(
-                                "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-                                "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                              )}
-                            >
-                              {item.title}
-                            </span>
-                          </Link>
-                        </NavigationMenuLink>
+                        {item.items ? ( // Check for nested items
+                          <>
+                            <div className="font-medium py-1.5">{item.title}</div>
+                            <ul className="pl-4 border-l border-border">
+                              {item.items.map((subItem) => (
+                                <li key={subItem.href}>
+                                  <NavigationMenuLink asChild>
+                                    <Link href={subItem.href}>
+                                      <span
+                                        className={cn(
+                                          "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
+                                          "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                        )}
+                                      >
+                                        {subItem.title}
+                                      </span>
+                                    </Link>
+                                  </NavigationMenuLink>
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        ) : (
+                          <NavigationMenuLink asChild>
+                            <Link href={item.href}>
+                              <span
+                                className={cn(
+                                  "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
+                                  "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                )}
+                              >
+                                {item.title}
+                              </span>
+                            </Link>
+                          </NavigationMenuLink>
+                        )}
                       </li>
                     ))}
                   </ul>
