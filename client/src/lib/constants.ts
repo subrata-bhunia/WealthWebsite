@@ -26,10 +26,15 @@ export const NAVIGATION_ITEMS = {
     label: "Wealth Management",
     items: [
       { title: "Mutual Funds", href: "/wealth-management/mutual-funds" },
-      { title: "NCD/Bond", href: "/wealth-management/ncd-bond" },
-      { title: "Corporate Bonds", href: "/wealth-management/corporate-bonds" },
-      { title: "Government Bonds", href: "/wealth-management/government-bonds" },
-      { title: "Tax-Free Bonds", href: "/wealth-management/tax-free-bonds" },
+      { 
+        title: "NCD/Bond", 
+        href: "/wealth-management/ncd-bond",
+        items: [
+          { title: "Corporate Bonds", href: "/wealth-management/ncd-bond/corporate-bonds" },
+          { title: "Government Bonds", href: "/wealth-management/ncd-bond/government-bonds" },
+          { title: "Tax-Free Bonds", href: "/wealth-management/ncd-bond/tax-free-bonds" }
+        ]
+      },
       {
         title: "Fractional Real Estate",
         href: "/wealth-management/fractional-real-estate",
