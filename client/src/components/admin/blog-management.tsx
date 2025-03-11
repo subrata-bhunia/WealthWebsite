@@ -139,6 +139,7 @@ export function BlogManagement() {
     setEditedBlog(blog);
     setNewBlog(blog); // Populate the form with existing data
     setIsEditMode(true);
+    setDialogOpen(true); // Open the dialog when edit button is clicked
   };
 
   const handleUpdateBlog = async (e: React.FormEvent) => {
