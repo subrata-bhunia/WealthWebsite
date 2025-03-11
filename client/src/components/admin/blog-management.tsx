@@ -22,8 +22,9 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill';
 
-import { Editor } from '@tinymce/tinymce-react';
 
 type Blog = {
   id: number;
@@ -42,6 +43,21 @@ export const authFetch = async (url: string, options?: RequestInit) => {
   // @ts-ignore
   return fetch(url, { ...options, headers });
 };
+
+const RichTextEditor = ({ value, onChange }: { value: string; onChange: (content: string) => void }) => {
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic', 'underline'],
+      ['image', 'link'],
+      ['list', 'blockquote', 'code-block'],
+    ],
+  };
+  return (
+    <ReactQuill value={value} onChange={onChange} modules={modules} theme="snow" />
+  );
+};
+
 
 export function BlogManagement() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -241,27 +257,9 @@ export function BlogManagement() {
                 <div className="grid gap-2">
                   <Label htmlFor="content">Content</Label>
                   <div className="border rounded-md">
-                    <Editor
-                      id="content"
-                      apiKey="no-api-key"
+                    <RichTextEditor
                       value={newBlog.content}
-                      onEditorChange={(content) =>
-                        setNewBlog({ ...newBlog, content })
-                      }
-                      init={{
-                        height: 400,
-                        menubar: true,
-                        plugins: [
-                          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                          'insertdatetime', 'media', 'table', 'help', 'wordcount'
-                        ],
-                        toolbar: 'undo redo | blocks | ' +
-                          'bold italic forecolor | alignleft aligncenter ' +
-                          'alignright alignjustify | bullist numlist outdent indent | ' +
-                          'removeformat | image link media | help',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                      }}
+                      onChange={(content) => setNewBlog({ ...newBlog, content })}
                     />
                   </div>
                 </div>

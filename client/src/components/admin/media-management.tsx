@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Plus, Save, Trash, Youtube, File, Edit } from "lucide-react";
 import { authFetch } from "@/components/admin/blog-management";
 import { RichTextEditor } from "./rich-text-editor";
+import 'react-quill/dist/quill.snow.css';
 
 type MediaItem = {
   id: number;
