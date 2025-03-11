@@ -1,31 +1,15 @@
-import { useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Trash2, FileVideo, Youtube, Pencil } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Plus, Save, Trash, Youtube, File, Edit } from "lucide-react";
+import { authFetch } from "@/components/admin/blog-management";
+import { RichTextEditor } from "./rich-text-editor";
 
-interface MediaItem {
+type MediaItem = {
   id: number;
   title: string;
   description?: string;
@@ -33,45 +17,50 @@ interface MediaItem {
   youtubeUrl?: string;
   mediaType: 'file' | 'youtube' | 'both';
   createdAt: string;
-}
+};
 
 export function MediaManagement() {
-  const [newMediaTitle, setNewMediaTitle] = useState("");
-  const [newMediaDescription, setNewMediaDescription] = useState("");
-  const [newMediaFileUrl, setNewMediaFileUrl] = useState("");
-  const [newMediaYoutubeUrl, setNewMediaYoutubeUrl] = useState("");
-  const [newMediaType, setNewMediaType] = useState<'file' | 'youtube' | 'both'>('file');
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false); // Added for edit mode
-  const [mediaToEdit, setMediaToEdit] = useState<MediaItem | null>(null); // Added for edit mode
-
+  const [newMedia, setNewMedia] = useState<Partial<MediaItem>>({
+    title: "",
+    description: "",
+    fileUrl: "",
+    youtubeUrl: "",
+    mediaType: "file",
+  });
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedMedia, setEditedMedia] = useState<MediaItem | null>(null);
   const { toast } = useToast();
-  const queryClient = useQueryClient();
 
-  const { data: mediaItems = [], isLoading, error } = useQuery({
-    queryKey: ["media"],
-    queryFn: async () => {
-      const response = await fetch("/api/media");
+  const fetchMediaItems = async () => {
+    setLoading(true);
+    try {
+      const response = await authFetch("/api/media");
       if (!response.ok) {
         throw new Error("Failed to fetch media items");
       }
-      return response.json();
-    },
-  });
-
-  // Using authFetch imported from elsewhere or defined at the top level
-  const authFetch = async (url: string, options?: RequestInit) => {
-    const token = localStorage.getItem("wealthspire_auth_token");
-    const headers = {
-      ...(options?.headers || {}),
-      Authorization: token ? `Bearer ${token}` : undefined,
-    };
-    // @ts-ignore
-    return fetch(url, { ...options, headers });
+      const data = await response.json();
+      setMediaItems(data);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to load media items",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const createMedia = useMutation({
-    mutationFn: async (newMedia: Omit<MediaItem, "id" | "createdAt">) => {
+  useEffect(() => {
+    fetchMediaItems();
+  }, [toast]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
       const response = await authFetch("/api/media", {
         method: "POST",
         headers: {
@@ -79,365 +68,291 @@ export function MediaManagement() {
         },
         body: JSON.stringify(newMedia),
       });
-
       if (!response.ok) {
-        throw new Error("Failed to create media item");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to create media item");
       }
-
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["media"] });
-      toast({
-        title: "Success",
-        description: "Media item created successfully",
+      setNewMedia({
+        title: "",
+        description: "",
+        fileUrl: "",
+        youtubeUrl: "",
+        mediaType: "file",
       });
-      resetForm();
       setDialogOpen(false);
-    },
-    onError: (error) => {
+      toast({ title: "Success", description: "Media item created successfully" });
+      fetchMediaItems();
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: `Failed to create media item: ${error.message}`,
         variant: "destructive",
       });
-    },
-  });
+    }
+  };
 
-  const updateMedia = useMutation({ // Added for update
-    mutationFn: async (updatedMedia: MediaItem) => {
-      const response = await authFetch(`/api/media/${updatedMedia.id}`, {
+  const handleUpdateMedia = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await authFetch(`/api/media/${editedMedia?.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(updatedMedia),
+        body: JSON.stringify(newMedia),
       });
       if (!response.ok) {
-        throw new Error("Failed to update media item");
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update media item");
       }
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["media"] });
-      toast({
-        title: "Success",
-        description: "Media item updated successfully",
-      });
-      resetForm();
-      setDialogOpen(false);
       setIsEditMode(false);
-      setMediaToEdit(null);
-    },
-    onError: (error) => {
+      setEditedMedia(null);
+      setNewMedia({
+        title: "",
+        description: "",
+        fileUrl: "",
+        youtubeUrl: "",
+        mediaType: "file",
+      });
+      setDialogOpen(false);
+      toast({ title: "Success", description: "Media item updated successfully" });
+      fetchMediaItems();
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.message,
+        description: `Failed to update media item: ${error.message}`,
         variant: "destructive",
       });
-    },
-  });
-
-
-  const deleteMedia = useMutation({
-    mutationFn: async (id: number) => {
-      const response = await authFetch(`/api/media/${id}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete media item");
-      }
-
-      return response.json();
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["media"] });
-      toast({
-        title: "Success",
-        description: "Media item deleted successfully",
-      });
-    },
-    onError: (error) => {
-      toast({
-        title: "Error",
-        description: error.message,
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleCreateMedia = () => {
-    // Validate required fields
-    if (!newMediaTitle) {
-      toast({
-        title: "Error",
-        description: "Title is required",
-        variant: "destructive",
-      });
-      return;
     }
-
-    // Validate media type
-    if (newMediaType === 'file' && !newMediaFileUrl) {
-      toast({
-        title: "Error",
-        description: "File URL is required for file type",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (newMediaType === 'youtube' && !newMediaYoutubeUrl) {
-      toast({
-        title: "Error",
-        description: "YouTube URL is required for YouTube type",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (newMediaType === 'both' && (!newMediaFileUrl || !newMediaYoutubeUrl)) {
-      toast({
-        title: "Error",
-        description: "Both File URL and YouTube URL are required for 'both' type",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    createMedia.mutate({
-      title: newMediaTitle,
-      description: newMediaDescription || undefined,
-      fileUrl: newMediaFileUrl || undefined,
-      youtubeUrl: newMediaYoutubeUrl || undefined,
-      mediaType: newMediaType,
-    });
   };
 
-  const handleUpdateMedia = () => { // Added for update
-    if (!mediaToEdit) return;
-    updateMedia.mutate({...mediaToEdit, title: newMediaTitle, description: newMediaDescription, fileUrl: newMediaFileUrl, youtubeUrl: newMediaYoutubeUrl, mediaType: newMediaType});
-  };
-
-  const handleCancelEdit = () => { // Added for cancel edit
-    setIsEditMode(false);
-    setMediaToEdit(null);
-    resetForm();
-    setDialogOpen(false);
-  }
-
-
-  const resetForm = () => {
-    setNewMediaTitle("");
-    setNewMediaDescription("");
-    setNewMediaFileUrl("");
-    setNewMediaYoutubeUrl("");
-    setNewMediaType('file');
-  };
-
-  const handleDeleteMedia = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm("Are you sure you want to delete this media item?")) {
-      deleteMedia.mutate(id);
+      try {
+        const response = await authFetch(`/api/media/${id}`, {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          throw new Error("Failed to delete media item");
+        }
+        toast({ title: "Success", description: "Media item deleted successfully" });
+        fetchMediaItems();
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Failed to delete media item",
+          variant: "destructive",
+        });
+      }
     }
   };
 
-  const handleEditMedia = (media: MediaItem) => {
-    setNewMediaTitle(media.title);
-    setNewMediaDescription(media.description || "");
-    setNewMediaFileUrl(media.fileUrl || "");
-    setNewMediaYoutubeUrl(media.youtubeUrl || "");
-    setNewMediaType(media.mediaType);
+  const handleEdit = (media: MediaItem) => {
     setIsEditMode(true);
-    setMediaToEdit(media);
+    setEditedMedia(media);
+    setNewMedia({
+      title: media.title,
+      description: media.description || "",
+      fileUrl: media.fileUrl || "",
+      youtubeUrl: media.youtubeUrl || "",
+      mediaType: media.mediaType,
+    });
     setDialogOpen(true);
   };
 
-  function formatYouTubeEmbed(url: string) {
-    if (!url) return '';
+  const handleCancelEdit = () => {
+    setIsEditMode(false);
+    setEditedMedia(null);
+    setNewMedia({
+      title: "",
+      description: "",
+      fileUrl: "",
+      youtubeUrl: "",
+      mediaType: "file",
+    });
+    setDialogOpen(false);
+  };
 
-    // Handle YouTube URLs
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-
-    if (match && match[2].length === 11) {
-      return `https://www.youtube.com/embed/${match[2]}`;
-    }
-
-    return url;
-  }
-
-  const renderMediaItem = (item: MediaItem) => {
+  const renderMediaItem = (media: MediaItem) => {
     return (
-      <Card key={item.id} className="mb-6">
+      <Card key={media.id} className="mb-4">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
-            <span>{item.title}</span>
+            <span>{media.title}</span>
             <div className="flex space-x-2">
               <Button
                 variant="outline"
                 size="icon"
-                onClick={() => handleEditMedia(item)}
+                onClick={() => handleEdit(media)}
               >
-                <Pencil className="h-4 w-4" />
+                <Edit className="h-4 w-4" />
               </Button>
               <Button
-                variant="destructive"
+                variant="outline"
                 size="icon"
-                onClick={() => handleDeleteMedia(item.id)}
-                className="h-8 w-8"
+                onClick={() => handleDelete(media.id)}
               >
-                <Trash2 className="h-4 w-4" />
+                <Trash className="h-4 w-4" />
               </Button>
             </div>
           </CardTitle>
-          {item.description && <CardDescription>{item.description}</CardDescription>}
         </CardHeader>
         <CardContent>
-          <div className="space-y-4">
-            {(item.mediaType === 'youtube' || item.mediaType === 'both') && item.youtubeUrl && (
+          <div className="space-y-2">
+            {media.description && (
               <div>
-                <div className="flex items-center gap-2 font-semibold text-sm mb-2">
-                  <Youtube className="h-4 w-4" />
-                  <span>YouTube Video</span>
-                </div>
-                <div className="aspect-video">
-                  <iframe
-                    src={formatYouTubeEmbed(item.youtubeUrl)}
-                    className="w-full h-full rounded-md"
-                    allowFullScreen
-                    title={`YouTube video - ${item.title}`}
-                  ></iframe>
-                </div>
+                <h4 className="text-sm font-medium mb-1">Description:</h4>
+                <div 
+                  className="text-sm text-muted-foreground" 
+                  dangerouslySetInnerHTML={{ __html: media.description }}
+                />
               </div>
             )}
-
-            {(item.mediaType === 'file' || item.mediaType === 'both') && item.fileUrl && (
-              <div>
-                <div className="flex items-center gap-2 font-semibold text-sm mb-2">
-                  <FileVideo className="h-4 w-4" />
-                  <span>File Link</span>
+            <div className="flex space-x-2 mt-2">
+              {media.mediaType === "file" || media.mediaType === "both" ? (
+                <div className="flex items-center">
+                  <File className="h-4 w-4 mr-1" />
+                  <a
+                    href={media.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    View File
+                  </a>
                 </div>
-                <a
-                  href={item.fileUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:underline break-all"
-                >
-                  {item.fileUrl}
-                </a>
-              </div>
-            )}
+              ) : null}
+              {media.mediaType === "youtube" || media.mediaType === "both" ? (
+                <div className="flex items-center">
+                  <Youtube className="h-4 w-4 mr-1" />
+                  <a
+                    href={media.youtubeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-500 hover:underline"
+                  >
+                    Watch Video
+                  </a>
+                </div>
+              ) : null}
+            </div>
           </div>
         </CardContent>
-        <CardFooter className="text-xs text-muted-foreground">
-          Added on {new Date(item.createdAt).toLocaleDateString()}
+        <CardFooter>
+          <p className="text-xs text-muted-foreground">
+            Added on {new Date(media.createdAt).toLocaleDateString()}
+          </p>
         </CardFooter>
       </Card>
     );
   };
 
-  // Effect to check for authentication
-  useEffect(() => {
-    const token = localStorage.getItem('wealthspire_auth_token');
-    if (!token) {
-      toast({
-        title: "Authentication Required",
-        description: "Please log in to manage media resources.",
-        variant: "destructive",
-      });
-    }
-  }, [toast]);
-
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading media items: {(error as Error).message}</div>;
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Media Library</h2>
-        <Dialog open={dialogOpen} onOpenChange={(open) => !open ? handleCancelEdit() : setDialogOpen(open)}>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button>Add New Media</Button>
+            <Button onClick={() => setDialogOpen(true)}>
+              <Plus className="mr-2 h-4 w-4" /> Add Media
+            </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="sm:max-w-[600px]">
             <DialogHeader>
-              <DialogTitle>{isEditMode ? "Edit Media" : "Add New Media"}</DialogTitle>
-              <DialogDescription>
-                {isEditMode ? "Edit existing media item." : "Upload file URLs or YouTube video links to share with your audience."}
-              </DialogDescription>
+              <DialogTitle>
+                {isEditMode ? "Edit Media Item" : "Add New Media"}
+              </DialogTitle>
             </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid gap-2">
-                <Label htmlFor="title">Title</Label>
-                <Input
-                  id="title"
-                  value={newMediaTitle}
-                  onChange={(e) => setNewMediaTitle(e.target.value)}
-                  placeholder="Enter media title"
-                  required
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="description">Description (Optional)</Label>
-                <Textarea
-                  id="description"
-                  value={newMediaDescription}
-                  onChange={(e) => setNewMediaDescription(e.target.value)}
-                  placeholder="Enter media description"
-                  rows={3}
-                />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="mediaType">Media Type</Label>
-                <Select
-                  value={newMediaType}
-                  onValueChange={(value) => setNewMediaType(value as 'file' | 'youtube' | 'both')}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select media type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="file">File Link</SelectItem>
-                    <SelectItem value="youtube">YouTube Video</SelectItem>
-                    <SelectItem value="both">Both</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {(newMediaType === 'file' || newMediaType === 'both') && (
+            <form onSubmit={isEditMode ? handleUpdateMedia : handleSubmit}>
+              <div className="grid gap-4 py-4">
                 <div className="grid gap-2">
-                  <Label htmlFor="fileUrl">File URL</Label>
+                  <Label htmlFor="title">Title</Label>
                   <Input
-                    id="fileUrl"
-                    value={newMediaFileUrl}
-                    onChange={(e) => setNewMediaFileUrl(e.target.value)}
-                    placeholder="Enter file URL"
+                    id="title"
+                    value={newMedia.title}
+                    onChange={(e) =>
+                      setNewMedia({ ...newMedia, title: e.target.value })
+                    }
+                    required
                   />
                 </div>
-              )}
-
-              {(newMediaType === 'youtube' || newMediaType === 'both') && (
                 <div className="grid gap-2">
-                  <Label htmlFor="youtubeUrl">YouTube URL</Label>
-                  <Input
-                    id="youtubeUrl"
-                    value={newMediaYoutubeUrl}
-                    onChange={(e) => setNewMediaYoutubeUrl(e.target.value)}
-                    placeholder="Enter YouTube video URL"
-                  />
+                  <Label htmlFor="description">Description</Label>
+                  <div className="border rounded-md">
+                    <RichTextEditor
+                      id="description"
+                      value={newMedia.description || ''}
+                      onChange={(content) =>
+                        setNewMedia({ ...newMedia, description: content })
+                      }
+                    />
+                  </div>
                 </div>
-              )}
-            </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={handleCancelEdit}>
-                Cancel
-              </Button>
-              <Button type="submit" onClick={isEditMode ? handleUpdateMedia : handleCreateMedia}>
-                {isEditMode ? "Update Media" : "Add Media"}
-              </Button>
-            </DialogFooter>
+                <div className="grid gap-2">
+                  <Label htmlFor="mediaType">Media Type</Label>
+                  <select
+                    id="mediaType"
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    value={newMedia.mediaType}
+                    onChange={(e) =>
+                      setNewMedia({
+                        ...newMedia,
+                        mediaType: e.target.value as "file" | "youtube" | "both",
+                      })
+                    }
+                    required
+                  >
+                    <option value="file">File URL</option>
+                    <option value="youtube">YouTube URL</option>
+                    <option value="both">Both</option>
+                  </select>
+                </div>
+                {(newMedia.mediaType === "file" || newMedia.mediaType === "both") && (
+                  <div className="grid gap-2">
+                    <Label htmlFor="fileUrl">File URL</Label>
+                    <Input
+                      id="fileUrl"
+                      value={newMedia.fileUrl}
+                      onChange={(e) =>
+                        setNewMedia({ ...newMedia, fileUrl: e.target.value })
+                      }
+                      required={newMedia.mediaType === "file" || newMedia.mediaType === "both"}
+                    />
+                  </div>
+                )}
+                {(newMedia.mediaType === "youtube" || newMedia.mediaType === "both") && (
+                  <div className="grid gap-2">
+                    <Label htmlFor="youtubeUrl">YouTube URL</Label>
+                    <Input
+                      id="youtubeUrl"
+                      value={newMedia.youtubeUrl}
+                      onChange={(e) =>
+                        setNewMedia({ ...newMedia, youtubeUrl: e.target.value })
+                      }
+                      required={newMedia.mediaType === "youtube" || newMedia.mediaType === "both"}
+                    />
+                  </div>
+                )}
+              </div>
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button type="button" variant="outline" onClick={handleCancelEdit}>
+                    Cancel
+                  </Button>
+                </DialogClose>
+                <Button type="submit">
+                  <Save className="mr-2 h-4 w-4" /> Save Media
+                </Button>
+              </DialogFooter>
+            </form>
           </DialogContent>
         </Dialog>
       </div>

@@ -23,6 +23,8 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
+import { Editor } from '@tinymce/tinymce-react';
+
 type Blog = {
   id: number;
   title: string;
@@ -238,15 +240,30 @@ export function BlogManagement() {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="content">Content</Label>
-                  <Textarea
-                    id="content"
-                    value={newBlog.content}
-                    onChange={(e) =>
-                      setNewBlog({ ...newBlog, content: e.target.value })
-                    }
-                    rows={10}
-                    required
-                  />
+                  <div className="border rounded-md">
+                    <Editor
+                      id="content"
+                      apiKey="no-api-key"
+                      value={newBlog.content}
+                      onEditorChange={(content) =>
+                        setNewBlog({ ...newBlog, content })
+                      }
+                      init={{
+                        height: 400,
+                        menubar: true,
+                        plugins: [
+                          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+                          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+                          'insertdatetime', 'media', 'table', 'help', 'wordcount'
+                        ],
+                        toolbar: 'undo redo | blocks | ' +
+                          'bold italic forecolor | alignleft aligncenter ' +
+                          'alignright alignjustify | bullist numlist outdent indent | ' +
+                          'removeformat | image link media | help',
+                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
               <DialogFooter>

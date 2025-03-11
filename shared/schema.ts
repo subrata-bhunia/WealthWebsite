@@ -34,6 +34,7 @@ export const insertBlogSchema = createInsertSchema(blogs).pick({
   title: true,
   content: true,
   authorName: true,
+  image: true,
 });
 
 export type Blog = typeof blogs.$inferSelect;
@@ -51,7 +52,7 @@ export const mediaItems = mysqlTable("media_items", {
 
 export const insertMediaSchema = z.object({
   title: z.string().min(1),
-  description: z.string().optional(),
+  description: z.string().optional(), // This will now accept HTML content
   fileUrl: z.string().optional(),
   youtubeUrl: z.string().optional(),
   mediaType: z.enum(['file', 'youtube', 'both']),

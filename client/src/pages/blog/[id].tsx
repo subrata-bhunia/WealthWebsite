@@ -65,6 +65,27 @@ export default function BlogPostPage() {
     );
   }
 
+  // Add required CSS for rich text content
+  useEffect(() => {
+    // Add a class to style the content properly
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .rich-content img { max-width: 100%; height: auto; margin: 1rem 0; }
+      .rich-content h1 { font-size: 2rem; font-weight: bold; margin: 1rem 0; }
+      .rich-content h2 { font-size: 1.5rem; font-weight: bold; margin: 1rem 0; }
+      .rich-content h3 { font-size: 1.25rem; font-weight: bold; margin: 1rem 0; }
+      .rich-content p { margin: 1rem 0; }
+      .rich-content ul, .rich-content ol { margin: 1rem 0; padding-left: 2rem; }
+      .rich-content blockquote { border-left: 4px solid #e5e7eb; padding-left: 1rem; margin: 1rem 0; font-style: italic; }
+      .rich-content a { color: #2563eb; text-decoration: underline; }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="container mx-auto px-4 py-12 pt-24">
@@ -99,12 +120,11 @@ export default function BlogPostPage() {
           __html: blog.content.replace('/n', '<br />')
         }}>
 
-          {/*/!* Render blog content - in a real app, you might use a rich text editor *!/*/}
-          {/*{blog?.content*/}
-          {/*  ?.split("\n")*/}
-          {/*  .map((paragraph, index) =>*/}
-          {/*    paragraph ? <p key={index}>{paragraph}</p> : <br key={index} />*/}
-          {/*  )}*/}
+          {/* Render rich HTML content */}
+          <div 
+            className="rich-content mt-4"
+            dangerouslySetInnerHTML={{ __html: blog.content }}
+          />
         </article>
       </div>
     </div>
