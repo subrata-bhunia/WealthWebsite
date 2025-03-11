@@ -31,7 +31,7 @@ type Blog = {
   createdAt: string;
 };
 
-const authFetch = async (url: string, options?: RequestInit) => {
+export const authFetch = async (url: string, options?: RequestInit) => {
   const token = localStorage.getItem("wealthspire_auth_token");
   const headers = {
     ...(options?.headers || {}),
