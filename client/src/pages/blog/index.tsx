@@ -33,6 +33,7 @@ export default function BlogPage() {
         data.json().then((res) => setBlogs(res));
       } catch (error) {
         toast({
+          id: "1",
           title: "Error",
           description: "Failed to load blogs",
           variant: "destructive",
