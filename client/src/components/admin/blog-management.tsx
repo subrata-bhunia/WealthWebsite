@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 
-// TinyMCE editor removed
+import { Editor } from '@tinymce/tinymce-react';
 
 type Blog = {
   id: number;
