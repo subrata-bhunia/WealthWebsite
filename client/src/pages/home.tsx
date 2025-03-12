@@ -12,6 +12,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useInterval } from "@/lib/hooks";
+import Autoplay from "embla-carousel-autoplay";
 
 interface Offer {
   id: number;
@@ -97,6 +98,13 @@ export default function Home() {
               align: "start",
               loop: true,
             }}
+            plugins={[
+              Autoplay({
+                delay: autoplayInterval,
+                stopOnInteraction: false,
+                stopOnMouseEnter: true,
+              }),
+            ]}
           >
             <CarouselContent className="h-full">
               {offers.map((offer) => (
