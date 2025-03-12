@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,7 +7,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -22,7 +28,10 @@ const callbackFormSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email"),
   phone: z.string().min(10, "Please enter a valid phone number"),
-  message: z.string().min(10, "Message must be at least 10 characters").default("Callback request"),
+  message: z
+    .string()
+    .min(10, "Message must be at least 10 characters")
+    .default("Callback request"),
 });
 
 type CallbackFormValues = z.infer<typeof callbackFormSchema>;
@@ -30,7 +39,7 @@ type CallbackFormValues = z.infer<typeof callbackFormSchema>;
 export function CallbackRequest() {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
-  
+
   const form = useForm<CallbackFormValues>({
     resolver: zodResolver(callbackFormSchema),
     defaultValues: {
@@ -47,6 +56,7 @@ export function CallbackRequest() {
       toast({
         title: "Request submitted",
         description: "We'll call you back as soon as possible.",
+        id: "8",
       });
       form.reset();
       setOpen(false);
@@ -55,13 +65,14 @@ export function CallbackRequest() {
         title: "Error",
         description: "Something went wrong. Please try again later.",
         variant: "destructive",
+        id: "9",
       });
     }
   }
 
   return (
     <>
-      <Button 
+      <Button
         onClick={() => setOpen(true)}
         size="icon"
         className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg z-50 bg-primary hover:bg-primary/90"
@@ -78,7 +89,7 @@ export function CallbackRequest() {
               Fill out this form and we'll call you back as soon as possible.
             </DialogDescription>
           </DialogHeader>
-          
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
@@ -94,7 +105,7 @@ export function CallbackRequest() {
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="email"
@@ -102,13 +113,17 @@ export function CallbackRequest() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="john@example.com" {...field} />
+                      <Input
+                        type="email"
+                        placeholder="john@example.com"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <FormField
                 control={form.control}
                 name="phone"
@@ -116,13 +131,17 @@ export function CallbackRequest() {
                   <FormItem>
                     <FormLabel>Phone</FormLabel>
                     <FormControl>
-                      <Input type="tel" placeholder="+1 (555) 000-0000" {...field} />
+                      <Input
+                        type="tel"
+                        placeholder="+1 (555) 000-0000"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
               <Button type="submit" className="w-full">
                 Request Callback
               </Button>

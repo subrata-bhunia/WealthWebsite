@@ -54,14 +54,14 @@ export default function MediaPage() {
 
   // Filter media by type
   const youtubeMedia = mediaItems.filter(
-    (item) =>
+    (item: any) =>
       item.mediaType === "youtube" ||
-      (item.mediaType === "both" && item.youtubeUrl),
+      (item.mediaType === "both" && item.youtubeUrl)
   );
 
   const fileMedia = mediaItems.filter(
-    (item) =>
-      item.mediaType === "file" || (item.mediaType === "both" && item.fileUrl),
+    (item: any) =>
+      item.mediaType === "file" || (item.mediaType === "both" && item.fileUrl)
   );
 
   return (
@@ -90,7 +90,7 @@ export default function MediaPage() {
 
             <TabsContent value="all" className="mt-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mediaItems.map((item) => (
+                {mediaItems.map((item: any) => (
                   <Card key={item.id} className="h-full flex flex-col">
                     <CardHeader>
                       <CardTitle>{item.title}</CardTitle>
@@ -149,7 +149,7 @@ export default function MediaPage() {
                     No video resources available yet.
                   </div>
                 ) : (
-                  youtubeMedia.map((item) => (
+                  youtubeMedia.map((item: any) => (
                     <Card key={item.id} className="h-full flex flex-col">
                       <CardHeader>
                         <CardTitle>{item.title}</CardTitle>
@@ -180,7 +180,7 @@ export default function MediaPage() {
                     No file resources available yet.
                   </div>
                 ) : (
-                  fileMedia.map((item) => (
+                  fileMedia.map((item: any) => (
                     <Card key={item.id} className="h-full flex flex-col">
                       <CardHeader>
                         <CardTitle>{item.title}</CardTitle>
