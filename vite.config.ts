@@ -21,3 +21,13 @@ export default defineConfig({
     emptyOutDir: true,
   },
 });
+
+//To fix the import error, create the following directory and file:
+// mkdir -p client/src/lib/api
+// touch client/src/lib/api/index.ts (or .js, depending on your setup)
+
+//Example contents for client/src/lib/api/index.ts
+// export const fetchData = async () => {
+//   const response = await fetch('/api/data');
+//   return response.json();
+// };
