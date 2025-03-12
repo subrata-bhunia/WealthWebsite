@@ -1,7 +1,7 @@
 import type { Express, Request } from "express";
 import { createServer } from "http";
 import { storage } from "./storage";
-import { insertContactSchema, insertBlogSchema, insertMediaSchema } from "@shared/schema";
+import { insertContactSchema, insertBlogSchema, insertMediaSchema, insertOfferSchema } from "@shared/schema";
 import { generateToken, requireAdmin } from "./auth";
 import { LoginCredentials } from "@shared/auth";
 
@@ -184,6 +184,59 @@ export async function registerRoutes(app: Express) {
       res.json(result);
     } catch (error) {
       res.status(500).json({ error: "Error updating media item" });
+    }
+  });
+
+  // Offer routes
+  app.post("/api/offers", requireAdmin, async (req, res) => {
+    try {
+      const offer = insertOfferSchema.parse(req.body);
+      const result = await storage.createOffer(offer);
+      res.json(result);
+    } catch (error) {
+      res.status(400).json({ error: "Invalid offer data" });
+    }
+  });
+
+  app.get("/api/offers", async (req, res) => {
+    try {
+      const offers = await storage.getAllOffers();
+      res.json(offers);
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching offers" });
+    }
+  });
+
+  app.get("/api/offers/:id", async (req, res) => {
+    try {
+      const offer = await storage.getOfferById(parseInt(req.params.id));
+      if (offer) {
+        res.json(offer);
+      } else {
+        res.status(404).json({ error: "Offer not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching offer" });
+    }
+  });
+
+  app.delete("/api/offers/:id", requireAdmin, async (req, res) => {
+    try {
+      await storage.deleteOffer(parseInt(req.params.id));
+      res.json({ success: true });
+    } catch (error) {
+      res.status(500).json({ error: "Error deleting offer" });
+    }
+  });
+  
+  app.put("/api/offers/:id", requireAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const offerUpdate = insertOfferSchema.parse(req.body);
+      const result = await storage.updateOffer(id, offerUpdate);
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: "Error updating offer" });
     }
   });
 

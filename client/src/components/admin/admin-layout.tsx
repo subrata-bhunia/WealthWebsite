@@ -6,6 +6,7 @@ import { BlogManagement } from "./blog-management";
 import { Button } from "@/components/ui/button";
 import { isAuthenticated, isAdmin } from "@/lib/auth";
 import { MediaManagement } from "./media-management";
+import { OfferManagement } from "./offer-management";
 
 export function AdminLayout() {
   const [, setLocation] = useLocation();
@@ -49,10 +50,11 @@ export function AdminLayout() {
       <section className="flex-1 w-full py-12">
         <div className="container mx-auto px-4">
           <Tabs defaultValue="blogs" className="w-full">
-            <TabsList className="w-full max-w-md mx-auto grid grid-cols-3 mb-8"> {/* Increased cols to 3 */}
-              <TabsTrigger value="blogs">Blog Management</TabsTrigger>
-              <TabsTrigger value="contacts">Contact Submissions</TabsTrigger>
-              <TabsTrigger value="media">Media Management</TabsTrigger> {/* Added Media Management */}
+            <TabsList className="w-full max-w-md mx-auto grid grid-cols-4 mb-8"> {/* Increased cols to 4 */}
+              <TabsTrigger value="blogs">Blog</TabsTrigger>
+              <TabsTrigger value="contacts">Contacts</TabsTrigger>
+              <TabsTrigger value="media">Media</TabsTrigger>
+              <TabsTrigger value="offers">Offers</TabsTrigger> {/* Added Offers Management */}
             </TabsList>
             <TabsContent value="blogs" className="mt-6">
               <BlogManagement />
@@ -60,8 +62,11 @@ export function AdminLayout() {
             <TabsContent value="contacts" className="mt-6">
               <ContactsList />
             </TabsContent>
-            <TabsContent value="media" className="mt-6"> {/* Added Media Management Content */}
+            <TabsContent value="media" className="mt-6">
               <MediaManagement />
+            </TabsContent>
+            <TabsContent value="offers" className="mt-6"> {/* Added Offers Management Content */}
+              <OfferManagement />
             </TabsContent>
           </Tabs>
         </div>
