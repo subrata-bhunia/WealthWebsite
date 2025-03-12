@@ -1,4 +1,3 @@
-
 import { Link } from "wouter";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,7 @@ export default function Home() {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState(0);
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: false })
+    Autoplay({ delay: 5000, stopOnInteraction: false }),
   );
 
   useEffect(() => {
@@ -102,7 +101,8 @@ export default function Home() {
                           <div
                             className="text-muted-foreground"
                             dangerouslySetInnerHTML={{
-                              __html: offer.description.substring(0, 150) + "...",
+                              __html:
+                                offer.description.substring(0, 150) + "...",
                             }}
                           />
                           {offer.discount && (
@@ -121,16 +121,15 @@ export default function Home() {
                             </Link>
                           </Button>
                         </div>
-                        <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
-                          <img
-                            src={
-                              offer.image ||
-                              "https://img.freepik.com/free-photo/businessman-working-laptop_53876-94825.jpg"
-                            }
-                            alt={offer.title}
-                            className="absolute inset-0 w-full h-full object-cover rounded-lg"
-                          />
-                        </div>
+                        {offer.image && (
+                          <div className="relative h-64 md:h-80 rounded-lg overflow-hidden">
+                            <img
+                              src={offer.image}
+                              alt={offer.title}
+                              className="absolute inset-0 w-full h-full object-cover rounded-lg"
+                            />
+                          </div>
+                        )}
                       </div>
                     </CarouselItem>
                   ))}
@@ -145,7 +144,9 @@ export default function Home() {
                   <button
                     key={index}
                     className={`h-2.5 rounded-full transition-all ${
-                      index === current ? "w-8 bg-primary" : "w-2.5 bg-primary/30"
+                      index === current
+                        ? "w-8 bg-primary"
+                        : "w-2.5 bg-primary/30"
                     }`}
                     onClick={() => api?.scrollTo(index)}
                     aria-label={`Go to slide ${index + 1}`}
@@ -171,8 +172,8 @@ export default function Home() {
               Secure Your Financial Future
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mb-8">
-              Expert guidance and personalized solutions to help you achieve your
-              financial goals.
+              Expert guidance and personalized solutions to help you achieve
+              your financial goals.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" asChild>
