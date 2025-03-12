@@ -89,6 +89,9 @@ export function Navbar() {
                                 Blog
                               </span>
                 </Link>
+                <Link href="/media" className="px-4 py-2 text-sm font-medium" onClick={() => setIsOpen(false)}>
+                    Media
+                  </Link>
                 <Button asChild className="w-full">
                   <Link href={"/contact"}>Contact Us</Link>
                 </Button>
