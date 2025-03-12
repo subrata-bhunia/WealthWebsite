@@ -80,36 +80,3 @@ export default function IndividualsFamiliesPage() {
     </PageLayout>
   );
 }
-import { PageTemplate } from "@/components/ui/page-template";
-
-export default function IndividualsAndFamilies() {
-  return (
-    <PageTemplate 
-      title="Individuals & Families" 
-      description="Comprehensive financial planning solutions for individuals and families."
-    >
-      <div className="space-y-6">
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-3">How We Help</h2>
-          <ul className="list-disc pl-5 space-y-2">
-            <li>Retirement planning</li>
-            <li>Education funding</li>
-            <li>Estate planning</li>
-            <li>Tax-efficient investment strategies</li>
-            <li>Insurance needs analysis</li>
-            <li>Generational wealth transfer</li>
-          </ul>
-        </div>
-        
-        <div className="bg-gray-50 p-6 rounded-lg">
-          <h2 className="text-xl font-semibold mb-3">Our Approach</h2>
-          <p className="text-gray-600">
-            We take the time to understand your unique family dynamics, financial goals, and risk tolerance 
-            to create a personalized financial roadmap. Our advisors work closely with you, providing 
-            regular reviews and adjustments as your life circumstances change.
-          </p>
-        </div>
-      </div>
-    </PageTemplate>
-  );
-}
