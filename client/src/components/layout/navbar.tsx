@@ -46,7 +46,7 @@ export function Navbar() {
                       <AccordionTrigger>{category.label}</AccordionTrigger>
                       <AccordionContent>
                         <div className="flex flex-col space-y-2">
-                          {category.items.map((item) => (
+                          {category.items.map((item) =>
                             item.items ? (
                               <div key={item.href} className="flex flex-col">
                                 <span className="block px-4 py-2 text-sm font-medium">
@@ -54,7 +54,10 @@ export function Navbar() {
                                 </span>
                                 <div className="flex flex-col space-y-2 pl-4 border-l border-border ml-4 mt-1">
                                   {item.items.map((subItem) => (
-                                    <Link key={subItem.href} href={subItem.href}>
+                                    <Link
+                                      key={subItem.href}
+                                      href={subItem.href}
+                                    >
                                       <span
                                         className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
                                         onClick={() => setIsOpen(false)}
@@ -74,8 +77,8 @@ export function Navbar() {
                                   {item.title}
                                 </span>
                               </Link>
-                            )
-                          ))}
+                            ),
+                          )}
                         </div>
                       </AccordionContent>
                     </AccordionItem>
@@ -83,15 +86,20 @@ export function Navbar() {
                 </Accordion>
                 <Link className="space-y-2" href={"/blog"}>
                   <span
-                      className="hover:bg-accent rounded-md"
-                      onClick={() => setIsOpen(false)}
+                    className="hover:bg-accent rounded-md font-medium"
+                    onClick={() => setIsOpen(false)}
                   >
-                                Blog
-                              </span>
+                    Blog
+                  </span>
                 </Link>
-                <Link href="/media" className="px-4 py-2 text-sm font-medium" onClick={() => setIsOpen(false)}>
-                    Media
-                  </Link>
+                <Link href="/media" className="space-y-2 ">
+                  <span
+                    className="hover:bg-accent rounded-md font-medium"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Blog
+                  </span>
+                </Link>
                 <Button asChild className="w-full">
                   <Link href={"/contact"}>Contact Us</Link>
                 </Button>
@@ -120,7 +128,9 @@ export function Navbar() {
                       <li key={item.href}>
                         {item.items ? ( // Check for nested items
                           <>
-                            <div className="font-medium py-1.5">{item.title}</div>
+                            <div className="font-medium py-1.5">
+                              {item.title}
+                            </div>
                             <ul className="pl-4 border-l border-border">
                               {item.items.map((subItem) => (
                                 <li key={subItem.href}>
@@ -129,7 +139,7 @@ export function Navbar() {
                                       <span
                                         className={cn(
                                           "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-                                          "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                          "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                                         )}
                                       >
                                         {subItem.title}
@@ -146,7 +156,7 @@ export function Navbar() {
                               <span
                                 className={cn(
                                   "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-                                  "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                  "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
                                 )}
                               >
                                 {item.title}
