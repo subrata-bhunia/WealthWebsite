@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "wouter";
-import { apiRequest } from "@/lib/api";
+import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import PageLayout from "@/components/layout/page-layout";
+import { PageLayout } from "@/components/layout/page-layout";
 
 type Blog = {
   id: number;
@@ -90,9 +90,11 @@ export default function BlogPage() {
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </div>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="line-clamp-3">{blog.content}</p>
-              </CardContent>
+              <CardContent
+                className="line-clamp-4"
+                dangerouslySetInnerHTML={{ __html: blog.content }}
+              />
+              
               <CardFooter>
                 <Button asChild className="w-full">
                   <Link href={`/blog/${blog.id}`}>Read More</Link>
