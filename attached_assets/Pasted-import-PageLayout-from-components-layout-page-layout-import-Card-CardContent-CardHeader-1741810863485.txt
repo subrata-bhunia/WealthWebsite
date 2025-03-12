@@ -17,8 +17,7 @@ export default function WomenInvestorsPage() {
               <CardTitle>Career Transition Planning</CardTitle>
             </CardHeader>
             <CardContent>
-              Financial strategies for women navigating career changes, breaks,
-              or entrepreneurial ventures.
+              Financial strategies for women navigating career changes, breaks, or entrepreneurial ventures.
             </CardContent>
           </Card>
 
@@ -28,8 +27,7 @@ export default function WomenInvestorsPage() {
               <CardTitle>Retirement Security</CardTitle>
             </CardHeader>
             <CardContent>
-              Specialized retirement planning addressing longevity and unique
-              earnings patterns.
+              Specialized retirement planning addressing longevity and unique earnings patterns.
             </CardContent>
           </Card>
 
@@ -39,8 +37,7 @@ export default function WomenInvestorsPage() {
               <CardTitle>Investment Confidence</CardTitle>
             </CardHeader>
             <CardContent>
-              Education and empowerment to build investment knowledge and
-              confidence in financial decision-making.
+              Education and empowerment to build investment knowledge and confidence in financial decision-making.
             </CardContent>
           </Card>
 
@@ -50,37 +47,31 @@ export default function WomenInvestorsPage() {
               <CardTitle>Legacy Planning</CardTitle>
             </CardHeader>
             <CardContent>
-              Comprehensive estate planning strategies that align with your
-              personal values and goals.
+              Comprehensive estate planning strategies that align with your personal values and goals.
             </CardContent>
           </Card>
         </div>
 
         {/* Why Choose Us */}
         <div className="mt-12 bg-primary/5 p-8 rounded-lg">
-          <h2 className="text-2xl font-bold mb-6">
-            Why Choose Our Women Investor Services?
-          </h2>
+          <h2 className="text-2xl font-bold mb-6">Why Choose Our Women Investor Services?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div>
               <h3 className="font-semibold mb-2">Gender-Smart Perspective</h3>
               <p className="text-muted-foreground">
-                We understand the financial impacts of gender pay gaps, career
-                breaks, and longer life expectancies.
+                We understand the financial impacts of gender pay gaps, career breaks, and longer life expectancies.
               </p>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Financial Education</h3>
               <p className="text-muted-foreground">
-                Our approach emphasizes education and communication to build
-                confidence in financial decision-making.
+                Our approach emphasizes education and communication to build confidence in financial decision-making.
               </p>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Holistic Planning</h3>
               <p className="text-muted-foreground">
-                We address the full spectrum of your financial life, from career
-                to retirement to legacy planning.
+                We address the full spectrum of your financial life, from career to retirement to legacy planning.
               </p>
             </div>
           </div>
