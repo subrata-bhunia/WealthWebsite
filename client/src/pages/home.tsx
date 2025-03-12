@@ -99,6 +99,9 @@ export default function Home() {
                 stopOnMouseEnter: true,
               }),
             ]}
+            onMouseEnter={() => setAutoplay(false)}
+            onMouseLeave={() => setAutoplay(true)}
+            onSelect={(index) => setCurrentOfferIndex(index)}
           >
             <CarouselContent className="h-full">
               {offers.map((offer) => (
@@ -107,11 +110,11 @@ export default function Home() {
                     className="relative w-full h-full bg-cover bg-center"
                     style={{
                       backgroundImage: offer.image 
-                        ? `url("${offer.image}")` 
-                        : `url("https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg")`,
+                        ? `url(${offer.image})` 
+                        : `url(https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg)`,
                     }}
                   >
-                    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm bg-opacity-40">
+                    <div className="absolute inset-0 bg-black/50">
                       <div className="container mx-auto px-4 flex flex-col items-center text-center h-full justify-center relative z-20 p-8">
                         <div className="text-sm uppercase tracking-wide mb-2 text-primary">Special Offer</div>
                         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white">
@@ -146,6 +149,7 @@ export default function Home() {
               {offers.map((_, index) => (
                 <button
                   key={index}
+                  onClick={() => setCurrentOfferIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all ${
                     index === currentOfferIndex ? "bg-primary w-6" : "bg-white/50"
                   }`}

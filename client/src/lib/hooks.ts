@@ -1,5 +1,8 @@
 import { useEffect, useRef } from "react";
 
+import Autoplay from 'embla-carousel-autoplay';
+
+
 // Custom hook for setting intervals
 export function useInterval(callback: () => void, delay: number | null) {
   const savedCallback = useRef<() => void>();
