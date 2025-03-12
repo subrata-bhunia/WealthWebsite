@@ -143,3 +143,62 @@ export default function HomeLoanPage() {
     </PageLayout>
   );
 }
+import { PageTemplate } from "@/components/ui/page-template";
+
+export default function HomeLoan() {
+  return (
+    <PageTemplate 
+      title="Home Loans" 
+      description="Competitive home loan solutions to help you purchase your dream home."
+    >
+      <div className="space-y-8">
+        <div className="bg-gray-50 p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-3">Home Loan Solutions</h2>
+          <p className="text-gray-600">
+            Our home loan solutions are designed to make homeownership accessible and affordable. 
+            We offer competitive interest rates, flexible repayment options, and personalized guidance 
+            throughout the loan application and approval process.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="border p-6 rounded-lg shadow-sm">
+            <h3 className="text-lg font-medium mb-3">Types of Home Loans</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Fixed-rate mortgages</li>
+              <li>Adjustable-rate mortgages</li>
+              <li>FHA loans</li>
+              <li>VA loans</li>
+              <li>Jumbo loans</li>
+              <li>Construction loans</li>
+            </ul>
+          </div>
+          
+          <div className="border p-6 rounded-lg shadow-sm">
+            <h3 className="text-lg font-medium mb-3">Loan Features</h3>
+            <ul className="list-disc pl-5 space-y-2">
+              <li>Competitive interest rates</li>
+              <li>Flexible loan tenures (5-30 years)</li>
+              <li>High loan-to-value ratios</li>
+              <li>Minimal processing fees</li>
+              <li>Prepayment options</li>
+              <li>Balance transfer facility</li>
+            </ul>
+          </div>
+          
+          <div className="border p-6 rounded-lg shadow-sm">
+            <h3 className="text-lg font-medium mb-3">Application Process</h3>
+            <ol className="list-decimal pl-5 space-y-2">
+              <li>Initial consultation</li>
+              <li>Pre-qualification</li>
+              <li>Documentation submission</li>
+              <li>Property evaluation</li>
+              <li>Loan approval</li>
+              <li>Disbursement</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </PageTemplate>
+  );
+}

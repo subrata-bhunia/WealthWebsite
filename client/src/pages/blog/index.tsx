@@ -107,3 +107,93 @@ export default function BlogPage() {
     </PageLayout>
   );
 }
+import { PageTemplate } from "@/components/ui/page-template";
+import { useState, useEffect } from "react";
+import { Link } from "wouter";
+
+interface BlogPost {
+  id: number;
+  title: string;
+  content: string;
+  image: string;
+  publishedAt: string;
+  author: string;
+}
+
+export default function Blog() {
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchBlogs() {
+      try {
+        const response = await fetch('/api/blogs');
+        if (response.ok) {
+          const data = await response.json();
+          setBlogs(data);
+        }
+      } catch (error) {
+        console.error('Error fetching blogs:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchBlogs();
+  }, []);
+
+  function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  return (
+    <PageTemplate 
+      title="Blog" 
+      description="Insights, tips, and updates on wealth management, investments, and financial planning."
+    >
+      {loading ? (
+        <div className="flex justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+        </div>
+      ) : blogs.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {blogs.map((blog) => (
+            <div key={blog.id} className="border rounded-lg overflow-hidden shadow-sm">
+              {blog.image && (
+                <div className="h-48 overflow-hidden">
+                  <img 
+                    src={blog.image} 
+                    alt={blog.title} 
+                    className="w-full h-full object-cover transition-transform hover:scale-105"
+                  />
+                </div>
+              )}
+              <div className="p-6">
+                <p className="text-sm text-gray-500 mb-2">
+                  {formatDate(blog.publishedAt)} • {blog.author}
+                </p>
+                <h3 className="text-xl font-semibold mb-2">{blog.title}</h3>
+                <p className="text-gray-600 mb-4">
+                  {blog.content.replace(/<[^>]*>/g, '').substring(0, 120)}...
+                </p>
+                <Link href={`/blog/${blog.id}`}>
+                  <span className="text-primary font-medium hover:underline">Read More</span>
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <h3 className="text-xl font-medium mb-2">No blog posts found</h3>
+          <p className="text-gray-600">Check back soon for new articles and insights.</p>
+        </div>
+      )}
+    </PageTemplate>
+  );
+}

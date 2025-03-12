@@ -103,3 +103,51 @@ export default function MutualFundsPage() {
     </PageLayout>
   );
 }
+import { PageTemplate } from "@/components/ui/page-template";
+
+export default function MutualFunds() {
+  return (
+    <PageTemplate 
+      title="Mutual Funds" 
+      description="Diversified investment solutions through professionally managed mutual funds."
+    >
+      <div className="space-y-8">
+        <div className="bg-gray-50 p-6 rounded-lg">
+          <h2 className="text-xl font-semibold mb-3">Our Mutual Fund Services</h2>
+          <p className="text-gray-600 mb-4">
+            At WealthSpire, we provide access to a wide range of mutual funds designed to meet various investment objectives, 
+            risk profiles, and time horizons.
+          </p>
+          
+          <h3 className="text-lg font-medium mb-2">We offer:</h3>
+          <ul className="list-disc pl-5 space-y-2">
+            <li>Equity funds for long-term growth</li>
+            <li>Debt funds for stable income</li>
+            <li>Hybrid funds for balanced exposure</li>
+            <li>Sector-specific funds for targeted investments</li>
+            <li>Index funds for market-linked returns</li>
+            <li>International funds for global diversification</li>
+          </ul>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="border p-6 rounded-lg">
+            <h3 className="text-lg font-medium mb-3">Fund Selection Methodology</h3>
+            <p className="text-gray-600">
+              Our rigorous fund selection process considers historical performance, fund manager track record, 
+              expense ratios, risk-adjusted returns, and alignment with your financial goals.
+            </p>
+          </div>
+          
+          <div className="border p-6 rounded-lg">
+            <h3 className="text-lg font-medium mb-3">Regular Monitoring & Review</h3>
+            <p className="text-gray-600">
+              We continuously monitor fund performance and provide periodic reviews to ensure your investments 
+              remain aligned with your financial objectives and market conditions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </PageTemplate>
+  );
+}
