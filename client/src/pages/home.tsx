@@ -1,9 +1,17 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ServiceCard } from "@/components/services/service-card";
-import { Briefcase, Building2, Shield, Car, Coins, ChevronLeft, ChevronRight } from "lucide-react";
+import { Briefcase, Building2, Shield, Car, Coins } from "lucide-react";
 import { Link } from "wouter";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useInterval } from "@/lib/hooks";
 
 interface Offer {
   id: number;
@@ -19,6 +27,8 @@ export default function Home() {
   const [offers, setOffers] = useState<Offer[]>([]);
   const [currentOfferIndex, setCurrentOfferIndex] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [autoplay, setAutoplay] = useState(true);
+  const autoplayInterval = 5000; // 5 seconds
 
   useEffect(() => {
     const fetchOffers = async () => {
@@ -38,13 +48,24 @@ export default function Home() {
     fetchOffers();
   }, []);
 
-  const nextOffer = () => {
-    setCurrentOfferIndex((prevIndex) => (prevIndex + 1) % offers.length);
-  };
+  const nextOffer = useCallback(() => {
+    if (offers.length > 0) {
+      setCurrentOfferIndex((prevIndex) => (prevIndex + 1) % offers.length);
+    }
+  }, [offers.length]);
 
-  const prevOffer = () => {
-    setCurrentOfferIndex((prevIndex) => (prevIndex - 1 + offers.length) % offers.length);
-  };
+  const prevOffer = useCallback(() => {
+    if (offers.length > 0) {
+      setCurrentOfferIndex((prevIndex) => (prevIndex - 1 + offers.length) % offers.length);
+    }
+  }, [offers.length]);
+
+  // Autoplay functionality
+  useInterval(() => {
+    if (autoplay && offers.length > 1) {
+      nextOffer();
+    }
+  }, autoplayInterval);
 
   // Format the date in a readable format
   const formatDate = (dateString?: string) => {
@@ -67,75 +88,73 @@ export default function Home() {
             <div className="animate-pulse">Loading offers...</div>
           </div>
         ) : offers.length > 0 ? (
-          // Carousel with offers
-          <div className="relative h-full">
-            {offers.map((offer, index) => (
-              <div
-                key={offer.id}
-                className={`absolute top-0 left-0 w-full h-full transition-opacity duration-500 ${
-                  index === currentOfferIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-                }`}
-                style={{
-                  backgroundImage: offer.image 
-                    ? `url('${offer.image}')` 
-                    : "url('https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg')",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              >
-                <div className="container mx-auto px-4 flex flex-col items-center text-center h-full justify-center relative z-20 bg-black/50 p-8">
-                  <div className="text-sm uppercase tracking-wide mb-2 text-primary">Special Offer</div>
-                  <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white">
-                    {offer.title}
-                  </h1>
-                  {offer.discount && (
-                    <div className="px-4 py-2 bg-primary text-primary-foreground rounded-full text-lg font-bold mb-4">
-                      {offer.discount}
+          // Modern Carousel with autoplay
+          <Carousel 
+            className="w-full h-full relative" 
+            onMouseEnter={() => setAutoplay(false)}
+            onMouseLeave={() => setAutoplay(true)}
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent className="h-full">
+              {offers.map((offer) => (
+                <CarouselItem key={offer.id} className="h-full">
+                  <div
+                    className="relative w-full h-full"
+                    style={{
+                      backgroundImage: offer.image 
+                        ? `url('${offer.image}')` 
+                        : "url('https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg')",
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-black/50 backdrop-blur-sm bg-opacity-40">
+                      <div className="container mx-auto px-4 flex flex-col items-center text-center h-full justify-center relative z-20 p-8">
+                        <div className="text-sm uppercase tracking-wide mb-2 text-primary">Special Offer</div>
+                        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white">
+                          {offer.title}
+                        </h1>
+                        {offer.discount && (
+                          <div className="px-4 py-2 bg-primary text-primary-foreground rounded-full text-lg font-bold mb-4">
+                            {offer.discount}
+                          </div>
+                        )}
+                        <div 
+                          className="text-xl text-white/90 max-w-2xl mb-8"
+                          dangerouslySetInnerHTML={{ __html: offer.description.substring(0, 200) + (offer.description.length > 200 ? '...' : '') }}
+                        />
+                        {offer.validUntil && (
+                          <div className="text-sm text-white/80 mb-6">
+                            Valid Until: {formatDate(offer.validUntil)}
+                          </div>
+                        )}
+                        <Button asChild size="lg" className="hover:scale-105 transition-transform">
+                          <Link href={`/offers/${offer.id}`}>Read More</Link>
+                        </Button>
+                      </div>
                     </div>
-                  )}
-                  <div 
-                    className="text-xl text-white/90 max-w-2xl mb-8"
-                    dangerouslySetInnerHTML={{ __html: offer.description.substring(0, 200) + (offer.description.length > 200 ? '...' : '') }}
-                  />
-                  {offer.validUntil && (
-                    <div className="text-sm text-white/80 mb-6">
-                      Valid Until: {formatDate(offer.validUntil)}
-                    </div>
-                  )}
-                  <Button asChild size="lg">
-                    <Link href={`/offers/${offer.id}`}>Read More</Link>
-                  </Button>
-                </div>
-              </div>
-            ))}
-            {offers.length > 1 && (
-              <>
-                <button 
-                  onClick={prevOffer} 
-                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
-                >
-                  <ChevronLeft className="h-6 w-6" />
-                </button>
-                <button 
-                  onClick={nextOffer} 
-                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-black/50 text-white p-2 rounded-full hover:bg-black/70"
-                >
-                  <ChevronRight className="h-6 w-6" />
-                </button>
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
-                  {offers.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentOfferIndex(index)}
-                      className={`w-3 h-3 rounded-full ${
-                        index === currentOfferIndex ? "bg-primary" : "bg-white/50"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </>
-            )}
-          </div>
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-4 bg-black/50 text-white hover:bg-black/70 border-none" />
+            <CarouselNext className="right-4 bg-black/50 text-white hover:bg-black/70 border-none" />
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
+              {offers.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentOfferIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all ${
+                    index === currentOfferIndex ? "bg-primary w-6" : "bg-white/50"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          </Carousel>
         ) : (
           // Default static banner when no offers
           <div 
@@ -154,10 +173,10 @@ export default function Home() {
                 Expert wealth management solutions tailored to your unique needs and aspirations.
               </p>
               <div className="flex gap-4">
-                <Button asChild size="lg">
+                <Button asChild size="lg" className="hover:scale-105 transition-transform">
                   <Link href="/contact">Get Started</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline">
+                <Button asChild size="lg" variant="outline" className="hover:scale-105 transition-transform">
                   <Link href="/who-we-serve">Learn More</Link>
                 </Button>
               </div>
