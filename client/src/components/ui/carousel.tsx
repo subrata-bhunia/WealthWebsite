@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
@@ -26,7 +27,8 @@ type CarouselContextProps = {
   scrollNext: () => void;
   canScrollPrev: boolean;
   canScrollNext: boolean;
-} & CarouselProps;
+  orientation: "horizontal" | "vertical";
+};
 
 const CarouselContext = React.createContext<CarouselContextProps | null>(null);
 
@@ -123,13 +125,11 @@ const Carousel = React.forwardRef<
         value={{
           carouselRef,
           api: api,
-          opts,
-          orientation:
-            orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
           scrollPrev,
           scrollNext,
           canScrollPrev,
           canScrollNext,
+          orientation: orientation || (opts?.axis === "y" ? "vertical" : "horizontal"),
         }}
       >
         <div
