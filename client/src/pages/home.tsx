@@ -60,7 +60,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="h-[70vh] pt-24 pb-16">
+      <section className="h-[70vh] pt-0 pb-0">
         {loading ? (
           // Loading state
           <div className="h-full flex items-center justify-center">
@@ -68,7 +68,7 @@ export default function Home() {
           </div>
         ) : offers.length > 0 ? (
           // Carousel with offers
-          <div className="relative h-full bg-gradient-to-b from-primary/10 to-background">
+          <div className="relative h-full">
             {offers.map((offer, index) => (
               <div
                 key={offer.id}
@@ -83,7 +83,7 @@ export default function Home() {
                   backgroundPosition: "center",
                 }}
               >
-                <div className="container mx-auto px-4 flex flex-col items-center text-center h-full justify-center relative z-20 bg-black/50 rounded-lg p-8">
+                <div className="container mx-auto px-4 flex flex-col items-center text-center h-full justify-center relative z-20 bg-black/50 p-8">
                   <div className="text-sm uppercase tracking-wide mb-2 text-primary">Special Offer</div>
                   <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white">
                     {offer.title}
