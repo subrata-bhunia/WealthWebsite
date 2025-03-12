@@ -103,11 +103,7 @@ export default function Home() {
                     </div>
                   )}
                   <Button asChild size="lg">
-                    <Link href={`/offers/${offer.id}`} onClick={(e) => {
-                      // Ensure the navigation works properly
-                      e.preventDefault();
-                      window.location.href = `/offers/${offer.id}`;
-                    }}>Read More</Link>
+                    <Link href={`/offers/${offer.id}`}>Read More</Link>
                   </Button>
                 </div>
               </div>
