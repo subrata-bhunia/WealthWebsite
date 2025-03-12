@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ServiceCard } from "@/components/services/service-card";
 import { Briefcase, Building2, Shield, Car, Coins } from "lucide-react";
@@ -28,6 +28,11 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [autoplay, setAutoplay] = useState(true);
   const autoplayInterval = 5000; // 5 seconds
+  const apiRef = useRef<any>(null); // Added ref to store the carousel API
+  const plugin = useRef(null);
+  const [count, setCount] = useState(0);
+  const [current, setCurrent] = useState(0);
+  const [api, setApi] = useState<any>(null);
 
   useEffect(() => {
     const fetchOffers = async () => {
@@ -36,6 +41,8 @@ export default function Home() {
         if (response.ok) {
           const data = await response.json();
           setOffers(data);
+          setCount(data.length);
+          setCurrent(0)
         }
       } catch (error) {
         console.error("Error fetching offers:", error);
@@ -48,21 +55,31 @@ export default function Home() {
   }, []);
 
   const nextOffer = useCallback(() => {
-    if (offers.length > 0) {
-      setCurrentOfferIndex((prevIndex) => (prevIndex + 1) % offers.length);
+    if (offers.length > 0 && api) {
+      api.scrollTo(api.scrollSnapList.indexOf(current) + 1);
+      setCurrent(api.scrollSnapList.indexOf(current) + 1)
+
     }
-  }, [offers.length]);
+  }, [offers.length, api, current]);
 
   const prevOffer = useCallback(() => {
-    if (offers.length > 0) {
-      setCurrentOfferIndex(
-        (prevIndex) => (prevIndex - 1 + offers.length) % offers.length,
-      );
+    if (offers.length > 0 && api) {
+      api.scrollTo(api.scrollSnapList.indexOf(current) - 1);
+      setCurrent(api.scrollSnapList.indexOf(current) - 1)
     }
-  }, [offers.length]);
+  }, [offers.length, api, current]);
 
-  // We're now using the embla-carousel-autoplay plugin instead of useInterval
-  // This will be handled by the Autoplay plugin passed to the Carousel component
+  useEffect(() => {
+    if(api){
+       plugin.current = Autoplay({
+        delay: autoplayInterval,
+        stopOnInteraction: false,
+        stopOnMouseEnter: true,
+       });
+    }
+   
+  }, [api, autoplayInterval])
+
 
   // Format the date in a readable format
   const formatDate = (dateString?: string) => {
@@ -86,90 +103,88 @@ export default function Home() {
           </div>
         ) : offers.length > 0 ? (
           // Modern Carousel with autoplay
-          <Carousel
-            className="w-full h-full relative"
-            opts={{
-              align: "start",
-              loop: true,
-            }}
-            plugins={[
-              Autoplay({
-                delay: autoplayInterval,
-                stopOnInteraction: false,
-                stopOnMouseEnter: true,
-              }),
-            ]}
-            onMouseEnter={() => setAutoplay(false)}
-            onMouseLeave={() => setAutoplay(true)}
-            onSelect={(index) => setCurrentOfferIndex(index)}
-          >
-            <CarouselContent className="h-full absolute w-full align-center">
-              {offers.map((offer) => (
-                <CarouselItem key={offer.id} className="h-full w-full">
-                  <div
-                    className="relative w-full h-full bg-cover bg-center"
-                    style={{
-                      backgroundImage: offer.image
-                        ? `url(${offer.image})`
-                        : `url(https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg)`,
-                    }}
-                  >
-                    <div className="absolute inset-0 bg-black/50">
-                      <div className="container mx-auto px-4 flex flex-col items-center text-center h-full justify-center relative z-20 p-8">
-                        <div className="text-sm uppercase tracking-wide mb-2 text-primary">
-                          Special Offer
+          <section className="py-16 bg-muted/50">
+            <div className="container mx-auto px-4">
+              <h2 className="text-3xl font-bold text-center mb-10">
+                Special Offers
+              </h2>
+              <div className="relative">
+                <Carousel
+                  opts={{
+                    align: "center",
+                    loop: true,
+                  }}
+                  plugins={[plugin.current]}
+                  onMouseEnter={() => api?.stop()}
+                  onMouseLeave={() => api?.play()}
+                  setApi={setApi}
+                  className="w-full max-w-5xl mx-auto"
+                >
+                  <CarouselContent>
+                    {offers.map((offer) => (
+                      <CarouselItem key={offer.id}>
+                        <div className="bg-card rounded-xl overflow-hidden shadow-lg p-8 mx-2 md:mx-4 transition-all duration-300 hover:shadow-xl h-full flex flex-col">
+                          {offer.image && (
+                            <div className="w-full h-48 mb-6 overflow-hidden rounded-lg">
+                              <img
+                                src={offer.image}
+                                alt={offer.title}
+                                className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                              />
+                            </div>
+                          )}
+                          <h3 className="text-2xl font-semibold mb-3">
+                            {offer.title}
+                          </h3>
+                          <div
+                            className="prose prose-sm flex-grow mb-4"
+                            dangerouslySetInnerHTML={{
+                              __html: offer.description,
+                            }}
+                          />
+                          <div className="flex flex-wrap items-center justify-between mt-auto">
+                            {offer.discount && (
+                              <div className="mb-2 md:mb-0 inline-block bg-primary text-primary-foreground px-3 py-1 rounded-md font-medium">
+                                {offer.discount}
+                              </div>
+                            )}
+                            {offer.validUntil && (
+                              <p className="text-sm text-muted-foreground">
+                                Valid until: {formatDate(offer.validUntil)}
+                              </p>
+                            )}
+                          </div>
+                          <div className="mt-6">
+                            <Button asChild className="w-full">
+                              <Link href={`/offers/${offer.id}`}>
+                                Learn More
+                              </Link>
+                            </Button>
+                          </div>
                         </div>
-                        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white">
-                          {offer.title}
-                        </h1>
-                        {offer.discount && (
-                          <div className="px-4 py-2 bg-primary text-primary-foreground rounded-full text-lg font-bold mb-4">
-                            {offer.discount}
-                          </div>
-                        )}
-                        <div
-                          className="text-xl text-white/90 max-w-2xl mb-8"
-                          dangerouslySetInnerHTML={{
-                            __html:
-                              offer.description.substring(0, 200) +
-                              (offer.description.length > 200 ? "..." : ""),
-                          }}
-                        />
-                        {offer.validUntil && (
-                          <div className="text-sm text-white/80 mb-6">
-                            Valid Until: {formatDate(offer.validUntil)}
-                          </div>
-                        )}
-                        <Button
-                          asChild
-                          size="lg"
-                          className="hover:scale-105 transition-transform"
-                        >
-                          <Link href={`/offers/${offer.id}`}>Read More</Link>
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-4 bg-black/50 text-white hover:bg-black/70 border-none" />
-            <CarouselNext className="right-4 bg-black/50 text-white hover:bg-black/70 border-none" />
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
-              {offers.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentOfferIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentOfferIndex
-                      ? "bg-primary w-6"
-                      : "bg-white/50"
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+
+                {/* Carousel indicators */}
+                <div className="flex justify-center gap-2 mt-8">
+                  {Array.from({ length: count }).map((_, index) => (
+                    <button
+                      key={index}
+                      className={`h-2.5 rounded-full transition-all ${
+                        index === current ? "w-8 bg-primary" : "w-2.5 bg-primary/30"
+                      }`}
+                      onClick={() => api?.scrollTo(index)}
+                      aria-label={`Go to slide ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
             </div>
-          </Carousel>
+          </section>
         ) : (
           // Default static banner when no offers
           <div
