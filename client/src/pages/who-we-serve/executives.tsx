@@ -105,3 +105,105 @@ export default function ExecutivesPage() {
     </PageLayout>
   );
 }
+import { PageLayout } from "@/components/layout/page-layout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Briefcase, Award, LineChart, CoinsIcon } from "lucide-react";
+
+export default function ExecutivesPage() {
+  return (
+    <PageLayout
+      title="Executives"
+      subtitle="Specialized wealth management solutions for corporate executives with complex compensation packages and financial needs."
+    >
+      <div className="grid gap-8">
+        {/* Services */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader>
+              <Briefcase className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Compensation Planning</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Stock Option Analysis</li>
+                <li>RSU Management</li>
+                <li>Deferred Compensation</li>
+                <li>Bonus Optimization</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <CoinsIcon className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Tax Strategy</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Tax-Efficient Investing</li>
+                <li>AMT Planning</li>
+                <li>Multi-State Tax Issues</li>
+                <li>Capital Gains Planning</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <Award className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Retirement Planning</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Executive Benefits</li>
+                <li>Pension Maximization</li>
+                <li>Early Retirement Options</li>
+                <li>Income Replacement</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <LineChart className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Wealth Accumulation</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Concentrated Position Management</li>
+                <li>Diversification Strategies</li>
+                <li>Alternative Investments</li>
+                <li>Wealth Protection</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Benefits Section */}
+        <div className="mt-12 bg-primary/5 p-8 rounded-lg">
+          <h2 className="text-2xl font-bold mb-6">Why Choose Our Executive Services?</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="font-semibold mb-2">Specialized Expertise</h3>
+              <p className="text-muted-foreground">
+                Deep understanding of executive compensation structures and corporate benefits.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2">Integrated Planning</h3>
+              <p className="text-muted-foreground">
+                Coordination between corporate benefits, personal investments, and long-term goals.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2">Confidentiality</h3>
+              <p className="text-muted-foreground">
+                Discreet handling of sensitive financial information and transactions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PageLayout>
+  );
+}

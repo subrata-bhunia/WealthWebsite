@@ -143,3 +143,105 @@ export default function HomeLoanPage() {
     </PageLayout>
   );
 }
+import { PageLayout } from "@/components/layout/page-layout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Home, Calculator, Clock, Shield } from "lucide-react";
+
+export default function HomeLoanPage() {
+  return (
+    <PageLayout
+      title="Home Loan"
+      subtitle="Comprehensive home loan solutions with competitive rates and flexible repayment options."
+    >
+      <div className="grid gap-8">
+        {/* Loan Features */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader>
+              <Home className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Loan Types</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>New Home Purchase</li>
+                <li>Home Construction</li>
+                <li>Home Improvement</li>
+                <li>Land Purchase</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <Calculator className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Financing Options</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Fixed Rate Loans</li>
+                <li>Adjustable Rate Loans</li>
+                <li>Balance Transfer</li>
+                <li>Top-up Loans</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <Clock className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Flexible Terms</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Long Tenure Options</li>
+                <li>Customized EMI Plans</li>
+                <li>Prepayment Facility</li>
+                <li>Step-up/Step-down EMIs</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <Shield className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Added Benefits</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Tax Benefits</li>
+                <li>Property Insurance Options</li>
+                <li>Digital Documentation</li>
+                <li>Property Valuation Assistance</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Benefits Section */}
+        <div className="mt-12 bg-primary/5 p-8 rounded-lg">
+          <h2 className="text-2xl font-bold mb-6">Why Choose Our Home Loan Services?</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="font-semibold mb-2">Competitive Rates</h3>
+              <p className="text-muted-foreground">
+                Access to favorable interest rates from multiple lenders to ensure the best deal.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2">Simplified Process</h3>
+              <p className="text-muted-foreground">
+                Streamlined application and approval process with minimal documentation requirements.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2">Expert Guidance</h3>
+              <p className="text-muted-foreground">
+                Professional advice on loan selection, tax implications, and repayment strategies.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PageLayout>
+  );
+}

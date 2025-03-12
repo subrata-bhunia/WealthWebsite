@@ -103,3 +103,105 @@ export default function MutualFundsPage() {
     </PageLayout>
   );
 }
+import { PageLayout } from "@/components/layout/page-layout";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LineChart, BarChart, PieChart, TrendingUp } from "lucide-react";
+
+export default function MutualFundsPage() {
+  return (
+    <PageLayout
+      title="Mutual Funds"
+      subtitle="Expert guidance on mutual fund investments to build diversified portfolios aligned with your financial goals."
+    >
+      <div className="grid gap-8">
+        {/* Fund Categories */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Card>
+            <CardHeader>
+              <TrendingUp className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Equity Funds</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Large Cap Funds</li>
+                <li>Mid Cap Funds</li>
+                <li>Small Cap Funds</li>
+                <li>Sector-specific Funds</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <LineChart className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Debt Funds</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Government Securities</li>
+                <li>Corporate Bond Funds</li>
+                <li>Short-term Debt Funds</li>
+                <li>Credit Risk Funds</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <BarChart className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Hybrid Funds</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Balanced Funds</li>
+                <li>Conservative Hybrid</li>
+                <li>Dynamic Asset Allocation</li>
+                <li>Multi-Asset Funds</li>
+              </ul>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader>
+              <PieChart className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Specialized Funds</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
+                <li>Index Funds</li>
+                <li>International Funds</li>
+                <li>Thematic Funds</li>
+                <li>ESG/Sustainable Funds</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Benefits Section */}
+        <div className="mt-12 bg-primary/5 p-8 rounded-lg">
+          <h2 className="text-2xl font-bold mb-6">Why Choose Our Mutual Fund Services?</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div>
+              <h3 className="font-semibold mb-2">Expert Fund Selection</h3>
+              <p className="text-muted-foreground">
+                Research-driven recommendations tailored to your risk profile and financial objectives.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2">Portfolio Optimization</h3>
+              <p className="text-muted-foreground">
+                Strategic asset allocation to maximize returns while managing risk effectively.
+              </p>
+            </div>
+            <div>
+              <h3 className="font-semibold mb-2">Ongoing Monitoring</h3>
+              <p className="text-muted-foreground">
+                Regular performance reviews and rebalancing to ensure alignment with changing market conditions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </PageLayout>
+  );
+}
