@@ -25,8 +25,9 @@ export const storage = {
   },
 
   async getOfferById(id: number) {
+    //db.select().from(blogs).where(eq(blogs.id, id))
     try {
-      const result = await db.select().from(offers).where(offers.id.equals(id));
+      const result = await db.select().from(offers).where(eq(offers.id, id));
       return result[0] || null;
     } catch (error) {
       console.error(`Error fetching offer with id ${id}:`, error);
@@ -34,9 +35,12 @@ export const storage = {
     }
   },
 
-  async updateOffer(id: number, offerData: InferModel<typeof offers, "insert">) {
+  async updateOffer(
+    id: number,
+    offerData: InferModel<typeof offers, "insert">,
+  ) {
     try {
-      await db.update(offers).set(offerData).where(offers.id.equals(id));
+      await db.update(offers).set(offerData).where(eq(offers.id, id));
       return { id, ...offerData };
     } catch (error) {
       console.error(`Error updating offer with id ${id}:`, error);
@@ -77,9 +81,13 @@ export const storage = {
     try {
       const result = await db.insert(blogs).values({
         ...blog,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
-      return { id: result[0].insertId, ...blog, createdAt: new Date().toISOString() };
+      return {
+        id: result[0].insertId,
+        ...blog,
+        createdAt: new Date().toISOString(),
+      };
     } catch (error) {
       console.error("Error creating blog:", error);
       throw error;
@@ -119,9 +127,13 @@ export const storage = {
     try {
       const result = await db.insert(mediaItems).values({
         ...mediaItem,
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
       });
-      return { id: result[0].insertId, ...mediaItem, createdAt: new Date().toISOString() };
+      return {
+        id: result[0].insertId,
+        ...mediaItem,
+        createdAt: new Date().toISOString(),
+      };
     } catch (error) {
       console.error("Error creating media item:", error);
       throw error;
@@ -139,7 +151,10 @@ export const storage = {
 
   async getMediaItemById(id: number) {
     try {
-      const results = await db.select().from(mediaItems).where(eq(mediaItems.id, id));
+      const results = await db
+        .select()
+        .from(mediaItems)
+        .where(eq(mediaItems.id, id));
       return results[0] || null;
     } catch (error) {
       console.error("Error getting media item by id:", error);
@@ -159,7 +174,8 @@ export const storage = {
 
   async updateBlog(id: number, blogUpdate: InferModel<typeof blogs, "insert">) {
     try {
-      await db.update(blogs)
+      await db
+        .update(blogs)
         .set({
           ...blogUpdate,
           // Don't update the creation date
@@ -175,9 +191,13 @@ export const storage = {
     }
   },
 
-  async updateMediaItem(id: number, mediaUpdate: InferModel<typeof mediaItems, "insert">) {
+  async updateMediaItem(
+    id: number,
+    mediaUpdate: InferModel<typeof mediaItems, "insert">,
+  ) {
     try {
-      await db.update(mediaItems)
+      await db
+        .update(mediaItems)
         .set({
           ...mediaUpdate,
           // Don't update the creation date
@@ -185,11 +205,14 @@ export const storage = {
         .where(eq(mediaItems.id, id));
 
       // Return the updated media item
-      const results = await db.select().from(mediaItems).where(eq(mediaItems.id, id));
+      const results = await db
+        .select()
+        .from(mediaItems)
+        .where(eq(mediaItems.id, id));
       return results[0] || null;
     } catch (error) {
       console.error("Error updating media item:", error);
       throw error;
     }
-  }
+  },
 };

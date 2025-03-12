@@ -28,6 +28,7 @@ import BlogPostPage from "./pages/blog/[id]";
 import BlogPage from "./pages/blog";
 import { useEffect } from "react";
 import MediaPage from "./pages/media";
+import OfferDetailPage from './pages/offers/[id]';
 
 function Router() {
   useEffect(() => {
@@ -101,6 +102,7 @@ function Router() {
           <Route path="/blog" component={BlogPage} />
           <Route path="/media" component={MediaPage} />
           <Route path="/blog/:id" component={BlogPostPage} />
+          <Route path="/offers/:id" component={OfferDetailPage} />
           <Route path="/register" component={RegisterPage} />
           {/* Admin route - only accessible via direct URL and protected by authentication */}
           <Route path="/admin" component={AdminPage} />

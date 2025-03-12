@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useRoute } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -25,11 +24,12 @@ export default function OfferDetailPage() {
   useEffect(() => {
     const fetchOfferDetails = async () => {
       if (!params?.id) return;
-      
+
       try {
         const response = await fetch(`/api/offers/${params.id}`);
         if (response.ok) {
           const data = await response.json();
+          console.log("offer details", data);
           setOffer(data);
         } else {
           setError("Offer not found");
@@ -71,7 +71,9 @@ export default function OfferDetailPage() {
       <PageLayout title="Offer Not Found">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <p className="text-lg text-muted-foreground mb-6">{error || "Offer not found"}</p>
+            <p className="text-lg text-muted-foreground mb-6">
+              {error || "Offer not found"}
+            </p>
             <Button asChild>
               <Link href="/">Return Home</Link>
             </Button>
@@ -84,7 +86,10 @@ export default function OfferDetailPage() {
   return (
     <PageLayout
       title={offer.title}
-      heroImageUrl={offer.image || "https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg"}
+      heroImageUrl={
+        offer.image ||
+        "https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg"
+      }
     >
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
@@ -110,7 +115,10 @@ export default function OfferDetailPage() {
           </div>
         )}
 
-        <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: offer.description }} />
+        <div
+          className="prose max-w-none"
+          dangerouslySetInnerHTML={{ __html: offer.description }}
+        />
 
         <div className="mt-10">
           <Button asChild size="lg">
