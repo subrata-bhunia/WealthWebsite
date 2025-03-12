@@ -1,5 +1,4 @@
-
-import 'react-quill/dist/quill.snow.css';
+import "react-quill/dist/quill.snow.css";
 
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -29,8 +28,10 @@ import BlogPostPage from "./pages/blog/[id]";
 import BlogPage from "./pages/blog";
 import { useEffect } from "react";
 import MediaPage from "./pages/media";
-import OfferDetailPage from './pages/offers/[id]';
-import NCDBondPage from './pages/wealth-management/ncd-bond';
+import OfferDetailPage from "./pages/offers/[id]";
+import NCDBondPage from "./pages/wealth-management/ncd-bond";
+import WhoWeServeOverviewPage from "./pages/who-we-serve";
+import AttorneysPage from "./pages/who-we-serve/attorneys";
 
 function Router() {
   useEffect(() => {
@@ -74,11 +75,13 @@ function Router() {
           <Route path="/services" component={Services} />
 
           {/* Who We Serve Routes */}
+          <Route path="/who-we-serve" component={WhoWeServeOverviewPage} />
           <Route
             path="/who-we-serve/individuals-families"
             component={IndividualsFamiliesPage}
           />
           <Route path="/who-we-serve/executives" component={ExecutivesPage} />
+          <Route path="who-we-serve/attorneys" component={AttorneysPage} />
           {/* Other Who We Serve routes will follow the same pattern */}
 
           {/* Wealth Management Routes */}
