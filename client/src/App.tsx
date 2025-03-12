@@ -30,6 +30,7 @@ import BlogPage from "./pages/blog";
 import { useEffect } from "react";
 import MediaPage from "./pages/media";
 import OfferDetailPage from './pages/offers/[id]';
+import NCDBondPage from './pages/wealth-management/ncd-bond';
 
 function Router() {
   useEffect(() => {
@@ -84,6 +85,10 @@ function Router() {
           <Route
             path="/wealth-management/mutual-funds"
             component={MutualFundsPage}
+          />
+          <Route
+            path="/wealth-management/ncd-bond/ncd"
+            component={NCDBondPage}
           />
           {/* Other Wealth Management routes will follow the same pattern */}
 
