@@ -20,7 +20,18 @@ import PersonalInsurancePage from "@/pages/insurance/personal";
 import HomeLoanPage from "@/pages/loans/home-loan";
 import NewCarLeasePage from "@/pages/lease/new-car";
 import BusinessInsurancePage from "@/pages/insurance/business";
-// Placeholder import - needs to be created
+// Who We Serve pages
+import WhoWeServeOverviewPage from "./pages/who-we-serve";
+import AttorneysPage from "./pages/who-we-serve/attorneys";
+import BusinessOwnersPage from "@/pages/who-we-serve/bussiness-owners";
+import DoctorsPage from "@/pages/who-we-serve/doctors";
+import WomenInvestorsPage from "@/pages/who-we-serve/wi";
+import CharitableInvestorsPage from "@/pages/who-we-serve/ci";
+import HNIPage from "@/pages/who-we-serve/hni";
+import FamilyOfficeServicesPage from "@/pages/who-we-serve/fos";
+import NRIPage from "@/pages/who-we-serve/nri";
+import ForeignInvestorsPage from "@/pages/who-we-serve/fi";
+// Other pages
 import AdminPage from "@/pages/admin";
 import LoginPage from "@/pages/login";
 import RegisterPage from "@/pages/register";
@@ -30,8 +41,6 @@ import { useEffect } from "react";
 import MediaPage from "./pages/media";
 import OfferDetailPage from "./pages/offers/[id]";
 import NCDBondPage from "./pages/wealth-management/ncd-bond";
-import WhoWeServeOverviewPage from "./pages/who-we-serve";
-import AttorneysPage from "./pages/who-we-serve/attorneys";
 
 function Router() {
   useEffect(() => {
@@ -81,8 +90,15 @@ function Router() {
             component={IndividualsFamiliesPage}
           />
           <Route path="/who-we-serve/executives" component={ExecutivesPage} />
-          <Route path="who-we-serve/attorneys" component={AttorneysPage} />
-          {/* Other Who We Serve routes will follow the same pattern */}
+          <Route path="/who-we-serve/attorneys" component={AttorneysPage} />
+          <Route path="/who-we-serve/bussiness-owners" component={BusinessOwnersPage} />
+          <Route path="/who-we-serve/doctors" component={DoctorsPage} />
+          <Route path="/who-we-serve/wi" component={WomenInvestorsPage} />
+          <Route path="/who-we-serve/ci" component={CharitableInvestorsPage} />
+          <Route path="/who-we-serve/hni" component={HNIPage} />
+          <Route path="/who-we-serve/fos" component={FamilyOfficeServicesPage} />
+          <Route path="/who-we-serve/nri" component={NRIPage} />
+          <Route path="/who-we-serve/fi" component={ForeignInvestorsPage} />
 
           {/* Wealth Management Routes */}
           <Route
