@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { ServiceCard } from "@/components/services/service-card";
@@ -11,7 +10,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { useInterval } from "@/lib/hooks";
 import Autoplay from "embla-carousel-autoplay";
 
 interface Offer {
@@ -57,7 +55,9 @@ export default function Home() {
 
   const prevOffer = useCallback(() => {
     if (offers.length > 0) {
-      setCurrentOfferIndex((prevIndex) => (prevIndex - 1 + offers.length) % offers.length);
+      setCurrentOfferIndex(
+        (prevIndex) => (prevIndex - 1 + offers.length) % offers.length,
+      );
     }
   }, [offers.length]);
 
@@ -86,7 +86,7 @@ export default function Home() {
           </div>
         ) : offers.length > 0 ? (
           // Modern Carousel with autoplay
-          <Carousel 
+          <Carousel
             className="w-full h-full relative"
             opts={{
               align: "start",
@@ -103,20 +103,22 @@ export default function Home() {
             onMouseLeave={() => setAutoplay(true)}
             onSelect={(index) => setCurrentOfferIndex(index)}
           >
-            <CarouselContent className="h-full">
+            <CarouselContent className="h-full absolute w-full align-center">
               {offers.map((offer) => (
-                <CarouselItem key={offer.id} className="h-full">
+                <CarouselItem key={offer.id} className="h-full w-full">
                   <div
                     className="relative w-full h-full bg-cover bg-center"
                     style={{
-                      backgroundImage: offer.image 
-                        ? `url(${offer.image})` 
+                      backgroundImage: offer.image
+                        ? `url(${offer.image})`
                         : `url(https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg)`,
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50">
                       <div className="container mx-auto px-4 flex flex-col items-center text-center h-full justify-center relative z-20 p-8">
-                        <div className="text-sm uppercase tracking-wide mb-2 text-primary">Special Offer</div>
+                        <div className="text-sm uppercase tracking-wide mb-2 text-primary">
+                          Special Offer
+                        </div>
                         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 text-white">
                           {offer.title}
                         </h1>
@@ -125,16 +127,24 @@ export default function Home() {
                             {offer.discount}
                           </div>
                         )}
-                        <div 
+                        <div
                           className="text-xl text-white/90 max-w-2xl mb-8"
-                          dangerouslySetInnerHTML={{ __html: offer.description.substring(0, 200) + (offer.description.length > 200 ? '...' : '') }}
+                          dangerouslySetInnerHTML={{
+                            __html:
+                              offer.description.substring(0, 200) +
+                              (offer.description.length > 200 ? "..." : ""),
+                          }}
                         />
                         {offer.validUntil && (
                           <div className="text-sm text-white/80 mb-6">
                             Valid Until: {formatDate(offer.validUntil)}
                           </div>
                         )}
-                        <Button asChild size="lg" className="hover:scale-105 transition-transform">
+                        <Button
+                          asChild
+                          size="lg"
+                          className="hover:scale-105 transition-transform"
+                        >
                           <Link href={`/offers/${offer.id}`}>Read More</Link>
                         </Button>
                       </div>
@@ -151,7 +161,9 @@ export default function Home() {
                   key={index}
                   onClick={() => setCurrentOfferIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all ${
-                    index === currentOfferIndex ? "bg-primary w-6" : "bg-white/50"
+                    index === currentOfferIndex
+                      ? "bg-primary w-6"
+                      : "bg-white/50"
                   }`}
                   aria-label={`Go to slide ${index + 1}`}
                 />
@@ -160,10 +172,11 @@ export default function Home() {
           </Carousel>
         ) : (
           // Default static banner when no offers
-          <div 
+          <div
             className="h-full bg-gradient-to-b from-primary/10 to-background"
             style={{
-              backgroundImage: "url('https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg')",
+              backgroundImage:
+                "url('https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg')",
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -173,13 +186,23 @@ export default function Home() {
                 Secure Your Financial Future
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mb-8">
-                Expert wealth management solutions tailored to your unique needs and aspirations.
+                Expert wealth management solutions tailored to your unique needs
+                and aspirations.
               </p>
               <div className="flex gap-4">
-                <Button asChild size="lg" className="hover:scale-105 transition-transform">
+                <Button
+                  asChild
+                  size="lg"
+                  className="hover:scale-105 transition-transform"
+                >
                   <Link href="/contact">Get Started</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="hover:scale-105 transition-transform">
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="hover:scale-105 transition-transform"
+                >
                   <Link href="/who-we-serve">Learn More</Link>
                 </Button>
               </div>
@@ -228,19 +251,27 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto text-center">
             <div>
               <div className="text-4xl font-bold text-primary mb-2">20+</div>
-              <div className="text-sm text-muted-foreground">Years Experience</div>
+              <div className="text-sm text-muted-foreground">
+                Years Experience
+              </div>
             </div>
             <div>
               <div className="text-4xl font-bold text-primary mb-2">5000+</div>
               <div className="text-sm text-muted-foreground">Happy Clients</div>
             </div>
             <div>
-              <div className="text-4xl font-bold text-primary mb-2">₹1000Cr+</div>
-              <div className="text-sm text-muted-foreground">Assets Managed</div>
+              <div className="text-4xl font-bold text-primary mb-2">
+                ₹1000Cr+
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Assets Managed
+              </div>
             </div>
             <div>
               <div className="text-4xl font-bold text-primary mb-2">50+</div>
-              <div className="text-sm text-muted-foreground">Expert Advisors</div>
+              <div className="text-sm text-muted-foreground">
+                Expert Advisors
+              </div>
             </div>
           </div>
         </div>
