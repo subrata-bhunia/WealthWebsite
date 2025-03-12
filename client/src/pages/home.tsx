@@ -61,12 +61,8 @@ export default function Home() {
     }
   }, [offers.length]);
 
-  // Autoplay functionality
-  useInterval(() => {
-    if (autoplay && offers.length > 1) {
-      nextOffer();
-    }
-  }, autoplayInterval);
+  // We're now using the embla-carousel-autoplay plugin instead of useInterval
+  // This will be handled by the Autoplay plugin passed to the Carousel component
 
   // Format the date in a readable format
   const formatDate = (dateString?: string) => {
@@ -91,9 +87,7 @@ export default function Home() {
         ) : offers.length > 0 ? (
           // Modern Carousel with autoplay
           <Carousel 
-            className="w-full h-full relative" 
-            onMouseEnter={() => setAutoplay(false)}
-            onMouseLeave={() => setAutoplay(true)}
+            className="w-full h-full relative"
             opts={{
               align: "start",
               loop: true,
@@ -110,13 +104,11 @@ export default function Home() {
               {offers.map((offer) => (
                 <CarouselItem key={offer.id} className="h-full">
                   <div
-                    className="relative w-full h-full"
+                    className="relative w-full h-full bg-cover bg-center"
                     style={{
                       backgroundImage: offer.image 
-                        ? `url('${offer.image}')` 
-                        : "url('https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg')",
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
+                        ? `url("${offer.image}")` 
+                        : `url("https://img.freepik.com/free-photo/table-with-finance-work-stuff-coffee-money-tablet-pen-papers_1268-17457.jpg")`,
                     }}
                   >
                     <div className="absolute inset-0 bg-black/50 backdrop-blur-sm bg-opacity-40">
@@ -154,7 +146,6 @@ export default function Home() {
               {offers.map((_, index) => (
                 <button
                   key={index}
-                  onClick={() => setCurrentOfferIndex(index)}
                   className={`w-3 h-3 rounded-full transition-all ${
                     index === currentOfferIndex ? "bg-primary w-6" : "bg-white/50"
                   }`}
