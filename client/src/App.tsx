@@ -11,6 +11,7 @@ import Services from "@/pages/services";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/forms/contact-form";
+import { CallbackRequest } from "@/components/callback-request";
 
 // Import pages
 import IndividualsFamiliesPage from "@/pages/who-we-serve/individuals-families";
@@ -40,6 +41,7 @@ function Router() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <CallbackRequest />
       <main className="flex-1">
         <Switch>
           <Route path="/" component={Home} />
