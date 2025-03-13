@@ -91,14 +91,14 @@ function Router() {
           />
           <Route path="/who-we-serve/executives" component={ExecutivesPage} />
           <Route path="/who-we-serve/attorneys" component={AttorneysPage} />
-          <Route path="/who-we-serve/bussiness-owners" component={BusinessOwnersPage} />
+          <Route path="/who-we-serve/business-owners" component={BusinessOwnersPage} />
           <Route path="/who-we-serve/doctors" component={DoctorsPage} />
-          <Route path="/who-we-serve/wi" component={WomenInvestorsPage} />
-          <Route path="/who-we-serve/ci" component={CharitableInvestorsPage} />
+          <Route path="/who-we-serve/woman-investors" component={WomenInvestorsPage} />
+          <Route path="/who-we-serve/charitable-investors" component={CharitableInvestorsPage} />
           <Route path="/who-we-serve/hni" component={HNIPage} />
-          <Route path="/who-we-serve/fos" component={FamilyOfficeServicesPage} />
+          <Route path="/who-we-serve/family-office" component={FamilyOfficeServicesPage} />
           <Route path="/who-we-serve/nri" component={NRIPage} />
-          <Route path="/who-we-serve/fi" component={ForeignInvestorsPage} />
+          <Route path="/who-we-serve/foreign-investors" component={ForeignInvestorsPage} />
 
           {/* Wealth Management Routes */}
           <Route
