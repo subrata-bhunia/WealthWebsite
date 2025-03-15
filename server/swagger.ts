@@ -132,5 +132,10 @@ export const swaggerDocument = {
 };
 
 export function setupSwagger(app: Express) {
-  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument, {
+    explorer: true,
+    swaggerOptions: {
+      persistAuthorization: true,
+    }
+  }));
 }
