@@ -5,9 +5,9 @@ import "dotenv/config";
 import { setupSwagger } from "./swagger";
 
 const app = express();
-setupSwagger(app);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+setupSwagger(app);
 
 app.use((req, res, next) => {
   const start = Date.now();
