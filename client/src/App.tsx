@@ -126,7 +126,8 @@ function Router() {
             component={NCDBondPage}
           />
           <Route path="/wealth-management/ncd-bond/bonds" component={BondPage} />
-          <Route path="/wealth-management/real-estate/fractional" component={BondPage} />
+          <Route path="/wealth-management/real-estate/fractional" component={FractionalOwnershipPage} />
+          <Route path="/wealth-management/real-estate/rera" component={RERAProjectsPage} />
           {/* Other Wealth Management routes will follow the same pattern */}
 
           {/* Insurance Routes */}
