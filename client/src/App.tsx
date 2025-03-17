@@ -40,7 +40,8 @@ import BlogPage from "./pages/blog";
 import { useEffect } from "react";
 import MediaPage from "./pages/media";
 import OfferDetailPage from "./pages/offers/[id]";
-import NCDBondPage from "./pages/wealth-management/ncd-bond";
+import NCDBondPage from "./pages/wealth-management/ncd-bond/ncd";
+import BondPage from "./pages/wealth-management/ncd-bond/bond";
 
 function Router() {
   useEffect(() => {
@@ -91,14 +92,29 @@ function Router() {
           />
           <Route path="/who-we-serve/executives" component={ExecutivesPage} />
           <Route path="/who-we-serve/attorneys" component={AttorneysPage} />
-          <Route path="/who-we-serve/business-owners" component={BusinessOwnersPage} />
+          <Route
+            path="/who-we-serve/business-owners"
+            component={BusinessOwnersPage}
+          />
           <Route path="/who-we-serve/doctors" component={DoctorsPage} />
-          <Route path="/who-we-serve/woman-investors" component={WomenInvestorsPage} />
-          <Route path="/who-we-serve/charitable-investors" component={CharitableInvestorsPage} />
+          <Route
+            path="/who-we-serve/woman-investors"
+            component={WomenInvestorsPage}
+          />
+          <Route
+            path="/who-we-serve/charitable-investors"
+            component={CharitableInvestorsPage}
+          />
           <Route path="/who-we-serve/hni" component={HNIPage} />
-          <Route path="/who-we-serve/family-office" component={FamilyOfficeServicesPage} />
+          <Route
+            path="/who-we-serve/family-office"
+            component={FamilyOfficeServicesPage}
+          />
           <Route path="/who-we-serve/nri" component={NRIPage} />
-          <Route path="/who-we-serve/foreign-investors" component={ForeignInvestorsPage} />
+          <Route
+            path="/who-we-serve/foreign-investors"
+            component={ForeignInvestorsPage}
+          />
 
           {/* Wealth Management Routes */}
           <Route
@@ -109,6 +125,8 @@ function Router() {
             path="/wealth-management/ncd-bond/ncd"
             component={NCDBondPage}
           />
+          <Route path="/wealth-management/ncd-bond/bonds" component={BondPage} />
+          <Route path="/wealth-management/real-estate/fractional" component={BondPage} />
           {/* Other Wealth Management routes will follow the same pattern */}
 
           {/* Insurance Routes */}
