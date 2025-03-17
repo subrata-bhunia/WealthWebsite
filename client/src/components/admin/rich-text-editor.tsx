@@ -1,35 +1,50 @@
-
-import React from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+import React from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 interface RichTextEditorProps {
   value: string;
   onChange: (content: string) => void;
-  height?: number;
-  id?: string;
 }
 
-export function RichTextEditor({ value, onChange, height = 300, id = 'editor' }: RichTextEditorProps) {
+export function RichTextEditor({ value, onChange }: RichTextEditorProps) {
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image"],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "indent",
+    "link",
+    "image",
+  ];
+
   return (
-    <Editor
-      id={id}
-      apiKey="no-api-key"
+    <ReactQuill
+      theme="snow"
       value={value}
-      onEditorChange={onChange}
-      init={{
-        height,
-        menubar: true,
-        plugins: [
-          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-          'insertdatetime', 'media', 'table', 'help', 'wordcount'
-        ],
-        toolbar: 'undo redo | blocks | ' +
-          'bold italic forecolor | alignleft aligncenter ' +
-          'alignright alignjustify | bullist numlist outdent indent | ' +
-          'removeformat | image link media | help',
-        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-      }}
+      onChange={onChange}
+      modules={modules}
+      formats={formats}
+      className="h-[300px] mb-12"
     />
   );
 }

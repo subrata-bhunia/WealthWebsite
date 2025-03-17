@@ -22,14 +22,14 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-
-import { Editor } from '@tinymce/tinymce-react';
+import ReactQuill from "react-quill";
 
 type Blog = {
   id: number;
   title: string;
   content: string;
   authorName: string;
+  image: string;
   createdAt: string;
 };
 
@@ -43,11 +43,37 @@ export const authFetch = async (url: string, options?: RequestInit) => {
   return fetch(url, { ...options, headers });
 };
 
+const RichTextEditor = ({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (content: string) => void;
+}) => {
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline"],
+      ["image", "link"],
+      ["list", "blockquote", "code-block"],
+    ],
+  };
+  return (
+    <ReactQuill
+      value={value}
+      onChange={onChange}
+      modules={modules}
+      theme="snow"
+      className="max-h-[50vh] overflow-x-scroll"
+    />
+  );
+};
+
 export function BlogManagement() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [newBlog, setNewBlog] = useState<Omit<Blog, 'id' | 'createdAt'>>({
+  const [newBlog, setNewBlog] = useState<Omit<Blog, "id" | "createdAt">>({
     title: "",
     content: "",
     authorName: "",
@@ -71,6 +97,7 @@ export function BlogManagement() {
         title: "Error",
         description: "Failed to load blogs",
         variant: "destructive",
+        id: "1",
       });
     } finally {
       setLoading(false);
@@ -98,6 +125,7 @@ export function BlogManagement() {
       toast({
         title: "Success",
         description: "Blog post created successfully",
+        id: "1",
       });
       setNewBlog({ title: "", content: "", authorName: "", image: "" });
       setDialogOpen(false);
@@ -107,6 +135,7 @@ export function BlogManagement() {
         title: "Error",
         description: `Failed to create blog post: ${error.message}`,
         variant: "destructive",
+        id: "1",
       });
     }
   };
@@ -126,6 +155,7 @@ export function BlogManagement() {
       toast({
         title: "Success",
         description: "Blog post deleted successfully",
+        id: "1",
       });
       setBlogs(blogs.filter((blog) => blog.id !== id));
     } catch (error: any) {
@@ -133,6 +163,7 @@ export function BlogManagement() {
         title: "Error",
         description: `Failed to delete blog post: ${error?.message}`,
         variant: "destructive",
+        id: "1",
       });
     }
   };
@@ -163,13 +194,18 @@ export function BlogManagement() {
       setEditedBlog(null);
       setNewBlog({ title: "", content: "", authorName: "", image: "" });
       setDialogOpen(false); // Close dialog after update
-      toast({ title: "Success", description: "Blog post updated successfully" });
+      toast({
+        title: "Success",
+        description: "Blog post updated successfully",
+        id: "1",
+      });
       fetchBlogs();
     } catch (error: any) {
       toast({
         title: "Error",
         description: `Failed to update blog post: ${error.message}`,
         variant: "destructive",
+        id: "1",
       });
     }
   };
@@ -180,7 +216,6 @@ export function BlogManagement() {
     setNewBlog({ title: "", content: "", authorName: "", image: "" });
     setDialogOpen(false); // Close dialog on cancel
   };
-
 
   if (loading) {
     return (
@@ -194,15 +229,21 @@ export function BlogManagement() {
     <div>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}> {/* Use dialogOpen state */}
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          {" "}
+          {/* Use dialogOpen state */}
           <DialogTrigger asChild>
-            <Button onClick={() => setDialogOpen(true)}> {/* Open dialog on button click */}
+            <Button onClick={() => setDialogOpen(true)}>
+              {" "}
+              {/* Open dialog on button click */}
               <Plus className="mr-2 h-4 w-4" /> Create New Post
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[550px]">
             <DialogHeader>
-              <DialogTitle>{isEditMode ? "Edit Blog Post" : "Create New Blog Post"}</DialogTitle>
+              <DialogTitle>
+                {isEditMode ? "Edit Blog Post" : "Create New Blog Post"}
+              </DialogTitle>
             </DialogHeader>
             <form onSubmit={isEditMode ? handleUpdateBlog : handleSubmit}>
               <div className="grid gap-4 py-4">
@@ -241,34 +282,22 @@ export function BlogManagement() {
                 <div className="grid gap-2">
                   <Label htmlFor="content">Content</Label>
                   <div className="border rounded-md">
-                    <Editor
-                      id="content"
-                      apiKey="no-api-key"
+                    <RichTextEditor
                       value={newBlog.content}
-                      onEditorChange={(content) =>
+                      onChange={(content) =>
                         setNewBlog({ ...newBlog, content })
                       }
-                      init={{
-                        height: 400,
-                        menubar: true,
-                        plugins: [
-                          'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                          'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                          'insertdatetime', 'media', 'table', 'help', 'wordcount'
-                        ],
-                        toolbar: 'undo redo | blocks | ' +
-                          'bold italic forecolor | alignleft aligncenter ' +
-                          'alignright alignjustify | bullist numlist outdent indent | ' +
-                          'removeformat | image link media | help',
-                        content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-                      }}
                     />
                   </div>
                 </div>
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button type="button" variant="outline" onClick={handleCancelEdit}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCancelEdit}
+                  >
                     Cancel
                   </Button>
                 </DialogClose>
@@ -289,9 +318,15 @@ export function BlogManagement() {
           </p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {blogs.map((blog) => (
-            <Card key={blog.id}>
+            <Card key={blog.id} className="flex flex-col">
+              {blog.image && (
+                <div
+                  className="h-40 w-full bg-cover bg-center rounded-t-md"
+                  style={{ backgroundImage: `url(${blog.image})` }}
+                />
+              )}
               <CardHeader>
                 <CardTitle className="flex justify-between items-center">
                   <span className="truncate">{blog.title}</span>
@@ -317,11 +352,12 @@ export function BlogManagement() {
                   {new Date(blog.createdAt).toLocaleDateString()}
                 </div>
               </CardHeader>
-              <CardContent>
-                <p className="line-clamp-4">{blog.content}</p>
-              </CardContent>
-              <CardFooter className="flex justify-end">
-              </CardFooter>
+              <CardContent
+                className="line-clamp-4"
+                dangerouslySetInnerHTML={{ __html: blog.content }}
+              />
+
+              <CardFooter className="flex justify-end"></CardFooter>
             </Card>
           ))}
         </div>

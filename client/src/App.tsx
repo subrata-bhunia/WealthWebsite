@@ -1,3 +1,5 @@
+import "react-quill/dist/quill.snow.css";
+
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
@@ -8,6 +10,7 @@ import Services from "@/pages/services";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import { ContactForm } from "@/components/forms/contact-form";
+import { CallbackRequest } from "@/components/callback-request";
 
 // Import pages
 import IndividualsFamiliesPage from "@/pages/who-we-serve/individuals-families";
@@ -17,7 +20,18 @@ import PersonalInsurancePage from "@/pages/insurance/personal";
 import HomeLoanPage from "@/pages/loans/home-loan";
 import NewCarLeasePage from "@/pages/lease/new-car";
 import BusinessInsurancePage from "@/pages/insurance/business";
-// Placeholder import - needs to be created
+// Who We Serve pages
+import WhoWeServeOverviewPage from "./pages/who-we-serve";
+import AttorneysPage from "./pages/who-we-serve/attorneys";
+import BusinessOwnersPage from "@/pages/who-we-serve/bussiness-owners";
+import DoctorsPage from "@/pages/who-we-serve/doctors";
+import WomenInvestorsPage from "@/pages/who-we-serve/wi";
+import CharitableInvestorsPage from "@/pages/who-we-serve/ci";
+import HNIPage from "@/pages/who-we-serve/hni";
+import FamilyOfficeServicesPage from "@/pages/who-we-serve/fos";
+import NRIPage from "@/pages/who-we-serve/nri";
+import ForeignInvestorsPage from "@/pages/who-we-serve/fi";
+// Other pages
 import AdminPage from "@/pages/admin";
 import LoginPage from "@/pages/login";
 import RegisterPage from "@/pages/register";
@@ -25,6 +39,8 @@ import BlogPostPage from "./pages/blog/[id]";
 import BlogPage from "./pages/blog";
 import { useEffect } from "react";
 import MediaPage from "./pages/media";
+import OfferDetailPage from "./pages/offers/[id]";
+import NCDBondPage from "./pages/wealth-management/ncd-bond";
 
 function Router() {
   useEffect(() => {
@@ -36,6 +52,7 @@ function Router() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <CallbackRequest />
       <main className="flex-1">
         <Switch>
           <Route path="/" component={Home} />
@@ -67,17 +84,30 @@ function Router() {
           <Route path="/services" component={Services} />
 
           {/* Who We Serve Routes */}
+          <Route path="/who-we-serve" component={WhoWeServeOverviewPage} />
           <Route
             path="/who-we-serve/individuals-families"
             component={IndividualsFamiliesPage}
           />
           <Route path="/who-we-serve/executives" component={ExecutivesPage} />
-          {/* Other Who We Serve routes will follow the same pattern */}
+          <Route path="/who-we-serve/attorneys" component={AttorneysPage} />
+          <Route path="/who-we-serve/business-owners" component={BusinessOwnersPage} />
+          <Route path="/who-we-serve/doctors" component={DoctorsPage} />
+          <Route path="/who-we-serve/woman-investors" component={WomenInvestorsPage} />
+          <Route path="/who-we-serve/charitable-investors" component={CharitableInvestorsPage} />
+          <Route path="/who-we-serve/hni" component={HNIPage} />
+          <Route path="/who-we-serve/family-office" component={FamilyOfficeServicesPage} />
+          <Route path="/who-we-serve/nri" component={NRIPage} />
+          <Route path="/who-we-serve/foreign-investors" component={ForeignInvestorsPage} />
 
           {/* Wealth Management Routes */}
           <Route
             path="/wealth-management/mutual-funds"
             component={MutualFundsPage}
+          />
+          <Route
+            path="/wealth-management/ncd-bond/ncd"
+            component={NCDBondPage}
           />
           {/* Other Wealth Management routes will follow the same pattern */}
 
@@ -98,6 +128,7 @@ function Router() {
           <Route path="/blog" component={BlogPage} />
           <Route path="/media" component={MediaPage} />
           <Route path="/blog/:id" component={BlogPostPage} />
+          <Route path="/offers/:id" component={OfferDetailPage} />
           <Route path="/register" component={RegisterPage} />
           {/* Admin route - only accessible via direct URL and protected by authentication */}
           <Route path="/admin" component={AdminPage} />

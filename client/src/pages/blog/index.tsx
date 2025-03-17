@@ -1,8 +1,8 @@
-
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "wouter";
 import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { PageLayout } from "@/components/layout/page-layout";
 
 type Blog = {
@@ -19,13 +18,20 @@ type Blog = {
   content: string;
   authorName: string;
   createdAt: string;
-  image?: string; // Optional image URL
+  image?: string;
 };
 
 export default function BlogPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, []);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -37,6 +43,7 @@ export default function BlogPage() {
           title: "Error",
           description: "Failed to load blogs",
           variant: "destructive",
+          id: "1",
         });
       } finally {
         setLoading(false);
@@ -48,14 +55,9 @@ export default function BlogPage() {
 
   if (loading) {
     return (
-      <PageLayout
-        title="Blog"
-        subtitle="Latest insights and updates from our financial experts"
-      >
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
-        </div>
-      </PageLayout>
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+      </div>
     );
   }
 
@@ -72,62 +74,36 @@ export default function BlogPage() {
           </p>
         </div>
       ) : (
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {blogs.map((blog) => (
-                <Card
-                    key={blog.id}
-                    className="flex flex-col"
-
-                >
-                  {blog.image && (
-                      <div
-                          className="h-40 w-full bg-cover bg-center rounded-t-md"
-                          style={{ backgroundImage: `url(${blog.image})` }}
-                      />
-                  )}
-
-                  <CardHeader>
-                    <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
-                    <div className="text-sm text-muted-foreground">
-                      By {blog.authorName} •{" "}
-                      {new Date(blog.createdAt).toLocaleDateString()}
-                    </div>
-                  </CardHeader>
-                  <CardContent className="flex-grow">
-                    <p className="line-clamp-4">{blog.content}</p>
-                  </CardContent>
-                  <CardFooter>
-                    <Button asChild className="w-full">
-                      <Link href={`/blog/${blog.id}`}>Read More</Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
-            ))}
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {blogs.map((blog) => (
+            <Card key={blog.id} className="flex flex-col h-full">
+              {blog.image && (
+                <div
+                  className="h-48 w-full bg-cover bg-center rounded-t-md"
+                  style={{ backgroundImage: `url(${blog.image})` }}
+                />
+              )}
+              <CardHeader>
+                <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
+                <div className="text-sm text-muted-foreground">
+                  By {blog.authorName} •{" "}
+                  {new Date(blog.createdAt).toLocaleDateString()}
+                </div>
+              </CardHeader>
+              <CardContent
+                className="line-clamp-4"
+                dangerouslySetInnerHTML={{ __html: blog.content }}
+              />
+              
+              <CardFooter>
+                <Button asChild className="w-full">
+                  <Link href={`/blog/${blog.id}`}>Read More</Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
       )}
     </PageLayout>
   );
 }
-
-
-//<div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-//           {blogs.map((blog) => (
-//             <Card key={blog.id} className="flex flex-col">
-//               <CardHeader>
-//                 <CardTitle className="line-clamp-2">{blog.title}</CardTitle>
-//                 <div className="text-sm text-muted-foreground">
-//                   By {blog.authorName} •{" "}
-//                   {new Date(blog.createdAt).toLocaleDateString()}
-//                 </div>
-//               </CardHeader>
-//               <CardContent className="flex-grow">
-//                 <p className="line-clamp-4">{blog.content}</p>
-//               </CardContent>
-//               <CardFooter>
-//                 <Button asChild className="w-full">
-//                   <Link href={`/blog/${blog.id}`}>Read More</Link>
-//                 </Button>
-//               </CardFooter>
-//             </Card>
-//           ))}
-//         </div>

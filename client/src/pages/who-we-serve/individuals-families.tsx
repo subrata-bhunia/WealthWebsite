@@ -17,20 +17,22 @@ export default function IndividualsFamiliesPage() {
               <CardTitle>Financial Protection</CardTitle>
             </CardHeader>
             <CardContent>
-              Secure your family's future with comprehensive insurance and risk management solutions.
+              Secure your family's future with comprehensive insurance and risk
+              management solutions.
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <Briefcase className="w-8 h-8 text-primary mb-4" />
               <CardTitle>Investment Planning</CardTitle>
             </CardHeader>
             <CardContent>
-              Build and manage your investment portfolio with our expert guidance.
+              Build and manage your investment portfolio with our expert
+              guidance.
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <PiggyBank className="w-8 h-8 text-primary mb-4" />
@@ -40,7 +42,7 @@ export default function IndividualsFamiliesPage() {
               Plan for a comfortable retirement with personalized strategies.
             </CardContent>
           </Card>
-          
+
           <Card>
             <CardHeader>
               <FileText className="w-8 h-8 text-primary mb-4" />
@@ -59,19 +61,22 @@ export default function IndividualsFamiliesPage() {
             <div>
               <h3 className="font-semibold mb-2">Personalized Approach</h3>
               <p className="text-muted-foreground">
-                We take time to understand your unique situation and goals to create tailored solutions.
+                We take time to understand your unique situation and goals to
+                create tailored solutions.
               </p>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Comprehensive Planning</h3>
               <p className="text-muted-foreground">
-                Our integrated approach covers all aspects of your financial life.
+                Our integrated approach covers all aspects of your financial
+                life.
               </p>
             </div>
             <div>
               <h3 className="font-semibold mb-2">Long-term Partnership</h3>
               <p className="text-muted-foreground">
-                We build lasting relationships to help you achieve your long-term financial goals.
+                We build lasting relationships to help you achieve your
+                long-term financial goals.
               </p>
             </div>
           </div>

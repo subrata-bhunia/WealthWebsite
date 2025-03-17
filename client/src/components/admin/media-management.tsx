@@ -2,12 +2,27 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogTrigger, DialogClose } from "@/components/ui/dialog";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogTrigger,
+  DialogClose,
+} from "@/components/ui/dialog";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
 import { Plus, Save, Trash, Youtube, File, Edit } from "lucide-react";
 import { authFetch } from "@/components/admin/blog-management";
 import { RichTextEditor } from "./rich-text-editor";
+import "react-quill/dist/quill.snow.css";
 
 type MediaItem = {
   id: number;
@@ -15,7 +30,7 @@ type MediaItem = {
   description?: string;
   fileUrl?: string;
   youtubeUrl?: string;
-  mediaType: 'file' | 'youtube' | 'both';
+  mediaType: "file" | "youtube" | "both";
   createdAt: string;
 };
 
@@ -45,6 +60,7 @@ export function MediaManagement() {
       setMediaItems(data);
     } catch (error) {
       toast({
+        id: "1",
         title: "Error",
         description: "Failed to load media items",
         variant: "destructive",
@@ -53,7 +69,20 @@ export function MediaManagement() {
       setLoading(false);
     }
   };
+  function formatYouTubeEmbed(url?: string) {
+    if (!url) return "";
 
+    // Handle YouTube URLs
+    const regExp =
+      /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+
+    if (match && match[2].length === 11) {
+      return `https://www.youtube.com/embed/${match[2]}`;
+    }
+
+    return url;
+  }
   useEffect(() => {
     fetchMediaItems();
   }, [toast]);
@@ -80,10 +109,15 @@ export function MediaManagement() {
         mediaType: "file",
       });
       setDialogOpen(false);
-      toast({ title: "Success", description: "Media item created successfully" });
+      toast({
+        id: "1",
+        title: "Success",
+        description: "Media item created successfully",
+      });
       fetchMediaItems();
     } catch (error: any) {
       toast({
+        id: "1",
         title: "Error",
         description: `Failed to create media item: ${error.message}`,
         variant: "destructive",
@@ -115,10 +149,15 @@ export function MediaManagement() {
         mediaType: "file",
       });
       setDialogOpen(false);
-      toast({ title: "Success", description: "Media item updated successfully" });
+      toast({
+        id: "1",
+        title: "Success",
+        description: "Media item updated successfully",
+      });
       fetchMediaItems();
     } catch (error: any) {
       toast({
+        id: "1",
         title: "Error",
         description: `Failed to update media item: ${error.message}`,
         variant: "destructive",
@@ -135,10 +174,15 @@ export function MediaManagement() {
         if (!response.ok) {
           throw new Error("Failed to delete media item");
         }
-        toast({ title: "Success", description: "Media item deleted successfully" });
+        toast({
+          id: "1",
+          title: "Success",
+          description: "Media item deleted successfully",
+        });
         fetchMediaItems();
       } catch (error) {
         toast({
+          id: "1",
           title: "Error",
           description: "Failed to delete media item",
           variant: "destructive",
@@ -202,8 +246,8 @@ export function MediaManagement() {
             {media.description && (
               <div>
                 <h4 className="text-sm font-medium mb-1">Description:</h4>
-                <div 
-                  className="text-sm text-muted-foreground" 
+                <div
+                  className="text-sm text-muted-foreground"
                   dangerouslySetInnerHTML={{ __html: media.description }}
                 />
               </div>
@@ -223,16 +267,27 @@ export function MediaManagement() {
                 </div>
               ) : null}
               {media.mediaType === "youtube" || media.mediaType === "both" ? (
-                <div className="flex items-center">
-                  <Youtube className="h-4 w-4 mr-1" />
-                  <a
+                <div className="mb-4">
+                  <div className="flex items-center">
+                    <Youtube className="h-4 w-4 mr-1" />
+                    <span>Video</span>
+                    {/* <a
                     href={media.youtubeUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-sm text-blue-500 hover:underline"
                   >
                     Watch Video
-                  </a>
+                  </a> */}
+                  </div>
+                  <div className="aspect-video">
+                    <iframe
+                      src={formatYouTubeEmbed(media.youtubeUrl)}
+                      className="w-full h-full rounded-md"
+                      allowFullScreen
+                      title={`YouTube video - ${media.title}`}
+                    ></iframe>
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -288,8 +343,7 @@ export function MediaManagement() {
                   <Label htmlFor="description">Description</Label>
                   <div className="border rounded-md">
                     <RichTextEditor
-                      id="description"
-                      value={newMedia.description || ''}
+                      value={newMedia.description || ""}
                       onChange={(content) =>
                         setNewMedia({ ...newMedia, description: content })
                       }
@@ -305,7 +359,10 @@ export function MediaManagement() {
                     onChange={(e) =>
                       setNewMedia({
                         ...newMedia,
-                        mediaType: e.target.value as "file" | "youtube" | "both",
+                        mediaType: e.target.value as
+                          | "file"
+                          | "youtube"
+                          | "both",
                       })
                     }
                     required
@@ -315,7 +372,8 @@ export function MediaManagement() {
                     <option value="both">Both</option>
                   </select>
                 </div>
-                {(newMedia.mediaType === "file" || newMedia.mediaType === "both") && (
+                {(newMedia.mediaType === "file" ||
+                  newMedia.mediaType === "both") && (
                   <div className="grid gap-2">
                     <Label htmlFor="fileUrl">File URL</Label>
                     <Input
@@ -324,11 +382,15 @@ export function MediaManagement() {
                       onChange={(e) =>
                         setNewMedia({ ...newMedia, fileUrl: e.target.value })
                       }
-                      required={newMedia.mediaType === "file" || newMedia.mediaType === "both"}
+                      required={
+                        newMedia.mediaType === "file" ||
+                        newMedia.mediaType === "both"
+                      }
                     />
                   </div>
                 )}
-                {(newMedia.mediaType === "youtube" || newMedia.mediaType === "both") && (
+                {(newMedia.mediaType === "youtube" ||
+                  newMedia.mediaType === "both") && (
                   <div className="grid gap-2">
                     <Label htmlFor="youtubeUrl">YouTube URL</Label>
                     <Input
@@ -337,14 +399,21 @@ export function MediaManagement() {
                       onChange={(e) =>
                         setNewMedia({ ...newMedia, youtubeUrl: e.target.value })
                       }
-                      required={newMedia.mediaType === "youtube" || newMedia.mediaType === "both"}
+                      required={
+                        newMedia.mediaType === "youtube" ||
+                        newMedia.mediaType === "both"
+                      }
                     />
                   </div>
                 )}
               </div>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button type="button" variant="outline" onClick={handleCancelEdit}>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCancelEdit}
+                  >
                     Cancel
                   </Button>
                 </DialogClose>

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { apiRequest } from "@/lib/queryClient";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui/table";
 import { Card } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
@@ -22,6 +22,7 @@ type Contact = {
 const authFetch = async (url: string) => {
   const token = localStorage.getItem("wealthspire_auth_token");
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
+  // @ts-ignore
   const response = await fetch(url, { headers });
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,11 +30,10 @@ const authFetch = async (url: string) => {
   return response;
 };
 
-
 export function ContactsList() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(''); //Added error state
+  const [error, setError] = useState(""); //Added error state
   const { toast } = useToast();
 
   useEffect(() => {
@@ -55,6 +55,7 @@ export function ContactsList() {
           title: "Error",
           description: "Failed to load contacts",
           variant: "destructive",
+          id: "1",
         });
       } finally {
         setLoading(false);
@@ -80,7 +81,9 @@ export function ContactsList() {
     return (
       <div className="text-center p-12">
         <h3 className="text-xl font-medium">No contacts yet</h3>
-        <p className="text-muted-foreground mt-2">When users submit the contact form, they'll appear here.</p>
+        <p className="text-muted-foreground mt-2">
+          When users submit the contact form, they'll appear here.
+        </p>
       </div>
     );
   }
@@ -103,7 +106,9 @@ export function ContactsList() {
                 <TableCell className="font-medium">{contact.name}</TableCell>
                 <TableCell>{contact.email}</TableCell>
                 <TableCell>{contact.phone}</TableCell>
-                <TableCell className="max-w-md truncate">{contact.message}</TableCell>
+                <TableCell className="max-w-md truncate">
+                  {contact.message}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -2,7 +2,14 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
@@ -35,12 +42,14 @@ export function ContactForm() {
       toast({
         title: "Message sent",
         description: "We'll get back to you as soon as possible.",
+        id: "6",
       });
       form.reset();
     } catch (error) {
       toast({
         title: "Error",
         description: "Something went wrong. Please try again later.",
+        id: "7",
         variant: "destructive",
       });
     }
@@ -62,7 +71,7 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="email"
@@ -76,7 +85,7 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="phone"
@@ -90,7 +99,7 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        
+
         <FormField
           control={form.control}
           name="message"
