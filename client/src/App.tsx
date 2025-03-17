@@ -44,6 +44,7 @@ import NCDBondPage from "./pages/wealth-management/ncd-bond/ncd";
 import BondPage from "./pages/wealth-management/ncd-bond/bond";
 import FractionalOwnershipPage from "./pages/wealth-management/real-estate/friction";
 import RERAProjectsPage from "./pages/wealth-management/real-estate/rera";
+import StartupInvestmentPage from "./pages/wealth-management/investment-startup";
 
 function Router() {
   useEffect(() => {
@@ -138,6 +139,10 @@ function Router() {
           <Route
             path="/wealth-management/real-estate/rera"
             component={RERAProjectsPage}
+          />
+          <Route
+            path="/wealth-management/startup-investment"
+            component={StartupInvestmentPage}
           />
           {/* Other Wealth Management routes will follow the same pattern */}
 
