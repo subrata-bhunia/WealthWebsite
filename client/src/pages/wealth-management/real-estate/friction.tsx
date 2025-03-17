@@ -1,14 +1,14 @@
 
 import { PageLayout } from "@/components/layout/page-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Building2, FileCheck, PieChart, Landmark } from "lucide-react";
+import { Building2, BarChart3, Percent, Users } from "lucide-react";
 import { Link } from "wouter";
 
-export default function RealEstatePage() {
+export default function FractionalOwnershipPage() {
   return (
     <PageLayout
-      title="Real Estate Investment"
-      subtitle="Strategic real estate investment opportunities for portfolio diversification and stable returns."
+      title="Fractional Real Estate Ownership"
+      subtitle="Access premium commercial real estate investments through fractional ownership, enabling diversification with lower capital requirements."
     >
       <div className="grid gap-8">
         {/* Investment Categories */}
@@ -16,59 +16,59 @@ export default function RealEstatePage() {
           <Card>
             <CardHeader>
               <Building2 className="w-8 h-8 text-primary mb-4" />
-              <CardTitle>Commercial Properties</CardTitle>
+              <CardTitle>Property Types</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-muted-foreground">
-                <li>Office Spaces</li>
-                <li>Retail Properties</li>
-                <li>Industrial Units</li>
-                <li>Warehouses</li>
+                <li>Grade A Office Spaces</li>
+                <li>Premium Retail Centers</li>
+                <li>Warehousing Facilities</li>
+                <li>Data Centers</li>
               </ul>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <FileCheck className="w-8 h-8 text-primary mb-4" />
-              <CardTitle>RERA Projects</CardTitle>
+              <BarChart3 className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Investment Structure</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-muted-foreground">
-                <li>Pre-approved Projects</li>
-                <li>Compliant Developments</li>
-                <li>Verified Builders</li>
-                <li>Secure Investments</li>
+                <li>SPV-based Ownership</li>
+                <li>Transparent Legal Structure</li>
+                <li>Professional Management</li>
+                <li>Regular Income Distribution</li>
               </ul>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <PieChart className="w-8 h-8 text-primary mb-4" />
-              <CardTitle>Fractional Ownership</CardTitle>
+              <Percent className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Returns Profile</CardTitle>
             </CardHeader>
             <CardContent>
               <ul className="space-y-2 text-muted-foreground">
-                <li>Grade A Properties</li>
-                <li>Managed Operations</li>
-                <li>Regular Yields</li>
+                <li>Rental Yield: 8-10% p.a.</li>
+                <li>Capital Appreciation</li>
+                <li>Tax Benefits</li>
+                <li>Portfolio Diversification</li>
+              </ul>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <Users className="w-8 h-8 text-primary mb-4" />
+              <CardTitle>Investor Benefits</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ul className="space-y-2 text-muted-foreground">
                 <li>Lower Investment Entry</li>
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <Landmark className="w-8 h-8 text-primary mb-4" />
-              <CardTitle>REITs</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="space-y-2 text-muted-foreground">
-                <li>Listed REITs</li>
-                <li>Commercial REITs</li>
-                <li>Residential REITs</li>
-                <li>Hybrid REITs</li>
+                <li>Hassle-free Management</li>
+                <li>Easy Exit Options</li>
+                <li>Risk Distribution</li>
               </ul>
             </CardContent>
           </Card>
@@ -77,28 +77,42 @@ export default function RealEstatePage() {
         {/* Benefits Section */}
         <div className="mt-12 bg-primary/5 p-8 rounded-lg">
           <h2 className="text-2xl font-bold mb-6">
-            Why Choose Our Real Estate Investment Services?
+            Why Choose Fractional Ownership?
           </h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div>
-              <h3 className="font-semibold mb-2">Curated Opportunities</h3>
+              <h3 className="font-semibold mb-2">Accessible Investment</h3>
               <p className="text-muted-foreground">
-                Access to premium real estate investments vetted by our expert team.
+                Access institutional-grade properties with lower capital requirements through fractional ownership.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">Regulatory Compliance</h3>
+              <h3 className="font-semibold mb-2">Professional Management</h3>
               <p className="text-muted-foreground">
-                All investments are fully compliant with RERA and other regulatory requirements.
+                Expert property and asset management ensuring optimal performance and maintenance.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold mb-2">Investment Flexibility</h3>
+              <h3 className="font-semibold mb-2">Diversification Benefits</h3>
               <p className="text-muted-foreground">
-                Multiple investment options from fractional ownership to REITs for different budgets.
+                Spread investments across multiple properties and locations to optimize risk-return profile.
               </p>
             </div>
           </div>
+        </div>
+
+        {/* Link to REIT Section */}
+        <div className="mt-8">
+          <Link href="/wealth-management/real-estate/reit">
+            <Card className="transition-all hover:shadow-md cursor-pointer">
+              <CardContent className="pt-6">
+                <h3 className="text-lg font-semibold mb-2">Explore REIT Investment Options</h3>
+                <p className="text-muted-foreground">
+                  Discover our range of Real Estate Investment Trust options for liquid real estate investments.
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
       </div>
     </PageLayout>
