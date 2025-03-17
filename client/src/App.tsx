@@ -45,6 +45,10 @@ import BondPage from "./pages/wealth-management/ncd-bond/bond";
 import FractionalOwnershipPage from "./pages/wealth-management/real-estate/friction";
 import RERAProjectsPage from "./pages/wealth-management/real-estate/rera";
 import StartupInvestmentPage from "./pages/wealth-management/investment-startup";
+import OldCarLeasePage from "./pages/lease/old-car";
+import CommercialVehicleLeasePage from "./pages/lease/commercial-vehicle";
+import EquipmentLeasePage from "./pages/lease/equipment";
+import MachineryLeasePage from "./pages/lease/machinery";
 
 function Router() {
   useEffect(() => {
@@ -152,6 +156,10 @@ function Router() {
 
           {/* Lease Routes */}
           <Route path="/lease/new-car" component={NewCarLeasePage} />
+          <Route path="/lease/old-car" component={OldCarLeasePage} />
+          <Route path="/lease/commercial-vehicle" component={CommercialVehicleLeasePage} />
+          <Route path="/lease/equipment" component={EquipmentLeasePage} />
+          <Route path="/lease/machinery" component={MachineryLeasePage} />
           {/* Other Lease routes will follow the same pattern */}
 
           {/* Loans Routes */}
