@@ -42,6 +42,8 @@ import MediaPage from "./pages/media";
 import OfferDetailPage from "./pages/offers/[id]";
 import NCDBondPage from "./pages/wealth-management/ncd-bond/ncd";
 import BondPage from "./pages/wealth-management/ncd-bond/bond";
+import FractionalOwnershipPage from "./pages/wealth-management/real-estate/friction";
+import RERAProjectsPage from "./pages/wealth-management/real-estate/rera";
 
 function Router() {
   useEffect(() => {
@@ -125,9 +127,18 @@ function Router() {
             path="/wealth-management/ncd-bond/ncd"
             component={NCDBondPage}
           />
-          <Route path="/wealth-management/ncd-bond/bonds" component={BondPage} />
-          <Route path="/wealth-management/real-estate/fractional" component={FractionalOwnershipPage} />
-          <Route path="/wealth-management/real-estate/rera" component={RERAProjectsPage} />
+          <Route
+            path="/wealth-management/ncd-bond/bonds"
+            component={BondPage}
+          />
+          <Route
+            path="/wealth-management/real-estate/fractional"
+            component={FractionalOwnershipPage}
+          />
+          <Route
+            path="/wealth-management/real-estate/rera"
+            component={RERAProjectsPage}
+          />
           {/* Other Wealth Management routes will follow the same pattern */}
 
           {/* Insurance Routes */}
