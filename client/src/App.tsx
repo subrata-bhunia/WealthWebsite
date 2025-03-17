@@ -40,7 +40,15 @@ import BlogPage from "./pages/blog";
 import { useEffect } from "react";
 import MediaPage from "./pages/media";
 import OfferDetailPage from "./pages/offers/[id]";
-import NCDBondPage from "./pages/wealth-management/ncd-bond";
+import NCDBondPage from "./pages/wealth-management/ncd-bond/ncd";
+import BondPage from "./pages/wealth-management/ncd-bond/bond";
+import FractionalOwnershipPage from "./pages/wealth-management/real-estate/friction";
+import RERAProjectsPage from "./pages/wealth-management/real-estate/rera";
+import StartupInvestmentPage from "./pages/wealth-management/investment-startup";
+import OldCarLeasePage from "./pages/lease/old-car";
+import CommercialVehicleLeasePage from "./pages/lease/commercial-vehicle";
+import EquipmentLeasePage from "./pages/lease/equipment";
+import MachineryLeasePage from "./pages/lease/machinery";
 
 function Router() {
   useEffect(() => {
@@ -91,14 +99,29 @@ function Router() {
           />
           <Route path="/who-we-serve/executives" component={ExecutivesPage} />
           <Route path="/who-we-serve/attorneys" component={AttorneysPage} />
-          <Route path="/who-we-serve/business-owners" component={BusinessOwnersPage} />
+          <Route
+            path="/who-we-serve/business-owners"
+            component={BusinessOwnersPage}
+          />
           <Route path="/who-we-serve/doctors" component={DoctorsPage} />
-          <Route path="/who-we-serve/woman-investors" component={WomenInvestorsPage} />
-          <Route path="/who-we-serve/charitable-investors" component={CharitableInvestorsPage} />
+          <Route
+            path="/who-we-serve/woman-investors"
+            component={WomenInvestorsPage}
+          />
+          <Route
+            path="/who-we-serve/charitable-investors"
+            component={CharitableInvestorsPage}
+          />
           <Route path="/who-we-serve/hni" component={HNIPage} />
-          <Route path="/who-we-serve/family-office" component={FamilyOfficeServicesPage} />
+          <Route
+            path="/who-we-serve/family-office"
+            component={FamilyOfficeServicesPage}
+          />
           <Route path="/who-we-serve/nri" component={NRIPage} />
-          <Route path="/who-we-serve/foreign-investors" component={ForeignInvestorsPage} />
+          <Route
+            path="/who-we-serve/foreign-investors"
+            component={ForeignInvestorsPage}
+          />
 
           {/* Wealth Management Routes */}
           <Route
@@ -109,6 +132,22 @@ function Router() {
             path="/wealth-management/ncd-bond/ncd"
             component={NCDBondPage}
           />
+          <Route
+            path="/wealth-management/ncd-bond/bonds"
+            component={BondPage}
+          />
+          <Route
+            path="/wealth-management/real-estate/fractional"
+            component={FractionalOwnershipPage}
+          />
+          <Route
+            path="/wealth-management/real-estate/rera"
+            component={RERAProjectsPage}
+          />
+          <Route
+            path="/wealth-management/startup-investment"
+            component={StartupInvestmentPage}
+          />
           {/* Other Wealth Management routes will follow the same pattern */}
 
           {/* Insurance Routes */}
@@ -117,6 +156,10 @@ function Router() {
 
           {/* Lease Routes */}
           <Route path="/lease/new-car" component={NewCarLeasePage} />
+          <Route path="/lease/old-car" component={OldCarLeasePage} />
+          <Route path="/lease/commercial-vehicle" component={CommercialVehicleLeasePage} />
+          <Route path="/lease/equipment" component={EquipmentLeasePage} />
+          <Route path="/lease/machinery" component={MachineryLeasePage} />
           {/* Other Lease routes will follow the same pattern */}
 
           {/* Loans Routes */}

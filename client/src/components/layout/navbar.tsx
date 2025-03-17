@@ -20,11 +20,15 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { navigate } from "wouter/use-browser-location";
 
 export function Navbar() {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
-
+  const onMenuClick = (menu: string, url: string) => {
+    setIsOpen((prev) => !prev);
+    navigate(url);
+  };
   if (isMobile) {
     return (
       <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b">
@@ -83,23 +87,21 @@ export function Navbar() {
                       </AccordionContent>
                     </AccordionItem>
                   ))}
+                  <AccordionItem value="Blog">
+                    <AccordionTrigger
+                      onClick={() => onMenuClick("Blog", "/blog")}
+                    >
+                      Blog
+                    </AccordionTrigger>
+                  </AccordionItem>
+                  <AccordionItem value="Media">
+                    <AccordionTrigger
+                      onClick={() => onMenuClick("Media", "/media")}
+                    >
+                      Media
+                    </AccordionTrigger>
+                  </AccordionItem>
                 </Accordion>
-                <Link className="space-y-2" href={"/blog"}>
-                  <span
-                    className="hover:bg-accent rounded-md font-medium"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Blog
-                  </span>
-                </Link>
-                <Link href="/media" className="space-y-2 ">
-                  <span
-                    className="hover:bg-accent rounded-md font-medium"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    Blog
-                  </span>
-                </Link>
                 <Button asChild className="w-full">
                   <Link href={"/contact"}>Contact Us</Link>
                 </Button>
