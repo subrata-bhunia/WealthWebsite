@@ -30,13 +30,13 @@ export default function Home() {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [current, setCurrent] = useState(0);
   const autoplayPlugin = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: false }),
+    Autoplay({ delay: 5000, stopOnInteraction: false })
   );
 
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const response = await fetch("/api/offers");
+        const response = await fetch("http://localhost:3333/api/offers");
         if (response.ok) {
           const data = await response.json();
           setOffers(data);

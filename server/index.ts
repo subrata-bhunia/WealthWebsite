@@ -1,6 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import { setupVite, serveStatic, log, setupViteApi } from "./vite";
 import "dotenv/config";
 const app = express();
 app.use(express.json());
@@ -53,13 +53,16 @@ app.use((req, res, next) => {
   log("Env -> " + app.get("env"));
   if (app.get("env") === "development") {
     await setupVite(app, server);
+  } else if (app.get("env") === "api") {
+    console.log("Api");
+    await setupViteApi(app, server);
   } else {
     serveStatic(app);
   }
 
   // ALWAYS serve the app on port 5000
   // this serves both the API and the client
-  const PORT = process.env.PORT;
+  const PORT = 3333;
   server.listen(PORT, () => {
     log(`serving on port ${PORT}`);
   });
