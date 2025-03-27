@@ -81,7 +81,7 @@ export function Navbar() {
                                   {item.title}
                                 </span>
                               </Link>
-                            ),
+                            )
                           )}
                         </div>
                       </AccordionContent>
@@ -102,7 +102,11 @@ export function Navbar() {
                     </AccordionTrigger>
                   </AccordionItem>
                 </Accordion>
-                <Button asChild className="w-full">
+                <Button
+                  asChild
+                  className="w-full"
+                  onClick={() => setIsOpen((prev) => !prev)}
+                >
                   <Link href={"/contact"}>Contact Us</Link>
                 </Button>
               </nav>
@@ -141,7 +145,7 @@ export function Navbar() {
                                       <span
                                         className={cn(
                                           "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-                                          "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                                          "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                         )}
                                       >
                                         {subItem.title}
@@ -158,7 +162,7 @@ export function Navbar() {
                               <span
                                 className={cn(
                                   "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
-                                  "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                                  "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
                                 )}
                               >
                                 {item.title}

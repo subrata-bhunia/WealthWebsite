@@ -1,7 +1,7 @@
 /**
  * Utility function for making API requests
  */
-const apiUrl: string = "http://localhost:3333";
+const apiUrl: string = "http://localhost:3001";
 export const apiRequest = async <T>(
   url: string,
   options: RequestInit = {}

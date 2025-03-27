@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,8 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Trash2, Edit, Plus, Save, Pencil } from "lucide-react";
+import { Trash2, Plus, Save, Pencil } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -40,7 +38,7 @@ export const authFetch = async (url: string, options?: RequestInit) => {
     Authorization: token ? `Bearer ${token}` : undefined,
   };
   // @ts-ignore
-  return fetch(url, { ...options, headers });
+  return fetch("http://localhost:3001" + url, { ...options, headers });
 };
 
 const RichTextEditor = ({

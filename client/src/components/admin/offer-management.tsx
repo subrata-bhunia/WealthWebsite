@@ -1,12 +1,22 @@
-
 import React, { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { authFetch } from "@/lib/auth";
+import { authFetch } from "@/components/admin/blog-management";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
@@ -92,6 +102,9 @@ export function OfferManagement() {
     try {
       const response = await authFetch("/api/offers", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(newOffer),
       });
 
@@ -232,7 +245,9 @@ export function OfferManagement() {
       {loading ? (
         <div className="text-center py-8">Loading offers...</div>
       ) : offers.length === 0 ? (
-        <div className="text-center py-8">No offers found. Create your first offer.</div>
+        <div className="text-center py-8">
+          No offers found. Create your first offer.
+        </div>
       ) : (
         <div className="grid gap-4">
           {offers.map((offer) => (
@@ -243,7 +258,8 @@ export function OfferManagement() {
               <div>
                 <h3 className="font-medium">{offer.title}</h3>
                 <p className="text-sm text-muted-foreground">
-                  Category: {offer.category} | Created: {formatDate(offer.createdAt)}
+                  Category: {offer.category} | Created:{" "}
+                  {formatDate(offer.createdAt)}
                 </p>
                 {offer.validUntil && (
                   <p className="text-sm text-muted-foreground">
@@ -252,7 +268,11 @@ export function OfferManagement() {
                 )}
               </div>
               <div className="flex gap-2">
-                <Button size="sm" variant="outline" onClick={() => handleEdit(offer)}>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleEdit(offer)}
+                >
                   Edit
                 </Button>
                 <Button
@@ -299,7 +319,11 @@ export function OfferManagement() {
                 Category
               </label>
               <Select
-                value={isEditMode ? editedOffer?.category || "lease" : newOffer.category}
+                value={
+                  isEditMode
+                    ? editedOffer?.category || "lease"
+                    : newOffer.category
+                }
                 onValueChange={(value) => {
                   if (isEditMode && editedOffer) {
                     setEditedOffer({ ...editedOffer, category: value });
@@ -328,10 +352,17 @@ export function OfferManagement() {
               <Input
                 id="discount"
                 placeholder="e.g., 10% off, Free first month"
-                value={isEditMode ? editedOffer?.discount || "" : newOffer.discount || ""}
+                value={
+                  isEditMode
+                    ? editedOffer?.discount || ""
+                    : newOffer.discount || ""
+                }
                 onChange={(e) => {
                   if (isEditMode && editedOffer) {
-                    setEditedOffer({ ...editedOffer, discount: e.target.value });
+                    setEditedOffer({
+                      ...editedOffer,
+                      discount: e.target.value,
+                    });
                   } else {
                     setNewOffer({ ...newOffer, discount: e.target.value });
                   }
@@ -346,10 +377,17 @@ export function OfferManagement() {
               <Input
                 id="validUntil"
                 type="date"
-                value={isEditMode ? editedOffer?.validUntil || "" : newOffer.validUntil || ""}
+                value={
+                  isEditMode
+                    ? editedOffer?.validUntil || ""
+                    : newOffer.validUntil || ""
+                }
                 onChange={(e) => {
                   if (isEditMode && editedOffer) {
-                    setEditedOffer({ ...editedOffer, validUntil: e.target.value });
+                    setEditedOffer({
+                      ...editedOffer,
+                      validUntil: e.target.value,
+                    });
                   } else {
                     setNewOffer({ ...newOffer, validUntil: e.target.value });
                   }
@@ -364,7 +402,9 @@ export function OfferManagement() {
               <Input
                 id="image"
                 placeholder="Image URL (optional)"
-                value={isEditMode ? editedOffer?.image || "" : newOffer.image || ""}
+                value={
+                  isEditMode ? editedOffer?.image || "" : newOffer.image || ""
+                }
                 onChange={(e) => {
                   if (isEditMode && editedOffer) {
                     setEditedOffer({ ...editedOffer, image: e.target.value });
@@ -381,7 +421,11 @@ export function OfferManagement() {
               </label>
               <div className="min-h-[150px]">
                 <RichTextEditor
-                  value={isEditMode ? editedOffer?.description || "" : newOffer.description}
+                  value={
+                    isEditMode
+                      ? editedOffer?.description || ""
+                      : newOffer.description
+                  }
                   onChange={(content) => {
                     if (isEditMode && editedOffer) {
                       setEditedOffer({ ...editedOffer, description: content });

@@ -1,33 +1,20 @@
 import { defineConfig } from "vite";
+import path from "path";
 import react from "@vitejs/plugin-react";
 import themePlugin from "@replit/vite-plugin-shadcn-theme-json";
-import path, { dirname } from "path";
 import runtimeErrorOverlay from "@replit/vite-plugin-runtime-error-modal";
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 export default defineConfig({
   plugins: [react(), runtimeErrorOverlay(), themePlugin()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "client", "src"),
+      "@": path.resolve(__dirname, "client/src"),
       "@shared": path.resolve(__dirname, "shared"),
     },
   },
   root: path.resolve(__dirname, "client"),
   build: {
-    outDir: path.resolve(__dirname, "dist/public"),
+    outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
   },
 });
-
-//To fix the import error, create the following directory and file:
-// mkdir -p client/src/lib/api
-// touch client/src/lib/api/index.ts (or .js, depending on your setup)
-
-//Example contents for client/src/lib/api/index.ts
-// export const fetchData = async () => {
-//   const response = await fetch('/api/data');
-//   return response.json();
-// };

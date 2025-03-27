@@ -29,7 +29,7 @@ export default function MediaPage() {
   } = useQuery({
     queryKey: ["media"],
     queryFn: async () => {
-      const response = await fetch("/api/media");
+      const response = await fetch("http://localhost:3001/api/media");
       if (!response.ok) {
         throw new Error("Failed to fetch media items");
       }

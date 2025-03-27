@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useLocation } from "wouter";
 import { PageLayout } from "@/components/layout/page-layout";
@@ -30,7 +29,7 @@ export default function RegisterPage() {
     }
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("http://localhost:3001/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +59,9 @@ export default function RegisterPage() {
       <div className="max-w-md mx-auto">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl text-center">Create Admin Account</CardTitle>
+            <CardTitle className="text-2xl text-center">
+              Create Admin Account
+            </CardTitle>
           </CardHeader>
           <CardContent>
             {error && (
