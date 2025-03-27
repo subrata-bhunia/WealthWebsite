@@ -36,7 +36,9 @@ export default function Home() {
   useEffect(() => {
     const fetchOffers = async () => {
       try {
-        const response = await fetch("http://localhost:3001/api/offers");
+        const response = await fetch(
+          "https://wealth-backend-production.up.railway.app/api/offers"
+        );
         if (response.ok) {
           const data = await response.json();
           setOffers(data);

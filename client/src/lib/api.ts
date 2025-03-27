@@ -1,7 +1,8 @@
 /**
  * Utility function for making API requests
  */
-const apiUrl: string = "http://localhost:3001";
+export const apiUrl: string =
+  "https://wealth-backend-production.up.railway.app";
 export const apiRequest = async <T>(
   url: string,
   options: RequestInit = {}

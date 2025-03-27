@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { PageLayout } from "@/components/layout/page-layout";
+import { apiUrl } from "@/lib/api";
 
 interface Offer {
   id: number;
@@ -26,7 +27,7 @@ export default function OfferDetailPage() {
       if (!params?.id) return;
 
       try {
-        const response = await fetch(`/api/offers/${params.id}`);
+        const response = await fetch(`${apiUrl}/api/offers/${params.id}`);
         if (response.ok) {
           const data = await response.json();
           console.log("offer details", data);

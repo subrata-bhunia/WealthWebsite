@@ -22,7 +22,10 @@ const authFetch = async (url: string) => {
   const token = localStorage.getItem("wealthspire_auth_token");
   const headers = token ? { Authorization: `Bearer ${token}` } : {};
   // @ts-ignore
-  const response = await fetch("http://localhost:3001" + url, { headers });
+  const response = await fetch(
+    "https://wealth-backend-production.up.railway.app" + url,
+    { headers }
+  );
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }

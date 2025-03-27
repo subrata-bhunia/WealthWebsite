@@ -13,12 +13,15 @@ export async function apiRequest(
   data?: unknown | undefined,
   credentials?: boolean | true
 ): Promise<Response> {
-  const res = await fetch("http://localhost:3001" + url, {
-    method,
-    headers: data ? { "Content-Type": "application/json" } : {},
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: credentials ? "include" : undefined,
-  });
+  const res = await fetch(
+    "https://wealth-backend-production.up.railway.app" + url,
+    {
+      method,
+      headers: data ? { "Content-Type": "application/json" } : {},
+      body: data ? JSON.stringify(data) : undefined,
+      credentials: credentials ? "include" : undefined,
+    }
+  );
 
   await throwIfResNotOk(res);
   return res;

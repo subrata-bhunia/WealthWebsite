@@ -38,7 +38,10 @@ export const authFetch = async (url: string, options?: RequestInit) => {
     Authorization: token ? `Bearer ${token}` : undefined,
   };
   // @ts-ignore
-  return fetch("http://localhost:3001" + url, { ...options, headers });
+  return fetch("https://wealth-backend-production.up.railway.app" + url, {
+    ...options,
+    headers,
+  });
 };
 
 const RichTextEditor = ({
