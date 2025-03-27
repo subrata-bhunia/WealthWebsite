@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useRoute, Link } from "wouter";
+import { useParams, Link } from "react-router-dom";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";

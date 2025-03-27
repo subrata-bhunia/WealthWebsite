@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { NAVIGATION_ITEMS } from "@/lib/constants";
 
 export function Footer() {

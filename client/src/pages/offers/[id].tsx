@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { useRoute } from "wouter";
+import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { PageLayout } from "@/components/layout/page-layout";
 
@@ -16,17 +16,17 @@ interface Offer {
 }
 
 export default function OfferDetailPage() {
-  const [, params] = useRoute("/offers/:id");
+  const { id } = useParams();
   const [offer, setOffer] = useState<Offer | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchOfferDetails = async () => {
-      if (!params?.id) return;
+      if (!id) return;
 
       try {
-        const response = await fetch(`/api/offers/${params.id}`);
+        const response = await fetch(`/api/offers/${id}`);
         if (response.ok) {
           const data = await response.json();
           console.log("offer details", data);
@@ -43,7 +43,7 @@ export default function OfferDetailPage() {
     };
 
     fetchOfferDetails();
-  }, [params?.id]);
+  }, [id]);
 
   // Format the date in a readable format
   const formatDate = (dateString?: string) => {
@@ -75,7 +75,7 @@ export default function OfferDetailPage() {
               {error || "Offer not found"}
             </p>
             <Button asChild>
-              <Link href="/">Return Home</Link>
+              <Link to="/">Return Home</Link>
             </Button>
           </div>
         </div>
@@ -94,7 +94,7 @@ export default function OfferDetailPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <Button asChild variant="outline" size="sm">
-            <Link href="/">
+            <Link to="/">
               <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
             </Link>
           </Button>
@@ -122,7 +122,7 @@ export default function OfferDetailPage() {
 
         <div className="mt-10">
           <Button asChild size="lg">
-            <Link href="/contact">Contact Us About This Offer</Link>
+            <Link to="/contact">Contact Us About This Offer</Link>
           </Button>
         </div>
       </div>
