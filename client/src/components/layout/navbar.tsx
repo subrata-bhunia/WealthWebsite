@@ -7,7 +7,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { NAVIGATION_ITEMS } from "@/lib/constants";
-import { Link } from "wouter";
+import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -20,11 +20,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { navigate } from "wouter/use-browser-location";
+import { useNavigate as useWouterNavigate } from "wouter/use-browser-location";
+
 
 export function Navbar() {
   const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const onMenuClick = (menu: string, url: string) => {
     setIsOpen((prev) => !prev);
     navigate(url);
@@ -33,7 +35,7 @@ export function Navbar() {
     return (
       <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b">
         <div className="container mx-auto px-4 flex items-center justify-between h-16">
-          <Link href="/">
+          <Link to="/">
             <span className="font-bold text-xl">WealthSpire</span>
           </Link>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -60,7 +62,7 @@ export function Navbar() {
                                   {item.items.map((subItem) => (
                                     <Link
                                       key={subItem.href}
-                                      href={subItem.href}
+                                      to={subItem.href}
                                     >
                                       <span
                                         className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
@@ -73,7 +75,7 @@ export function Navbar() {
                                 </div>
                               </div>
                             ) : (
-                              <Link key={item.href} href={item.href}>
+                              <Link key={item.href} to={item.href}>
                                 <span
                                   className="block px-4 py-2 text-sm hover:bg-accent rounded-md"
                                   onClick={() => setIsOpen(false)}
@@ -107,7 +109,7 @@ export function Navbar() {
                   className="w-full"
                   onClick={() => setIsOpen((prev) => !prev)}
                 >
-                  <Link href={"/contact"}>Contact Us</Link>
+                  <Link to={"/contact"}>Contact Us</Link>
                 </Button>
               </nav>
             </SheetContent>
@@ -120,7 +122,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background border-b">
       <div className="container mx-auto px-4 flex items-center justify-between h-16">
-        <Link href="/">
+        <Link to="/">
           <span className="font-bold text-xl">WealthSpire</span>
         </Link>
         <NavigationMenu>
@@ -141,7 +143,7 @@ export function Navbar() {
                               {item.items.map((subItem) => (
                                 <li key={subItem.href}>
                                   <NavigationMenuLink asChild>
-                                    <Link href={subItem.href}>
+                                    <Link to={subItem.href}>
                                       <span
                                         className={cn(
                                           "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
@@ -158,7 +160,7 @@ export function Navbar() {
                           </>
                         ) : (
                           <NavigationMenuLink asChild>
-                            <Link href={item.href}>
+                            <Link to={item.href}>
                               <span
                                 className={cn(
                                   "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors",
@@ -178,19 +180,19 @@ export function Navbar() {
             ))}
             <NavigationMenuItem key={"blog"}>
               <NavigationMenuTrigger>
-                <Link href="/blog">{"Blog"}</Link>
+                <Link to="/blog">{"Blog"}</Link>
               </NavigationMenuTrigger>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuTrigger>
-                <Link href="/media">{"Media"}</Link>
+                <Link to="/media">{"Media"}</Link>
               </NavigationMenuTrigger>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
 
         <Button asChild className="hidden md:inline-flex">
-          <Link href="/contact">Contact Us</Link>
+          <Link to="/contact">Contact Us</Link>
         </Button>
       </div>
     </header>
