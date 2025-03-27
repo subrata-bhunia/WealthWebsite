@@ -17,4 +17,9 @@ export default defineConfig({
     outDir: path.resolve(__dirname, "dist"),
     emptyOutDir: true,
   },
+  server: {
+    allowedHosts: [
+      "8c9b8635-bb63-4783-b684-d5f388100a01-00-28n0vz2kys3f5.pike.replit.dev",
+    ],
+  },
 });
