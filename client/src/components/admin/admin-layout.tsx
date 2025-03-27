@@ -18,7 +18,7 @@ export function AdminLayout() {
       navigate("/login");
     }
     setInitialized(true);
-  }, [setLocation]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("wealthspire_auth_token"); //Added this line for logout functionality

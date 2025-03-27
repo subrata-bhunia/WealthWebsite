@@ -2,7 +2,7 @@
 import { PageLayout } from "@/components/layout/page-layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Briefcase, Stethoscope, Scale, Building2, UserCircle, Heart, DollarSign, Landmark, Globe } from "lucide-react";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { NAVIGATION_ITEMS } from "@/lib/constants";
 
 export default function WhoWeServeOverviewPage() {

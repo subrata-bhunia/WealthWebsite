@@ -1,6 +1,6 @@
 
 import { Button } from "@/components/ui/button";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import { AlertTriangle, ArrowLeft, Home } from "lucide-react";
 
 export default function NotFound() {

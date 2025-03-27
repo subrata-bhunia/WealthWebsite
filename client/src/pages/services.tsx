@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NAVIGATION_ITEMS } from "@/lib/constants";
 import { Briefcase, Building2, Shield, Car, Coins, ChevronRight } from "lucide-react";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 
 interface ServiceItem {
   icon: React.ReactNode;
