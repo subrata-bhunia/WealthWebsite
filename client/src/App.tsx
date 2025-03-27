@@ -1,4 +1,4 @@
-import "react-quill/dist/quill.snow.css";
+// import "react-quill/dist/quill.snow.css";
 
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -157,7 +157,10 @@ function Router() {
           {/* Lease Routes */}
           <Route path="/lease/new-car" component={NewCarLeasePage} />
           <Route path="/lease/old-car" component={OldCarLeasePage} />
-          <Route path="/lease/commercial-vehicle" component={CommercialVehicleLeasePage} />
+          <Route
+            path="/lease/commercial-vehicle"
+            component={CommercialVehicleLeasePage}
+          />
           <Route path="/lease/equipment" component={EquipmentLeasePage} />
           <Route path="/lease/machinery" component={MachineryLeasePage} />
           {/* Other Lease routes will follow the same pattern */}
