@@ -20,8 +20,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useNavigate } from "react-router-dom";
-
 
 export function Navbar() {
   const isMobile = useIsMobile();
