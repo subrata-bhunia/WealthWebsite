@@ -20,7 +20,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useNavigate as useWouterNavigate } from "wouter/use-browser-location";
+import { useNavigate } from "react-router-dom";
 
 
 export function Navbar() {
