@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "wouter";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ContactsList } from "./contacts-list";
 import { BlogManagement } from "./blog-management";
@@ -9,20 +9,20 @@ import { MediaManagement } from "./media-management";
 import { OfferManagement } from "./offer-management";
 
 export function AdminLayout() {
-  const [, setLocation] = useLocation();
+  const navigate = useNavigate();
   const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     // Check if user is authenticated and is admin
     if (!isAuthenticated() || !isAdmin()) {
-      setLocation("/login");
+      navigate("/login");
     }
     setInitialized(true);
   }, [setLocation]);
 
   const handleLogout = () => {
     localStorage.removeItem("wealthspire_auth_token"); //Added this line for logout functionality
-    setLocation("/");
+    navigate("/");
   };
 
   if (!initialized || !isAuthenticated() || !isAdmin()) {
