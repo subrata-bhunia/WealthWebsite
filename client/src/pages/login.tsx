@@ -22,7 +22,7 @@ export default function LoginPage() {
 
     try {
       const response = await fetch(
-        "https://wealth-backend-production.up.railway.app/api/login",
+        "https://wealth-backend-production.up.railway.app" + "/api/login",
         {
           method: "POST",
           headers: {

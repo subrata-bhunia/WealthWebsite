@@ -30,7 +30,7 @@ export default function RegisterPage() {
 
     try {
       const response = await fetch(
-        "https://wealth-backend-production.up.railway.app/api/register",
+        "https://wealth-backend-production.up.railway.app" + "/api/register",
         {
           method: "POST",
           headers: {

@@ -30,7 +30,7 @@ export default function MediaPage() {
     queryKey: ["media"],
     queryFn: async () => {
       const response = await fetch(
-        "https://wealth-backend-production.up.railway.app/api/media"
+        "https://wealth-backend-production.up.railway.app" + "/api/media"
       );
       if (!response.ok) {
         throw new Error("Failed to fetch media items");

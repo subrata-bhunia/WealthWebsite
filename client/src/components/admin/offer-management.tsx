@@ -145,14 +145,10 @@ export function OfferManagement() {
     try {
       const response = await authFetch(`/api/offers/${editedOffer.id}`, {
         method: "PUT",
-        body: JSON.stringify({
-          title: editedOffer.title,
-          description: editedOffer.description,
-          category: editedOffer.category,
-          discount: editedOffer.discount,
-          validUntil: editedOffer.validUntil,
-          image: editedOffer.image,
-        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(editedOffer),
       });
 
       if (!response.ok) {

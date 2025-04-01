@@ -37,7 +37,7 @@ export default function Home() {
     const fetchOffers = async () => {
       try {
         const response = await fetch(
-          "https://wealth-backend-production.up.railway.app/api/offers"
+          "https://wealth-backend-production.up.railway.app" + "/api/offers"
         );
         if (response.ok) {
           const data = await response.json();
