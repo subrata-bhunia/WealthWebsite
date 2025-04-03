@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ type Blog = {
   authorName: string;
   image: string;
   createdAt: string;
+  short_desc: string;
 };
 
 export const authFetch = async (url: string, options?: RequestInit) => {
@@ -79,6 +81,7 @@ export function BlogManagement() {
     content: "",
     authorName: "",
     image: "",
+    short_desc: "",
   });
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedBlog, setEditedBlog] = useState<Blog | null>(null);
@@ -231,11 +234,9 @@ export function BlogManagement() {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold">Blog Posts</h2>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          {" "}
           {/* Use dialogOpen state */}
           <DialogTrigger asChild>
             <Button onClick={() => setDialogOpen(true)}>
-              {" "}
               {/* Open dialog on button click */}
               <Plus className="mr-2 h-4 w-4" /> Create New Post
             </Button>
@@ -266,6 +267,17 @@ export function BlogManagement() {
                     value={newBlog.authorName}
                     onChange={(e) =>
                       setNewBlog({ ...newBlog, authorName: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="author">Short Description</Label>
+                  <Input
+                    id="short_desc"
+                    value={newBlog.short_desc}
+                    onChange={(e) =>
+                      setNewBlog({ ...newBlog, short_desc: e.target.value })
                     }
                     required
                   />

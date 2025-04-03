@@ -1,4 +1,3 @@
-
 import { mysqlTable, int, text, varchar } from "drizzle-orm/mysql-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
@@ -24,6 +23,7 @@ export type InsertContact = z.infer<typeof insertContactSchema>;
 export const blogs = mysqlTable("blogs", {
   id: int("id").primaryKey().autoincrement(),
   title: text("title").notNull(),
+  short_desc: varchar("short_desc").notNull(),
   content: text("content").notNull(),
   authorName: text("author_name").notNull(),
   image: text("image"),
@@ -32,6 +32,7 @@ export const blogs = mysqlTable("blogs", {
 
 export const insertBlogSchema = createInsertSchema(blogs).pick({
   title: true,
+  short_desc: true,
   content: true,
   authorName: true,
   image: true,
@@ -55,7 +56,7 @@ export const insertMediaSchema = z.object({
   description: z.string().optional(), // This will now accept HTML content
   fileUrl: z.string().optional(),
   youtubeUrl: z.string().optional(),
-  mediaType: z.enum(['file', 'youtube', 'both']),
+  mediaType: z.enum(["file", "youtube", "both"]),
 });
 
 export type MediaItem = typeof mediaItems.$inferSelect;

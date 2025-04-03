@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -15,6 +16,7 @@ import { PageLayout } from "@/components/layout/page-layout";
 type Blog = {
   id: number;
   title: string;
+  short_desc: string;
   content: string;
   authorName: string;
   createdAt: string;
@@ -92,9 +94,14 @@ export default function BlogPage() {
               </CardHeader>
               <CardContent
                 className="line-clamp-4"
-                dangerouslySetInnerHTML={{ __html: blog.content }}
-              />
-              
+                // dangerouslySetInnerHTML={{ __html: blog.content }}
+                draggable
+              >
+                <CardDescription className="line-clamp-4">
+                  {blog.short_desc}
+                </CardDescription>
+              </CardContent>
+
               <CardFooter>
                 <Button asChild className="w-full">
                   <Link href={`/blog/${blog.id}`}>Read More</Link>
